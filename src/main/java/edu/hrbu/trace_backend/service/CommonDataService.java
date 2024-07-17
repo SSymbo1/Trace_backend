@@ -1,14 +1,13 @@
 package edu.hrbu.trace_backend.service;
 
 import edu.hrbu.trace_backend.entity.Result;
-import edu.hrbu.trace_backend.entity.dto.Welcome;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
-public interface WelcomeService {
+public interface CommonDataService {
 
-    Result login(Welcome welcome);
+    Result requestHomeStatisticsCardData();
 
-    Result pictureCaptcha();
+    Result requestHomeStatisticsLineData();
 
 }

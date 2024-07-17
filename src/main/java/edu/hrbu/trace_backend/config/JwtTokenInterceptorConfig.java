@@ -19,13 +19,8 @@ public class JwtTokenInterceptorConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         log.info("token校验拦截器启动");
         registry.addInterceptor(jwtTokenInterceptor)
-                .addPathPatterns("/user/**/**")
-                .addPathPatterns("/nurse/**/**")
-                .addPathPatterns("/customer/**/**")
-                .addPathPatterns("/bed/**/**")
-                .addPathPatterns("/service/**/**")
-                .addPathPatterns("/meal/**/**")
                 .addPathPatterns("/menue/**/**")
+                .addPathPatterns("/common/**/**")
                 .excludePathPatterns("/welcome/**/**");
     }
 

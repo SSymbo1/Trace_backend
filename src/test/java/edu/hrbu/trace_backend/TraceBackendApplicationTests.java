@@ -1,6 +1,8 @@
 package edu.hrbu.trace_backend;
 
+import edu.hrbu.trace_backend.entity.enums.Secret;
 import edu.hrbu.trace_backend.util.AesUtil;
+import edu.hrbu.trace_backend.util.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,6 +18,16 @@ class TraceBackendApplicationTests {
         log.info("加密后{}", security);
         log.info("加密后长度{}", security.length());
         log.info("解密后{}", AesUtil.decryptStr(security));
+    }
+
+    @Test
+    void jwtBuild(){
+        log.info(JwtUtil.createJWT("1",3600000));
+    }
+
+    @Test
+    void testEnum(){
+        log.info(Secret.AES.getValue());
     }
 
 }

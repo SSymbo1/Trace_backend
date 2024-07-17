@@ -1,4 +1,4 @@
-package edu.hrbu.trace_backend.entity.vo;
+package edu.hrbu.trace_backend.entity.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,9 +11,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class Welcome {
-    private String username;
-    private String password;
-    private String verify;
+public class PictureCaptcha {
+    private String picture;
     private String captcha;
 }

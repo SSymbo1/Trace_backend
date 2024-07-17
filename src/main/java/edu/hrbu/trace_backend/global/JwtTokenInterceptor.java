@@ -1,6 +1,7 @@
 package edu.hrbu.trace_backend.global;
 
 import edu.hrbu.trace_backend.entity.OnlineContext;
+import edu.hrbu.trace_backend.entity.enums.Statue;
 import edu.hrbu.trace_backend.util.JwtUtil;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
@@ -17,24 +18,24 @@ import javax.servlet.http.HttpServletResponse;
 public class JwtTokenInterceptor implements HandlerInterceptor {
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         if (!(handler instanceof HandlerMethod)) {
             return true;
         }
         String token = request.getHeader("token");
         try {
-            log.info("jwt校验:{}",token);
+            log.info("jwt校验:{}", token);
             String user = JwtUtil.parseJWT(token).getSubject();
-            log.info("登录用户为:{}", user);
-            OnlineContext.setCurrent(user);
+            log.info("登录接口用户的aid为:{}", user);
+            OnlineContext.setCurrent(token);
             return true;
         } catch (Exception exception) {
             if (exception instanceof ExpiredJwtException) {
                 log.info("token已过期");
-                response.setStatus(402);
+                response.setStatus(Statue.EXPIRE_TOKEN.getValue());
             } else if (exception instanceof IllegalArgumentException || exception instanceof MalformedJwtException || exception instanceof io.jsonwebtoken.SignatureException) {
                 log.info("token不合法");
-                response.setStatus(401);
+                response.setStatus(Statue.WRONG_TOKEN.getValue());
             }
             return false;
         }
