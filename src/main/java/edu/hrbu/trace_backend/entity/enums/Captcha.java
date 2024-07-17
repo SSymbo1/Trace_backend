@@ -16,7 +16,7 @@ public enum Captcha {
     THICKNESS("扭曲",5),
     CIRCLE_COUNT("圆形",10);
 
-    private String key;
-    private Integer value;
+    private final String key;
+    private final Integer value;
 
 }

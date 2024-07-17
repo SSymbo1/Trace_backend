@@ -15,6 +15,6 @@ public enum Statue {
     WRONG_TOKEN(402),
     EXPIRE_TOKEN(401);
 
-    private Integer value;
+    private final Integer value;
 
 }

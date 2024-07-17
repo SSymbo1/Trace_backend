@@ -15,6 +15,6 @@ public enum Condition {
     ACCOUNT_DISABLED(1),
     ACCOUNT_DELETED(1);
 
-    private Integer value;
+    private final Integer value;
 
 }

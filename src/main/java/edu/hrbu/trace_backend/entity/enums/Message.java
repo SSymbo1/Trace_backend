@@ -10,6 +10,10 @@ import lombok.ToString;
 // 通讯消息枚举
 public enum Message {
 
+    SERVER_ERROR("出现未知错误!"),
+    LOGIN_ERROR("登录失效，请重新登录!"),
+    EXPIRE_TOKEN("token已过期!"),
+    WRONG_TOKEN("不合法的token!"),
     GET_HOME_MENUE_SUCCESS("获取主界面菜单成功!"),
     GET_CAPTCHA_SUCCESS("获取验证码成功!"),
     WRONG_CAPTCHA("验证码错误!"),
@@ -19,6 +23,6 @@ public enum Message {
     ACCOUNT_DELETE("该账号已被删除，详情请联系管理员!"),
     LOGIN_SUCCESS("登录成功，欢迎:");
 
-    private String value;
+    private final String value;
 
 }
