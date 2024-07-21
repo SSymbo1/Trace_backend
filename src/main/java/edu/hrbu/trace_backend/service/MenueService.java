@@ -10,21 +10,11 @@ public interface MenueService {
 
     Result requestSubjectMenue();
 
-    Result requestQualityMenue();
-
-    Result requestEmergencyMenue();
-
     Result requestAnalysisMenue();
-
-    Result requestConstructMenue();
-
-    Result requestDeviceMenue();
 
     Result requestMonitorMenue();
 
     Result requestSegmentMenue();
-
-    Result requestOperationMenue();
 
     Result requestSystemMenue();
 
