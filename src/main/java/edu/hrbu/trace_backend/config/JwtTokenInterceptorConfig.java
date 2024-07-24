@@ -21,6 +21,7 @@ public class JwtTokenInterceptorConfig implements WebMvcConfigurer {
         registry.addInterceptor(jwtTokenInterceptor)
                 .addPathPatterns("/menue/**/**")
                 .addPathPatterns("/common/**/**")
+                .addPathPatterns("/system/**/**")
                 .excludePathPatterns("/welcome/**/**");
     }
 

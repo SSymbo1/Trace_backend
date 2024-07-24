@@ -58,99 +58,52 @@ public class MenueServiceImpl implements MenueService {
 
     @Override
     public Result requestAnalysisMenue() {
-        QueryWrapper<Menue> baseWrapper = new QueryWrapper<>();
-        baseWrapper
-                .eq("mid", Table.MENUE_ANALYSIS.getValue())
-                .and(condition -> condition.eq("del", 0));
-        Menue baseTree = menueMapper.selectOne(baseWrapper);
-        QueryWrapper<Menue> treeWrapper = new QueryWrapper<>();
-        treeWrapper
-                .eq("parent", baseTree.getMid())
-                .and(condition -> condition.eq("del", 0));
-        List<Menue> analysisMenue = menueMapper.selectList(treeWrapper);
-        if (!analysisMenue.isEmpty()) {
-            analysisMenue.forEach(menue -> {
-                QueryWrapper<Menue> childrenWrapper = new QueryWrapper<>();
-                childrenWrapper
-                        .eq("parent", menue.getMid())
-                        .and(condition -> condition.eq("del", 0));
-                List<Menue> childrenTree = menueMapper.selectList(childrenWrapper);
-                menue.setChildren(childrenTree);
-            });
-        }
         return Result
                 .ok(Message.GET_ANALYSIS_MENUE_SUCCESS.getValue())
-                .data("menue", analysisMenue);
+                .data("menue", subMenueSelector(Table.MENUE_ANALYSIS.getValue()));
     }
 
     @Override
     public Result requestMonitorMenue() {
-        QueryWrapper<Menue> baseWrapper = new QueryWrapper<>();
-        baseWrapper
-                .eq("mid", Table.MENUE_MONITOR.getValue())
-                .and(condition -> condition.eq("del", 0));
-        Menue baseTree = menueMapper.selectOne(baseWrapper);
-        QueryWrapper<Menue> treeWrapper = new QueryWrapper<>();
-        treeWrapper
-                .eq("parent", baseTree.getMid())
-                .and(condition -> condition.eq("del", 0));
-        List<Menue> monitorMenue = menueMapper.selectList(treeWrapper);
-        if (!monitorMenue.isEmpty()) {
-            monitorMenue.forEach(menue -> {
-                QueryWrapper<Menue> childrenWrapper = new QueryWrapper<>();
-                childrenWrapper
-                        .eq("parent", menue.getMid())
-                        .and(condition -> condition.eq("del", 0));
-                List<Menue> childrenTree = menueMapper.selectList(childrenWrapper);
-                menue.setChildren(childrenTree);
-            });
-        }
         return Result
                 .ok(Message.GET_MONITOR_MENUE_SUCCESS.getValue())
-                .data("menue", monitorMenue);
+                .data("menue", subMenueSelector(Table.MENUE_MONITOR.getValue()));
     }
 
     @Override
     public Result requestSegmentMenue() {
-        QueryWrapper<Menue> baseWrapper = new QueryWrapper<>();
-        baseWrapper
-                .eq("mid", Table.MENUE_SEGMENT.getValue())
-                .and(condition -> condition.eq("del", 0));
-        Menue baseTree = menueMapper.selectOne(baseWrapper);
-        QueryWrapper<Menue> treeWrapper = new QueryWrapper<>();
-        treeWrapper
-                .eq("parent", baseTree.getMid())
-                .and(condition -> condition.eq("del", 0));
-        List<Menue> segmentMenue = menueMapper.selectList(treeWrapper);
-        if (!segmentMenue.isEmpty()) {
-            segmentMenue.forEach(menue -> {
-                QueryWrapper<Menue> childrenWrapper = new QueryWrapper<>();
-                childrenWrapper
-                        .eq("parent", menue.getMid())
-                        .and(condition -> condition.eq("del", 0));
-                List<Menue> childrenTree = menueMapper.selectList(childrenWrapper);
-                menue.setChildren(childrenTree);
-            });
-        }
         return Result
                 .ok(Message.GET_SEGMENT_MENUE_SUCCESS.getValue())
-                .data("menue", segmentMenue);
+                .data("menue", subMenueSelector(Table.MENUE_SEGMENT.getValue()));
     }
 
     @Override
     public Result requestSubjectMenue() {
+        return Result
+                .ok(Message.GET_SUBJECT_MENUE_SUCCESS.getValue())
+                .data("menue", subMenueSelector(Table.MENUE_SUBJECT.getValue()));
+    }
+
+    @Override
+    public Result requestSystemMenue() {
+        return Result
+                .ok(Message.GET_SUBJECT_MENUE_SUCCESS.getValue())
+                .data("menue", subMenueSelector(Table.MENUE_SYSTEM.getValue()));
+    }
+
+    private List<Menue> subMenueSelector(Integer target) {
         QueryWrapper<Menue> baseWrapper = new QueryWrapper<>();
         baseWrapper
-                .eq("mid", Table.MENUE_SUBJECT.getValue())
+                .eq("mid", target)
                 .and(condition -> condition.eq("del", 0));
         Menue baseTree = menueMapper.selectOne(baseWrapper);
         QueryWrapper<Menue> treeWrapper = new QueryWrapper<>();
         treeWrapper
                 .eq("parent", baseTree.getMid())
                 .and(condition -> condition.eq("del", 0));
-        List<Menue> subjectMenue = menueMapper.selectList(treeWrapper);
-        if (!subjectMenue.isEmpty()) {
-            subjectMenue.forEach(menue -> {
+        List<Menue> subMenue = menueMapper.selectList(treeWrapper);
+        if (!subMenue.isEmpty()) {
+            subMenue.forEach(menue -> {
                 QueryWrapper<Menue> childrenWrapper = new QueryWrapper<>();
                 childrenWrapper
                         .eq("parent", menue.getMid())
@@ -159,17 +112,7 @@ public class MenueServiceImpl implements MenueService {
                 menue.setChildren(childrenTree);
             });
         }
-        return Result
-                .ok(Message.GET_SUBJECT_MENUE_SUCCESS.getValue())
-                .data("menue", subjectMenue);
+        return subMenue;
     }
 
-    @Override
-    public Result requestSystemMenue() {
-        QueryWrapper<Menue> baseWrapper = new QueryWrapper<>();
-        baseWrapper
-                .eq("mid", Table.MENUE_SYSTEM.getValue())
-                .and(condition -> condition.eq("del", 0));
-        return null;
-    }
 }

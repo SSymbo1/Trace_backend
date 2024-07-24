@@ -29,3 +29,6 @@ logging:
     dateformat: yyyy-MM-dd HH:mm:ss.SSS
   file:
     name: backend-log.log
+
+resources:
+  avatar: http://localhost:8081/avatar/

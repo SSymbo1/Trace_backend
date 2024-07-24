@@ -10,6 +10,10 @@ import lombok.ToString;
 // 通讯消息枚举
 public enum Message {
 
+    GET_LOGIN_ACCOUNT_INFO_SUCCESS("查询当前登录用户信息成功!"),
+    GET_ACCOUNT_INFO_SUCCESS("查询用户信息成功"),
+    SAVE_SUCCESS("保存成功"),
+    SAVE_ERROR("保存失败"),
     GET_MONITOR_MENUE_SUCCESS("获取运行监测管理菜单成功!"),
     GET_SEGMENT_MENUE_SUCCESS("获取追溯环节管理菜单成功!"),
     GET_ANALYSIS_MENUE_SUCCESS("获取追溯数据分析菜单成功!"),

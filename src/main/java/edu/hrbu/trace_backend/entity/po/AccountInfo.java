@@ -1,8 +1,8 @@
 package edu.hrbu.trace_backend.entity.po;
 
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,15 +14,22 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class Account {
-    @TableId(value = "aid", type = IdType.AUTO)
+public class AccountInfo {
+    @TableId(value = "aid")
     private Integer aid;
-    private String username;
-    private String password;
+    private Integer eid;
     private Integer rid;
-    private Integer del;
-    private Integer ban;
-    private String memo;
+    private String name;
+    private String gander;
+    private String tel;
+    private String avatar;
+    private String email;
+    private String address;
+    private String zipCode;
     @TableField(exist = false)
-    private AccountInfo accountInfo;
+    private Enterprise enterprise;
+    @TableField(exist = false)
+    private Role role;
+    @TableField(exist = false)
+    private Account account;
 }
