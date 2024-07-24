@@ -1,15 +1,12 @@
 package edu.hrbu.trace_backend.service;
 
 import edu.hrbu.trace_backend.entity.Result;
+import edu.hrbu.trace_backend.entity.dto.UserQuery;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
-public interface CommonDataService {
+public interface SystemService {
 
-    Result requestHomeStatisticsCardData();
-
-    Result requestHomeStatisticsLineData();
-
-    Result requestWhoIs();
+    Result requestAccountInfoPaged(UserQuery query);
 
 }

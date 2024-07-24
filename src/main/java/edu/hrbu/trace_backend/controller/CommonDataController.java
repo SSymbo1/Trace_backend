@@ -44,4 +44,14 @@ public class CommonDataController {
         return commonDataService.requestHomeStatisticsLineData();
     }
 
+    @GetMapping("/whois")
+    @ApiOperation(
+            value = "获取当前用户信息接口",
+            notes = "当用户登录成功时，前端从该接口可以获取用户的详细信息，" +
+                    "需要登陆验证"
+    )
+    public Result getLoginUserInfo(){
+        return commonDataService.requestWhoIs();
+    }
+
 }
