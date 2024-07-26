@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @Slf4j
 @Component
+//  JwtToken校验拦截器
 public class JwtTokenInterceptor implements HandlerInterceptor {
 
     @Override
@@ -25,7 +26,7 @@ public class JwtTokenInterceptor implements HandlerInterceptor {
         String token = request.getHeader("token");
         log.info("jwt校验:{}", token);
         String user = JwtUtil.parseJWT(token).getSubject();
-        log.info("登录接口用户的aid为:{}", user);
+        log.info("调用接口用户的aid为:{}", user);
         OnlineContext.setCurrent(token);
         return true;
     }

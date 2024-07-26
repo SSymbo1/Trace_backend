@@ -18,4 +18,8 @@ public interface MenueService {
 
     Result requestSystemMenue();
 
+    Result requestRoleSubMenue();
+
+    Result requestEnterpriseMenue(String keyword);
+
 }

@@ -82,4 +82,24 @@ public class MenueController {
         return menueService.requestSystemMenue();
     }
 
+    @GetMapping("/role_sub_menue")
+    @ApiOperation(
+            value = "角色菜单数据接口",
+            notes = "角色菜单数据接口，需要登录验证，" +
+                    "返回角色选择菜单，包括rid和name值"
+    )
+    public Result getAccountRoleMenue(){
+        return menueService.requestRoleSubMenue();
+    }
+
+    @GetMapping("/enterprise_sub_menue")
+    @ApiOperation(
+            value = "公司菜单数据接口",
+            notes = "公司菜单数据接口，需要登录验证，" +
+                    "返回角色选择菜单，包括eid和name值"
+    )
+    public Result getAccountEnterpriseMenue(String keyword){
+        return menueService.requestEnterpriseMenue(keyword);
+    }
+
 }

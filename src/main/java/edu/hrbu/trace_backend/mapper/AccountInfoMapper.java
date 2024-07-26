@@ -11,7 +11,7 @@ import java.util.Map;
 @Mapper
 public interface AccountInfoMapper extends BaseMapper<AccountInfo> {
 
-    IPage<AccountInfo> selectAccountInfoByCondition(IPage<AccountInfo> page,@Param("condition") Map<String, Object> condition);
+    IPage<AccountInfo> selectAccountInfoByCondition(IPage<AccountInfo> page, @Param("condition") Map<String, Object> condition);
 
     AccountInfo selectAccountInfoByAccountId(Integer accountId);
 

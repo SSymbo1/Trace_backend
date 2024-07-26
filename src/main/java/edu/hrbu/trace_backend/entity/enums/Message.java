@@ -10,6 +10,21 @@ import lombok.ToString;
 // 通讯消息枚举
 public enum Message {
 
+    GET_ACCOUNT_OPERATE_SUCCESS("获取账户敏感操作记录成功"),
+    EDIT_ACCOUNT_SUCCESS("修改账户成功!"),
+    EDIT_ACCOUNT_FAIL("修改账户失败!"),
+    GET_ACCOUNT_EDIT_DATA("获取指定账户信息成功"),
+    SET_ACCOUNT_STATUE_SUCCESS("设置账户状态成功"),
+    SET_ACCOUNT_STATUE_FAIL("设置账户状态失败"),
+    ADD_ACCOUNT_SUCCESS("添加账户成功!"),
+    ADD_ACCOUNT_FAIL("添加账户失败!"),
+    ACCOUNT_USER_EXIST("所注册的用户名存在!"),
+    DECODE_WRONG("AES解码失败!"),
+    DECODED("已解码!"),
+    NO_PERMISSION("没有足够的权限!"),
+    TIMESTAMP_TIMEOUT("解码请求超时!"),
+    GET_ENTERPRISE_SUB_SUCCESS("查询公司子菜单成功"),
+    GET_ROLE_SUB_SUCCESS("查询角色子菜单成功!"),
     GET_LOGIN_ACCOUNT_INFO_SUCCESS("查询当前登录用户信息成功!"),
     GET_ACCOUNT_INFO_SUCCESS("查询用户信息成功"),
     SAVE_SUCCESS("保存成功"),

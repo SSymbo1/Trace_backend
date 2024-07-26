@@ -6,11 +6,10 @@ import edu.hrbu.trace_backend.entity.Result;
 import edu.hrbu.trace_backend.entity.enums.Table;
 import edu.hrbu.trace_backend.entity.po.Account;
 import edu.hrbu.trace_backend.entity.po.Menue;
+import edu.hrbu.trace_backend.entity.po.Role;
 import edu.hrbu.trace_backend.entity.po.RoleMenueContrast;
 import edu.hrbu.trace_backend.entity.enums.Message;
-import edu.hrbu.trace_backend.mapper.AccountMapper;
-import edu.hrbu.trace_backend.mapper.MenueMapper;
-import edu.hrbu.trace_backend.mapper.RoleMenueContrastMapper;
+import edu.hrbu.trace_backend.mapper.*;
 import edu.hrbu.trace_backend.service.MenueService;
 import edu.hrbu.trace_backend.util.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +30,10 @@ public class MenueServiceImpl implements MenueService {
     private MenueMapper menueMapper;
     @Resource
     private RoleMenueContrastMapper roleMenueContrastMapper;
+    @Resource
+    private RoleMapper roleMapper;
+    @Resource
+    private EnterpriseMapper enterpriseMapper;
 
     @Override
     public Result requestHomeMenue() {
@@ -89,6 +92,23 @@ public class MenueServiceImpl implements MenueService {
         return Result
                 .ok(Message.GET_SUBJECT_MENUE_SUCCESS.getValue())
                 .data("menue", subMenueSelector(Table.MENUE_SYSTEM.getValue()));
+    }
+
+    @Override
+    public Result requestRoleSubMenue() {
+        QueryWrapper<Role> roleSubWrapper = new QueryWrapper<>();
+        roleSubWrapper.eq("del", 0);
+        List<Role> roleSubMenue = roleMapper.selectList(roleSubWrapper);
+        return Result
+                .ok(Message.GET_ROLE_SUB_SUCCESS.getValue())
+                .data("menue",roleSubMenue);
+    }
+
+    @Override
+    public Result requestEnterpriseMenue(String keyword) {
+        return Result
+                .ok(Message.GET_ENTERPRISE_SUB_SUCCESS.getValue())
+                .data("menue",enterpriseMapper.selectEnterpriseByConditionForMenue(keyword));
     }
 
     private List<Menue> subMenueSelector(Integer target) {

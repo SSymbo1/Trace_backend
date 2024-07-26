@@ -11,17 +11,8 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserQuery {
-    private Integer currentPage;
-    private Integer pageSize;
-    private String name;
-    private String gander;
-    private String tel;
-    private String email;
-    private String role;
-    private String address;
-    private String zipCode;
-    private Integer ban;
+public class AccountStatue {
+    private Integer aid;
     private Integer del;
-
+    private Integer ban;
 }
