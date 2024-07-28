@@ -7,9 +7,11 @@ import edu.hrbu.trace_backend.entity.dto.Decode;
 import edu.hrbu.trace_backend.entity.enums.Message;
 import edu.hrbu.trace_backend.entity.po.Account;
 import edu.hrbu.trace_backend.entity.po.AccountInfo;
+import edu.hrbu.trace_backend.entity.po.Enterprise;
 import edu.hrbu.trace_backend.mapper.AccountInfoMapper;
 import edu.hrbu.trace_backend.mapper.AccountMapper;
 import edu.hrbu.trace_backend.mapper.AccountOperateMapper;
+import edu.hrbu.trace_backend.mapper.EnterpriseMapper;
 import edu.hrbu.trace_backend.service.CommonDataService;
 import edu.hrbu.trace_backend.util.AesUtil;
 import edu.hrbu.trace_backend.util.JwtUtil;
@@ -29,6 +31,8 @@ public class CommonDataServiceImpl implements CommonDataService {
     private AccountInfoMapper accountInfoMapper;
     @Resource
     private AccountMapper accountMapper;
+    @Resource
+    private EnterpriseMapper enterpriseMapper;
     @Value("${resources.avatar}")
     private String avatarPath;
 
@@ -71,7 +75,7 @@ public class CommonDataServiceImpl implements CommonDataService {
     }
 
     @Override
-    public Result requestEditInfo(Integer accountId) {
+    public Result requestEditAccountInfo(Integer accountId) {
         Map<String, Object> data = new HashMap<>();
         Account account = accountMapper.selectById(accountId);
         AccountInfo accountInfo = accountInfoMapper.selectById(accountId);
@@ -89,5 +93,12 @@ public class CommonDataServiceImpl implements CommonDataService {
         return Result
                 .ok(Message.GET_ACCOUNT_EDIT_DATA.getValue())
                 .data("form", data);
+    }
+
+    @Override
+    public Result requestEditEnterpriseInfo(Integer enterpriseId) {
+        return Result
+                .ok(Message.GET_ENTERPRISE_EDIT_DATA.getValue())
+                .data("form",enterpriseMapper.selectById(enterpriseId));
     }
 }

@@ -1,8 +1,5 @@
-package edu.hrbu.trace_backend.entity.po;
+package edu.hrbu.trace_backend.entity.dto;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import io.swagger.models.auth.In;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,9 +11,9 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class Enterprise {
-    @TableId(value = "eid",type = IdType.AUTO)
-    private Integer eid;
+public class EnterpriseQuery {
+    private Integer currentPage;
+    private Integer pageSize;
     private String name;
     private String legalPerson;
     private String tel;

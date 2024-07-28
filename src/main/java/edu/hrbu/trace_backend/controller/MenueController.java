@@ -82,7 +82,7 @@ public class MenueController {
         return menueService.requestSystemMenue();
     }
 
-    @GetMapping("/role_sub_menue")
+    @GetMapping("/sub/role")
     @ApiOperation(
             value = "角色菜单数据接口",
             notes = "角色菜单数据接口，需要登录验证，" +
@@ -92,7 +92,7 @@ public class MenueController {
         return menueService.requestRoleSubMenue();
     }
 
-    @GetMapping("/enterprise_sub_menue")
+    @GetMapping("/sub/enterprise")
     @ApiOperation(
             value = "公司菜单数据接口",
             notes = "公司菜单数据接口，需要登录验证，" +

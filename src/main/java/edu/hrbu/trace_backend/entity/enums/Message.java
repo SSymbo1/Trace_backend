@@ -10,7 +10,15 @@ import lombok.ToString;
 // 通讯消息枚举
 public enum Message {
 
-    GET_ACCOUNT_OPERATE_SUCCESS("获取账户敏感操作记录成功"),
+    EDIT_ENTERPRISE_FAIL("编辑企业信息失败"),
+    EDIT_ENTERPRISE_SUCCESS("编辑企业信息成功"),
+    GET_ENTERPRISE_EDIT_DATA("获取指定企业信息成功"),
+    GET_ENTERPRISE_OPERATE_SUCCESS("查询企业敏感操作记录成功!"),
+    ADD_ENTERPRISE_SUCCESS("创建企业成功!"),
+    ADD_ENTERPRISE_FAIL("创建企业失败!"),
+    ADD_ENTERPRISE_EXIST("所添加的企业已存在!"),
+    GET_ENTERPRISE_SUCCESS("查询公司信息成功!"),
+    GET_ACCOUNT_OPERATE_SUCCESS("查询账户敏感操作记录成功!"),
     EDIT_ACCOUNT_SUCCESS("修改账户成功!"),
     EDIT_ACCOUNT_FAIL("修改账户失败!"),
     GET_ACCOUNT_EDIT_DATA("获取指定账户信息成功"),

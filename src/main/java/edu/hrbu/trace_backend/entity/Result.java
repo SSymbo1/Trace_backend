@@ -12,7 +12,7 @@ import java.util.Map;
 public class Result {
     private Integer code;
     private boolean success;
-    private String msg;
+    private String message;
     private Map<String, Object> data = new HashMap<>();
 
     public Result data(String key, Object value) {
@@ -24,7 +24,7 @@ public class Result {
         Result result = new Result();
         result.setCode(Statue.SUCCESS.getValue());
         result.setSuccess(true);
-        result.setMsg(message);
+        result.setMessage(message);
         return result;
     }
 
@@ -32,7 +32,7 @@ public class Result {
         Result result = new Result();
         result.setCode(Statue.FAIL.getValue());
         result.setSuccess(false);
-        result.setMsg(message);
+        result.setMessage(message);
         return result;
     }
 
@@ -40,7 +40,7 @@ public class Result {
         Result result = new Result();
         result.setCode(code);
         result.setSuccess(success);
-        result.setMsg(message);
+        result.setMessage(message);
         return result;
     }
 }

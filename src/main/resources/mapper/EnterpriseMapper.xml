@@ -9,11 +9,50 @@
         FROM
             enterprise
         <where>
+            del = 0
             <if test="keyword != null and keyword != ''">
-                name LIKE CONCAT('%',#{keyword},'%') OR social_code LIKE CONCAT('%',#{keyword},'%')
+               AND name LIKE CONCAT('%',#{keyword},'%') OR social_code LIKE CONCAT('%',#{keyword},'%')
             </if>
         </where>
         LIMIT 5
+    </select>
+
+    <select id="selectEnterpriseByCondition" resultType="edu.hrbu.trace_backend.entity.po.Enterprise">
+        SELECT
+            eid,
+            name,
+            legal_person,
+            tel,
+            social_code,
+            address,
+            zip_code,
+            del
+        FROM
+            enterprise
+        <where>
+            eid != 1
+            <if test="condition.name != null and condition.name != ''">
+                AND name LIKE CONCAT('%',#{condition.name},'%')
+            </if>
+            <if test="condition.legalPerson != null and condition.legalPerson != ''">
+                AND legal_person LIKE CONCAT('%',#{condition.legalPerson},'%')
+            </if>
+            <if test="condition.tel != null and condition.tel != ''">
+                AND tel LIKE CONCAT('%',#{condition.tel},'%')
+            </if>
+            <if test="condition.socialCode != null and condition.socialCode != ''">
+                AND social_code LIKE CONCAT('%',#{condition.socialCode},'%')
+            </if>
+            <if test="condition.address != null and condition.address != ''">
+                AND address LIKE CONCAT('%',#{condition.address},'%')
+            </if>
+            <if test="condition.zipCode != null and condition.zipCode != ''">
+                AND zip_code LIKE CONCAT('%',#{condition.zipCode},'%')
+            </if>
+            <if test="condition.del != null and condition.del != ''">
+                AND del = #{condition.del}
+            </if>
+        </where>
     </select>
 
 </mapper>

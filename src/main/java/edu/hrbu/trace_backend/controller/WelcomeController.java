@@ -30,7 +30,7 @@ public class WelcomeController {
         return welcomeService.login(welcome);
     }
 
-    @GetMapping("/picture_captcha")
+    @GetMapping("/captcha")
     @ApiOperation(
             value = "图片验证码请求接口",
             notes = "图片验证码请求接口，请求接口时返回图片验证码的base64编码和验证码的值"

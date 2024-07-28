@@ -20,7 +20,7 @@ public class FileController {
     @Resource
     private FileService fileService;
 
-    @PostMapping("/upload_avatar")
+    @PostMapping("/upload/avatar")
     @ApiOperation(
             value = "用户头像上传接口",
             notes = "用户头像上传接口，需要登录验证，" +

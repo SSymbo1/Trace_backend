@@ -1,9 +1,7 @@
 package edu.hrbu.trace_backend.controller;
 
 import edu.hrbu.trace_backend.entity.Result;
-import edu.hrbu.trace_backend.entity.dto.Account;
-import edu.hrbu.trace_backend.entity.dto.AccountStatue;
-import edu.hrbu.trace_backend.entity.dto.UserQuery;
+import edu.hrbu.trace_backend.entity.dto.*;
 import edu.hrbu.trace_backend.service.SystemService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -22,7 +20,7 @@ public class SystemController {
     @Resource
     private SystemService systemService;
 
-    @GetMapping("/get_account_info")
+    @GetMapping("/account")
     @ApiOperation(
             value = "查询分页用户信息接口",
             notes = "查询分页用户信息接口，需要登录验证，" +
@@ -32,17 +30,7 @@ public class SystemController {
         return systemService.requestAccountInfoPaged(query);
     }
 
-    @GetMapping("/get_enterprise")
-    @ApiOperation(
-            value = "查询分页公司信息接口",
-            notes = "查询分页公司信息接口，需要登录验证，" +
-                    "除了分页参数外，不携带条件时全查询，携带条件则进行条件查询"
-    )
-    public Result getEnterprisePaged() {
-        return null;
-    }
-
-    @PostMapping("/add_account_info")
+    @PostMapping("/account")
     @ApiOperation(
             value = "添加用户信息接口",
             notes = "添加用户信息接口，需要登录验证，" +
@@ -52,7 +40,7 @@ public class SystemController {
         return systemService.requestAccountAdd(account);
     }
 
-    @PutMapping("/edit_account_info")
+    @PutMapping("/account")
     @ApiOperation(
             value = "用户信息编辑接口",
             notes = "用户信息编辑接口，需要登录验证，" +
@@ -62,7 +50,7 @@ public class SystemController {
         return systemService.requestAccountEdit(account);
     }
 
-    @PutMapping("/set_account_statue")
+    @PutMapping("/account/statue")
     @ApiOperation(
             value = "用户状态修改接口",
             notes = "用户状态修改接口，需要登录验证，" +
@@ -72,7 +60,7 @@ public class SystemController {
         return systemService.requestAccountStatueSet(statue);
     }
 
-    @GetMapping("/get_sensitive_account_info")
+    @GetMapping("/sensitive/account")
     @ApiOperation(
             value = "查询分页账户敏感操作记录接口",
             notes = "查询分页账户敏感操作记录接口，需要登录验证，" +
@@ -80,6 +68,56 @@ public class SystemController {
     )
     public Result getSensitiveAccountInfoPaged(String keyword, Integer currentPage, Integer pageSize) {
         return systemService.requestSensitiveAccountInfoPaged(keyword, currentPage, pageSize);
+    }
+
+    @GetMapping("/sensitive/enterprise")
+    @ApiOperation(
+            value = "查询分页企业敏感操作记录接口",
+            notes = "查询分页企业敏感操作记录接口，需要登录验证，" +
+                    "除了分页参数外，不携带条件时全查询，携带条件则进行条件查询"
+    )
+    public Result getSensitiveEnterpriseInfoPaged(String keyword, Integer currentPage, Integer pageSize) {
+        return systemService.requestSensitiveEnterpriseInfoPaged(keyword, currentPage, pageSize);
+    }
+
+    @GetMapping("/enterprise")
+    @ApiOperation(
+            value = "查询分页企业信息接口",
+            notes = "查询分页企业信息接口，需要登录验证，" +
+                    "除了分页参数外，不携带条件时全查询，携带条件则进行条件查询"
+    )
+    public Result getEnterpriseInfoPaged(EnterpriseQuery query) {
+        return systemService.requestEnterpriseInfoPaged(query);
+    }
+
+    @PostMapping("/enterprise")
+    @ApiOperation(
+            value = "添加企业信息接口",
+            notes = "添加企业信息接口，需要登录验证，" +
+                    "提供新增企业所需要的信息，返回执行结果"
+    )
+    public Result addEnterprise(@RequestBody Enterprise enterprise) {
+        return systemService.requestEnterpriseAdd(enterprise);
+    }
+
+    @PutMapping("/enterprise")
+    @ApiOperation(
+            value = "企业信息编辑接口",
+            notes = "企业信息编辑接口，需要登录验证，" +
+                    "根据提供的数据修改企业的详细信息，返回修改结果"
+    )
+    public Result editEnterprise(@RequestBody Enterprise enterprise) {
+        return systemService.requestEnterpriseEdit(enterprise);
+    }
+
+    @DeleteMapping("/enterprise")
+    @ApiOperation(
+            value = "企业信息删除接口",
+            notes = "企业信息删除接口，需要登录验证，" +
+                    "根据提供的数据删除企业信息，返回修改结果"
+    )
+    public Result deleteEnterprise(@RequestBody Enterprise enterprise) {
+        return null;
     }
 
 

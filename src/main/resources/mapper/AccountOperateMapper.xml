@@ -20,17 +20,17 @@
 
     <select id="selectAccountOperateByCondition" resultMap="operateResult">
         SELECT
-        account_operate.iid,
-        account_operate.oid,
-        account_operate.aid,
-        account_operate.operate,
-        account_operate.operate_time,
-        operate_table.name AS operate_name,
-        operate_table.avatar AS operate_avatar,
-        account_table.name AS account_name,
-        account_table.avatar AS account_avatar
+            account_operate.iid,
+            account_operate.oid,
+            account_operate.aid,
+            account_operate.operate,
+            account_operate.operate_time,
+            operate_table.name              AS operate_name,
+            operate_table.avatar            AS operate_avatar,
+            account_table.name              AS account_name,
+            account_table.avatar            AS account_avatar
         FROM
-        account_operate
+            account_operate
         LEFT JOIN account_info AS operate_table on account_operate.oid = operate_table.aid
         LEFT JOIN account_info AS account_table on account_operate.aid = account_table.aid
         <where>

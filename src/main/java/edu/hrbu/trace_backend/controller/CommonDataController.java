@@ -21,7 +21,7 @@ public class CommonDataController {
     private CommonDataService commonDataService;
 
     // todo 首页数据统计卡片的数据接口
-    @GetMapping("/home_statistics_card")
+    @GetMapping("/statistics/card")
     @ApiOperation(
             value = "首页数据统计卡片数据接口",
             notes = "首页数据统计卡片数据接口，需要登录验证，" +
@@ -32,7 +32,7 @@ public class CommonDataController {
     }
 
     // todo 首页数据统计柱状图的数据接口
-    @GetMapping("/home_statistics_line")
+    @GetMapping("/statistics/line")
     @ApiOperation(
             value = "首页数据统计柱状图数据接口",
             notes = "首页数据统计柱状图数据接口，需要登录验证，" +
@@ -52,7 +52,7 @@ public class CommonDataController {
         return commonDataService.requestWhoIs();
     }
 
-    @PostMapping("/decode_password")
+    @PostMapping("/decode/password")
     @ApiOperation(
             value = "解码加密后密码接口",
             notes = "解码加密后密码接口，前端从该接口可以获取提供密码的解码，" +
@@ -62,14 +62,24 @@ public class CommonDataController {
         return commonDataService.requestDecodePass(decode);
     }
 
-    @GetMapping("/edit_account_info")
+    @GetMapping("/account")
     @ApiOperation(
             value = "获取用户修改信息接口",
             notes = "获取用户修改信息接口，需要登陆验证，" +
                     "在需要修改账户信息时，请求该接口获取修改前数据"
     )
     public Result getEditAccountInfo(Integer accountId){
-        return commonDataService.requestEditInfo(accountId);
+        return commonDataService.requestEditAccountInfo(accountId);
+    }
+
+    @GetMapping("/enterprise")
+    @ApiOperation(
+            value = "获取企业修改信息接口",
+            notes = "获取企业修改信息接口，需要登陆验证，" +
+                    "在需要修改企业信息时，请求该接口获取修改前数据"
+    )
+    public Result getEditEnterpriseInfo(Integer enterpriseId){
+        return commonDataService.requestEditEnterpriseInfo(enterpriseId);
     }
 
 }

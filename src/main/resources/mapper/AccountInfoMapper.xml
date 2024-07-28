@@ -38,33 +38,33 @@
 
     <select id="selectAccountInfoByCondition" resultMap="accountInfoResult">
         SELECT
-        account_info.aid,
-        account_info.name,
-        account_info.gander,
-        account_info.tel,
-        account_info.avatar,
-        account_info.email,
-        account_info.address,
-        account_info.zip_code,
-        enterprise.eid,
-        enterprise.name AS enterprise_name,
-        enterprise.legal_person,
-        enterprise.tel AS enterprise_tel,
-        enterprise.social_code,
-        enterprise.address AS enterprise_address,
-        enterprise.zip_code AS enterprise_zipCode,
-        role.rid,
-        role.name AS role_name,
-        role.memo,
-        role.del,
-        account.aid AS account_aid,
-        account.username,
-        account.password,
-        account.ban,
-        account.del AS account_del,
-        account.memo
+            account_info.aid,
+            account_info.name,
+            account_info.gander,
+            account_info.tel,
+            account_info.avatar,
+            account_info.email,
+            account_info.address,
+            account_info.zip_code,
+            enterprise.eid,
+            enterprise.name             AS enterprise_name,
+            enterprise.legal_person,
+            enterprise.tel              AS enterprise_tel,
+            enterprise.social_code,
+            enterprise.address          AS enterprise_address,
+            enterprise.zip_code         AS enterprise_zipCode,
+            role.rid,
+            role.name                   AS role_name,
+            role.memo,
+            role.del,
+            account.aid                 AS account_aid,
+            account.username,
+            account.password,
+            account.ban,
+            account.del                 AS account_del,
+            account.memo
         FROM
-        account_info
+            account_info
         JOIN account ON account.aid = account_info.aid
         JOIN enterprise on enterprise.eid = account_info.eid
         JOIN role ON role.rid = account_info.rid
