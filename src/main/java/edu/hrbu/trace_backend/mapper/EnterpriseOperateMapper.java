@@ -9,7 +9,7 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface EnterpriseOperateMapper extends BaseMapper<EnterpriseOperate> {
 
-    IPage<EnterpriseOperate> getEnterpriseOperateByCondition(IPage<EnterpriseOperate> page,@Param("condition") String condition);
+    IPage<EnterpriseOperate> selectEnterpriseOperateByCondition(IPage<EnterpriseOperate> page,@Param("condition") String condition);
 
 }
 

@@ -1,4 +1,4 @@
-package edu.hrbu.trace_backend.entity.dto;
+package edu.hrbu.trace_backend.entity.dto.system;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,8 +11,9 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class Enterprise {
-    private Integer eid;
+public class EnterpriseQuery {
+    private Integer currentPage;
+    private Integer pageSize;
     private String name;
     private String legalPerson;
     private String tel;

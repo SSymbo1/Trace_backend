@@ -25,6 +25,7 @@
             <result property="name" column="role_name"/>
             <result property="memo" column="memo"/>
             <result property="del" column="del"/>
+            <result property="ban" column="ban"/>
         </association>
         <association property="account" javaType="edu.hrbu.trace_backend.entity.po.Account">
             <id property="aid" column="account_aid"/>

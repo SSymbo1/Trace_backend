@@ -11,4 +11,9 @@ public interface AccountOperateService {
     void requestRecordAccountStatueSet(JoinPoint joinPoint);
 
     void requestRecordDecodePassword(JoinPoint joinPoint);
+
+    void requestRecordEnableAllAccount(JoinPoint joinPoint);
+
+    void requestRecordDisableAllAccount(JoinPoint joinPoint);
+
 }

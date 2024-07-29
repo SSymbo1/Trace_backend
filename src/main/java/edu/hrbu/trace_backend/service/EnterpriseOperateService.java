@@ -8,6 +8,4 @@ public interface EnterpriseOperateService{
 
     void requestRecordEnterpriseEdit(JoinPoint joinPoint, Object result);
 
-    void requestRecordEnterpriseDelete(JoinPoint joinPoint);
-
 }

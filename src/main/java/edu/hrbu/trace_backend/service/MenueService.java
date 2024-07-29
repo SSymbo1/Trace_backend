@@ -21,4 +21,6 @@ public interface MenueService {
 
     Result requestEnterpriseMenue(String keyword);
 
+    Result requestRoleTreeMenue();
+
 }

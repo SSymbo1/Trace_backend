@@ -1,4 +1,4 @@
-package edu.hrbu.trace_backend.entity.dto;
+package edu.hrbu.trace_backend.entity.dto.system;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

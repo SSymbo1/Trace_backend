@@ -102,4 +102,14 @@ public class MenueController {
         return menueService.requestEnterpriseMenue(keyword);
     }
 
+    @GetMapping("/tree/role")
+    @ApiOperation(
+            value = "权限树形菜单接口",
+            notes = "权限树形菜单接口，需要登录验证，" +
+                    "返回添加角色时需要的权限树形菜单"
+    )
+    public Result getRoleTreeMenue(){
+        return menueService.requestRoleTreeMenue();
+    }
+
 }

@@ -4,4 +4,42 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="edu.hrbu.trace_backend.mapper.RoleOperateMapper">
 
+    <resultMap id="operateResult" type="edu.hrbu.trace_backend.entity.po.RoleOperate">
+        <id property="iid" column="iid"/>
+        <result property="oid" column="oid"/>
+        <result property="rid" column="rid"/>
+        <result property="operate" column="operate"/>
+        <result property="operateTime" column="operate_time"/>
+        <association property="operator" javaType="edu.hrbu.trace_backend.entity.po.AccountInfo">
+            <result property="name" column="operate_name"/>
+            <result property="avatar" column="operate_avatar"/>
+        </association>
+        <association property="role" javaType="edu.hrbu.trace_backend.entity.po.Role">
+            <result property="name" column="role_name"/>
+        </association>
+    </resultMap>
+
+    <select id="selectRoleOperateByCondition" resultMap="operateResult">
+        SELECT
+            role_operate.iid,
+            role_operate.oid,
+            role_operate.rid,
+            role_operate.operate,
+            role_operate.operate_time,
+            operate_table.name   AS operate_name,
+            operate_table.avatar AS operate_avatar,
+            role_table.name      AS role_name
+        FROM
+            role_operate
+        LEFT JOIN account_info AS operate_table ON role_operate.oid = operate_table.aid
+        LEFT JOIN role AS role_table ON role_table.rid = role_operate.rid
+        <where>
+            <if test="condition != null and condition != ''">
+                operate_table.name LIKE CONCAT('%',#{condition},'%') OR role_table.name LIKE CONCAT('%',#{condition},'%')
+            </if>
+        </where>
+        ORDER BY role_operate.operate_time DESC
+    </select>
+
+
 </mapper>

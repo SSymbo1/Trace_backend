@@ -1,7 +1,7 @@
 package edu.hrbu.trace_backend.controller;
 
 import edu.hrbu.trace_backend.entity.Result;
-import edu.hrbu.trace_backend.entity.dto.*;
+import edu.hrbu.trace_backend.entity.dto.system.*;
 import edu.hrbu.trace_backend.service.SystemService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -60,24 +60,24 @@ public class SystemController {
         return systemService.requestAccountStatueSet(statue);
     }
 
-    @GetMapping("/sensitive/account")
+    @PutMapping("/account/enable")
     @ApiOperation(
-            value = "查询分页账户敏感操作记录接口",
-            notes = "查询分页账户敏感操作记录接口，需要登录验证，" +
-                    "除了分页参数外，不携带条件时全查询，携带条件则进行条件查询"
+            value = "启用所有用户接口",
+            notes = "启用所有用户接口，需要登录验证，" +
+                    "根据提供的数据验证后启用所有账户"
     )
-    public Result getSensitiveAccountInfoPaged(String keyword, Integer currentPage, Integer pageSize) {
-        return systemService.requestSensitiveAccountInfoPaged(keyword, currentPage, pageSize);
+    public Result enableAllAccount(@RequestBody Able able) {
+        return systemService.requestEnableAllAccount(able);
     }
 
-    @GetMapping("/sensitive/enterprise")
+    @PutMapping("/account/disable")
     @ApiOperation(
-            value = "查询分页企业敏感操作记录接口",
-            notes = "查询分页企业敏感操作记录接口，需要登录验证，" +
-                    "除了分页参数外，不携带条件时全查询，携带条件则进行条件查询"
+            value = "禁用所有用户接口",
+            notes = "禁用所有用户接口，需要登录验证，" +
+                    "根据提供的数据验证后禁用所有账户"
     )
-    public Result getSensitiveEnterpriseInfoPaged(String keyword, Integer currentPage, Integer pageSize) {
-        return systemService.requestSensitiveEnterpriseInfoPaged(keyword, currentPage, pageSize);
+    public Result disableAllAccount(@RequestBody Able able) {
+        return systemService.requestDisableAllAccount(able);
     }
 
     @GetMapping("/enterprise")
@@ -110,15 +110,94 @@ public class SystemController {
         return systemService.requestEnterpriseEdit(enterprise);
     }
 
-    @DeleteMapping("/enterprise")
+    @GetMapping("/role")
     @ApiOperation(
-            value = "企业信息删除接口",
-            notes = "企业信息删除接口，需要登录验证，" +
-                    "根据提供的数据删除企业信息，返回修改结果"
+            value = "查询分页角色信息接口",
+            notes = "查询分页角色信息接口，需要登录验证，" +
+                    "除了分页参数外，不携带条件时全查询，携带条件则进行条件查询"
     )
-    public Result deleteEnterprise(@RequestBody Enterprise enterprise) {
-        return null;
+    public Result getRoleInfoPaged(RoleQuery query) {
+        return systemService.requestRoleInfoPaged(query);
     }
 
+    @PostMapping("/role")
+    @ApiOperation(
+            value = "添加角色信息接口",
+            notes = "添加角色信息接口，需要登录验证，" +
+                    "提供新增角色所需要的信息，返回执行结果 "
+    )
+    public Result addRole(@RequestBody Role role) {
+        return systemService.requestRoleAdd(role);
+    }
+
+    @PutMapping("/role")
+    @ApiOperation(
+            value = "角色信息编辑接口",
+            notes = "角色信息编辑接口，需要登录验证，" +
+                    "根据提供的数据修改角色的详细信息，返回修改结果"
+    )
+    public Result editRole(@RequestBody Role role) {
+        return systemService.requestRoleEdit(role);
+    }
+
+    @PutMapping("/role/statue")
+    @ApiOperation(
+            value = "角色状态修改接口",
+            notes = "角色状态修改接口，需要登录验证，" +
+                    "根据提供的数据修改角色的状态，例如禁用和删除"
+    )
+    public Result roleStatueSet(@RequestBody RoleStatue statue) {
+        return systemService.requestRoleStatueSet(statue);
+    }
+
+    @PutMapping("/role/enable")
+    @ApiOperation(
+            value = "启用所有角色接口",
+            notes = "启用所有角色接口，需要登录验证，" +
+                    "根据提供的数据验证后启用所有角色"
+    )
+    public Result enableAllRole(@RequestBody Able able) {
+        return systemService.requestEnableAllRole(able);
+    }
+
+    @PutMapping("/role/disable")
+    @ApiOperation(
+            value = "禁用所有角色接口",
+            notes = "禁用所有角色接口，需要登录验证，" +
+                    "根据提供的数据验证后禁用所有角色"
+    )
+    public Result disableAllRole(@RequestBody Able able) {
+        return systemService.requestDisableAllRole(able);
+    }
+
+    @GetMapping("/sensitive/account")
+    @ApiOperation(
+            value = "查询分页账户敏感操作记录接口",
+            notes = "查询分页账户敏感操作记录接口，需要登录验证，" +
+                    "除了分页参数外，不携带条件时全查询，携带条件则进行条件查询"
+    )
+    public Result getSensitiveAccountInfoPaged(String keyword, Integer currentPage, Integer pageSize) {
+        return systemService.requestSensitiveAccountInfoPaged(keyword, currentPage, pageSize);
+    }
+
+    @GetMapping("/sensitive/enterprise")
+    @ApiOperation(
+            value = "查询分页企业敏感操作记录接口",
+            notes = "查询分页企业敏感操作记录接口，需要登录验证，" +
+                    "除了分页参数外，不携带条件时全查询，携带条件则进行条件查询"
+    )
+    public Result getSensitiveEnterpriseInfoPaged(String keyword, Integer currentPage, Integer pageSize) {
+        return systemService.requestSensitiveEnterpriseInfoPaged(keyword, currentPage, pageSize);
+    }
+
+    @GetMapping("/sensitive/role")
+    @ApiOperation(
+            value = "查询分页角色敏感操作记录接口",
+            notes = "查询分页角色敏感操作记录接口，需要登录验证，" +
+                    "除了分页参数外，不携带条件时全查询，携带条件则进行条件查询"
+    )
+    public Result getSensitiveRoleInfoPaged(String keyword, Integer currentPage, Integer pageSize) {
+        return systemService.requestSensitiveRoleInfoPaged(keyword, currentPage, pageSize);
+    }
 
 }

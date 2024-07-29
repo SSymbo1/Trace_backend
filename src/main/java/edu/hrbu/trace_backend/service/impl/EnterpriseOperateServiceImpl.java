@@ -32,20 +32,16 @@ public class EnterpriseOperateServiceImpl implements EnterpriseOperateService {
         EnterpriseOperate record = null;
         record = EnterpriseOperate.builder()
                 .oid(currentAccountId)
-                .eid((Integer) returnResult.getData().get("createAid"))
                 .operateTime(operateTime.toString("yyyy-MM-dd HH:mm:ss")).build();
         if (Objects.equals(returnResult.getData().get("createAid"), currentAccountId)) {
+            record.setEid(1);
             record.setOperate(Operate.ENTERPRISE_ADD_FAIL.getValue());
         } else {
+            record.setEid((Integer) returnResult.getData().get("createAid"));
             record.setOperate(Operate.ENTERPRISE_ADD.getValue());
         }
         enterpriseOperateMapper.insert(record);
         log.info("已记录敏感操作:创建企业");
-    }
-
-    @Override
-    public void requestRecordEnterpriseDelete(JoinPoint joinPoint) {
-
     }
 
     @Override

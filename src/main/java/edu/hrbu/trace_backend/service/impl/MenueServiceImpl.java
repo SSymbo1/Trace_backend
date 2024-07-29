@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -101,14 +102,51 @@ public class MenueServiceImpl implements MenueService {
         List<Role> roleSubMenue = roleMapper.selectList(roleSubWrapper);
         return Result
                 .ok(Message.GET_ROLE_SUB_SUCCESS.getValue())
-                .data("menue",roleSubMenue);
+                .data("menue", roleSubMenue);
     }
 
     @Override
     public Result requestEnterpriseMenue(String keyword) {
         return Result
                 .ok(Message.GET_ENTERPRISE_SUB_SUCCESS.getValue())
-                .data("menue",enterpriseMapper.selectEnterpriseByConditionForMenue(keyword));
+                .data("menue", enterpriseMapper.selectEnterpriseByConditionForMenue(keyword));
+    }
+
+    @Override
+    public Result requestRoleTreeMenue() {
+        List<Menue> menueList = menueMapper.selectList(null);
+        List<Menue> treeList = new ArrayList<>();
+        menueList.forEach(menue -> {
+            if (menue.getParent().equals(0)) {
+                Menue base = Menue.builder()
+                        .value(menue.getMid())
+                        .label(menue.getName())
+                        .children(new ArrayList<>()).build();
+                treeList.add(base);
+            } else {
+                treeList.forEach(children -> {
+                    if (children.getValue().equals(menue.getParent())) {
+                        Menue child = Menue.builder()
+                                .value(menue.getMid())
+                                .label(menue.getName())
+                                .children(new ArrayList<>()).build();
+                        children.getChildren().add(child);
+                    } else {
+                        children.getChildren().forEach(son -> {
+                            if(son.getValue().equals(menue.getParent())){
+                                Menue sonChild = Menue.builder()
+                                        .value(menue.getMid())
+                                        .label(menue.getName()).build();
+                                son.getChildren().add(sonChild);
+                            }
+                        });
+                    }
+                });
+            }
+        });
+        return Result
+                .ok(Message.GET_TREE_ROLE_MENUE.getValue())
+                .data("tree",treeList);
     }
 
     private List<Menue> subMenueSelector(Integer target) {
@@ -134,5 +172,4 @@ public class MenueServiceImpl implements MenueService {
         }
         return subMenue;
     }
-
 }

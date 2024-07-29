@@ -17,7 +17,7 @@
         </association>
     </resultMap>
 
-    <select id="getEnterpriseOperateByCondition" resultMap="operateResult">
+    <select id="selectEnterpriseOperateByCondition" resultMap="operateResult">
         SELECT
             enterprise_operate.iid,
             enterprise_operate.oid,

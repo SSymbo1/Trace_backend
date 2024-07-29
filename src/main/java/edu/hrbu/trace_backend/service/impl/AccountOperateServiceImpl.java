@@ -3,7 +3,7 @@ package edu.hrbu.trace_backend.service.impl;
 import cn.hutool.core.date.DateTime;
 import edu.hrbu.trace_backend.entity.OnlineContext;
 import edu.hrbu.trace_backend.entity.Result;
-import edu.hrbu.trace_backend.entity.dto.AccountStatue;
+import edu.hrbu.trace_backend.entity.dto.system.AccountStatue;
 import edu.hrbu.trace_backend.entity.dto.Decode;
 import edu.hrbu.trace_backend.entity.enums.Operate;
 import edu.hrbu.trace_backend.entity.po.AccountOperate;
@@ -85,5 +85,33 @@ public class AccountOperateServiceImpl implements AccountOperateService {
                 .operateTime(operateTime.toString("yyyy-MM-dd HH:mm:ss")).build();
         accountOperateMapper.insert(record);
         log.info("已记录敏感操作:解码密码");
+    }
+
+    @Override
+    public void requestRecordDisableAllAccount(JoinPoint joinPoint) {
+        Object[] args = joinPoint.getArgs();
+        Integer currentAccountId = Integer.valueOf(JwtUtil.parseJWT(OnlineContext.getCurrent()).getSubject());
+        DateTime operateTime = new DateTime(DateTime.now());
+        AccountOperate record = AccountOperate.builder()
+                .oid(currentAccountId)
+                .aid(currentAccountId)
+                .operate(Operate.DISABLE_ALL_ACCOUNT.getValue())
+                .operateTime(operateTime.toString("yyyy-MM-dd HH:mm:ss")).build();
+        accountOperateMapper.insert(record);
+        log.info("已记录敏感操作:禁用所有账户");
+    }
+
+    @Override
+    public void requestRecordEnableAllAccount(JoinPoint joinPoint) {
+        Object[] args = joinPoint.getArgs();
+        Integer currentAccountId = Integer.valueOf(JwtUtil.parseJWT(OnlineContext.getCurrent()).getSubject());
+        DateTime operateTime = new DateTime(DateTime.now());
+        AccountOperate record = AccountOperate.builder()
+                .oid(currentAccountId)
+                .aid(currentAccountId)
+                .operate(Operate.ENABLE_ALL_ACCOUNT.getValue())
+                .operateTime(operateTime.toString("yyyy-MM-dd HH:mm:ss")).build();
+        accountOperateMapper.insert(record);
+        log.info("已记录敏感操作:启用所有账户");
     }
 }

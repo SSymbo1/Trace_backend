@@ -27,5 +27,9 @@ public class Menue {
     private String memo;
     private Integer del;
     @TableField(exist = false)
+    private Integer value;
+    @TableField(exist = false)
+    private String label;
+    @TableField(exist = false)
     private List<Menue> children;
 }
