@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="10 seconds">
+
+    <!--  日志文件名称  -->
+    <property name="appName" value="trace_backend-"/>
+
+    <!--单文件最大保存文件大小-->
+    <property name="KEEP_FILE_MAX_SIZE" value="500MB"/>
+
+    <!--日志文件保留天数-->
+    <property name="KEEP_MAX_DAY" value="7"/>
+
+    <!--  日志编码  -->
+    <property name="log.charset" value="UTF-8" />
+
+    <!--  日志输出格式  -->
+    <property name="log.pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n" />
+    <property name="log.pattern.short" value="%date{yyyyMMdd HH:mm:ss.SSS}-%msg%n" />
+
+    <!-- 彩色日志格式 -->
+    <property name="log.pattern.color" value="${CONSOLE_LOG_PATTERN:-%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint}
+    %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint}
+    %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}" />
+
+    <!--  日志文件存储位置  -->
+    <springProfile name="dev">
+        <property name="LOG_HOME" value="D:/trace/log"/>
+    </springProfile>
+    <springProfile name="prod">
+        <property name="LOG_HOME" value="/media/vdc/trace/log"/>
+    </springProfile>
+
+    <!-- 定义控制台输出 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder charset="${log.charset}">
+            <pattern>${log.pattern}</pattern>
+        </encoder>
+    </appender>
+    <appender name="STDOUT_SHORT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder charset="${log.charset}">
+            <pattern>${log.pattern.short}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 彩色日志 -->
+    <!-- 彩色日志依赖的渲染类 -->
+    <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter" />
+    <conversionRule conversionWord="wex" converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter" />
+    <conversionRule conversionWord="wEx" converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter" />
+    <!-- Console 输出设置 -->
+    <appender name="STDOUT_COLOR" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder charset="${log.charset}">
+            <pattern>${log.pattern.color}</pattern>
+        </encoder>
+    </appender>
+
+    <!--输出到文件-->
+    <!-- 时间滚动输出 level为 INFO 日志 -->
+    <appender name="INFO_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 此日志文件只记录info级别的 -->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+        <!-- 正在记录的日志文件的路径及文件名 -->
+        <File>${LOG_HOME}/${appName}info.log</File>
+        <!-- 日志记录器的滚动策略 日志文件:按照每天生成 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--日志文件输出的文件地址和名称-->
+            <fileNamePattern>${LOG_HOME}/${appName}info-%d{yyyyMMdd}.%i.log.gz</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>${KEEP_FILE_MAX_SIZE}</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxHistory>${KEEP_MAX_DAY}</maxHistory>
+        </rollingPolicy>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} -%msg%n</Pattern>
+        </layout>
+    </appender>
+
+    <!-- 时间滚动输出 level为 ERROR 日志 -->
+    <appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 此日志文件只记录ERROR级别的 -->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+        <!-- 正在记录的日志文件的路径及文件名 -->
+        <File>${LOG_HOME}/${appName}error.log</File>
+        <!-- 日志记录器的滚动策略 日志文件:按照每天生成 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--日志文件输出的文件地址和名称-->
+            <fileNamePattern>${LOG_HOME}/${appName}error-%d{yyyyMMdd}.%i.log.gz</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>${KEEP_FILE_MAX_SIZE}</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxHistory>${KEEP_MAX_DAY}</maxHistory>
+        </rollingPolicy>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} -%msg%n</Pattern>
+        </layout>
+    </appender>
+
+    <!--mybatis log configure-->
+    <logger name="com.apache.ibatis" level="TRACE"/>
+    <logger name="java.sql.Connection" level="DEBUG"/>
+    <logger name="java.sql.Statement" level="DEBUG"/>
+    <logger name="java.sql.PreparedStatement" level="DEBUG"/>
+
+    <!--
+        root节点是必选节点，用来指定最基础的日志输出级别，只有一个level属性
+        level:用来设置打印级别，大小写无关：TRACE, DEBUG, INFO, WARN, ERROR, ALL 和 OFF，
+        不能设置为INHERITED或者同义词NULL。默认是DEBUG
+        可以包含零个或多个元素，标识这个appender将会添加到这个logger。
+    -->
+    <root level="INFO">
+        <appender-ref ref="STDOUT_COLOR" />
+        <appender-ref ref="ERROR_FILE"/>
+        <appender-ref ref="INFO_FILE"/>
+    </root>
+</configuration>

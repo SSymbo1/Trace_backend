@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @Slf4j
 @Component
+//  JwtToken校验拦截器
 public class JwtTokenInterceptor implements HandlerInterceptor {
 
     @Override
@@ -23,21 +24,10 @@ public class JwtTokenInterceptor implements HandlerInterceptor {
             return true;
         }
         String token = request.getHeader("token");
-        try {
-            log.info("jwt校验:{}", token);
-            String user = JwtUtil.parseJWT(token).getSubject();
-            log.info("登录接口用户的aid为:{}", user);
-            OnlineContext.setCurrent(token);
-            return true;
-        } catch (Exception exception) {
-            if (exception instanceof ExpiredJwtException) {
-                log.info("token已过期");
-                response.setStatus(Statue.EXPIRE_TOKEN.getValue());
-            } else if (exception instanceof IllegalArgumentException || exception instanceof MalformedJwtException || exception instanceof io.jsonwebtoken.SignatureException) {
-                log.info("token不合法");
-                response.setStatus(Statue.WRONG_TOKEN.getValue());
-            }
-            return false;
-        }
+        log.info("jwt校验:{}", token);
+        String user = JwtUtil.parseJWT(token).getSubject();
+        log.info("调用接口用户的aid为:{}", user);
+        OnlineContext.setCurrent(token);
+        return true;
     }
 }

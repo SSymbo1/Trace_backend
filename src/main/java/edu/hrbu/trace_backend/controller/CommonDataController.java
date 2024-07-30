@@ -1,14 +1,12 @@
 package edu.hrbu.trace_backend.controller;
 
 import edu.hrbu.trace_backend.entity.Result;
+import edu.hrbu.trace_backend.entity.dto.Decode;
 import edu.hrbu.trace_backend.service.CommonDataService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -23,7 +21,7 @@ public class CommonDataController {
     private CommonDataService commonDataService;
 
     // todo 首页数据统计卡片的数据接口
-    @GetMapping("/home_statistics_card")
+    @GetMapping("/statistics/card")
     @ApiOperation(
             value = "首页数据统计卡片数据接口",
             notes = "首页数据统计卡片数据接口，需要登录验证，" +
@@ -34,7 +32,7 @@ public class CommonDataController {
     }
 
     // todo 首页数据统计柱状图的数据接口
-    @GetMapping("/home_statistics_line")
+    @GetMapping("/statistics/line")
     @ApiOperation(
             value = "首页数据统计柱状图数据接口",
             notes = "首页数据统计柱状图数据接口，需要登录验证，" +
@@ -42,6 +40,56 @@ public class CommonDataController {
     )
     public Result getHomeStatisticsLineData() {
         return commonDataService.requestHomeStatisticsLineData();
+    }
+
+    @GetMapping("/whois")
+    @ApiOperation(
+            value = "获取当前用户信息接口",
+            notes = "当用户登录成功时，前端从该接口可以获取用户的详细信息，" +
+                    "需要登陆验证"
+    )
+    public Result getLoginUserInfo(){
+        return commonDataService.requestWhoIs();
+    }
+
+    @PostMapping("/decode/password")
+    @ApiOperation(
+            value = "解码加密后密码接口",
+            notes = "解码加密后密码接口，前端从该接口可以获取提供密码的解码，" +
+                    "需要登陆验证以及角色验证"
+    )
+    public Result decodePassword(@RequestBody Decode decode){
+        return commonDataService.requestDecodePass(decode);
+    }
+
+    @GetMapping("/account")
+    @ApiOperation(
+            value = "获取用户修改信息接口",
+            notes = "获取用户修改信息接口，需要登陆验证，" +
+                    "在需要修改账户信息时，请求该接口获取修改前数据"
+    )
+    public Result getEditAccountInfo(Integer accountId){
+        return commonDataService.requestEditAccountInfo(accountId);
+    }
+
+    @GetMapping("/enterprise")
+    @ApiOperation(
+            value = "获取企业修改信息接口",
+            notes = "获取企业修改信息接口，需要登陆验证，" +
+                    "在需要修改企业信息时，请求该接口获取修改前数据"
+    )
+    public Result getEditEnterpriseInfo(Integer enterpriseId){
+        return commonDataService.requestEditEnterpriseInfo(enterpriseId);
+    }
+
+    @GetMapping("/role")
+    @ApiOperation(
+            value = "获取角色修改信息接口",
+            notes = "获取角色修改信息接口，需要登陆验证，" +
+                    "在需要修改角色信息时，请求该接口获取修改前数据"
+    )
+    public Result getEditRoleInfo(Integer roleId){
+        return commonDataService.requestEditRoleInfo(roleId);
     }
 
 }

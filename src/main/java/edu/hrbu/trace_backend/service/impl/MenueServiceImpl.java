@@ -3,19 +3,20 @@ package edu.hrbu.trace_backend.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import edu.hrbu.trace_backend.entity.OnlineContext;
 import edu.hrbu.trace_backend.entity.Result;
+import edu.hrbu.trace_backend.entity.enums.Table;
 import edu.hrbu.trace_backend.entity.po.Account;
 import edu.hrbu.trace_backend.entity.po.Menue;
+import edu.hrbu.trace_backend.entity.po.Role;
 import edu.hrbu.trace_backend.entity.po.RoleMenueContrast;
 import edu.hrbu.trace_backend.entity.enums.Message;
-import edu.hrbu.trace_backend.mapper.AccountMapper;
-import edu.hrbu.trace_backend.mapper.MenueMapper;
-import edu.hrbu.trace_backend.mapper.RoleMenueContrastMapper;
+import edu.hrbu.trace_backend.mapper.*;
 import edu.hrbu.trace_backend.service.MenueService;
 import edu.hrbu.trace_backend.util.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -30,6 +31,10 @@ public class MenueServiceImpl implements MenueService {
     private MenueMapper menueMapper;
     @Resource
     private RoleMenueContrastMapper roleMenueContrastMapper;
+    @Resource
+    private RoleMapper roleMapper;
+    @Resource
+    private EnterpriseMapper enterpriseMapper;
 
     @Override
     public Result requestHomeMenue() {
@@ -52,56 +57,106 @@ public class MenueServiceImpl implements MenueService {
                 );
         return Result
                 .ok(Message.GET_HOME_MENUE_SUCCESS.getValue())
-                .data("homeMenu",menueMapper.selectList(menuWrapper));
+                .data("homeMenu", menueMapper.selectList(menuWrapper));
     }
 
     @Override
     public Result requestAnalysisMenue() {
-        return null;
-    }
-
-    @Override
-    public Result requestConstructMenue() {
-        return null;
-    }
-
-    @Override
-    public Result requestDeviceMenue() {
-        return null;
-    }
-
-    @Override
-    public Result requestEmergencyMenue() {
-        return null;
+        return Result
+                .ok(Message.GET_ANALYSIS_MENUE_SUCCESS.getValue())
+                .data("menue", subMenueSelector(Table.MENUE_ANALYSIS.getValue()));
     }
 
     @Override
     public Result requestMonitorMenue() {
-        return null;
-    }
-
-    @Override
-    public Result requestOperationMenue() {
-        return null;
-    }
-
-    @Override
-    public Result requestQualityMenue() {
-        return null;
+        return Result
+                .ok(Message.GET_MONITOR_MENUE_SUCCESS.getValue())
+                .data("menue", subMenueSelector(Table.MENUE_MONITOR.getValue()));
     }
 
     @Override
     public Result requestSegmentMenue() {
-        return null;
+        return Result
+                .ok(Message.GET_SEGMENT_MENUE_SUCCESS.getValue())
+                .data("menue", subMenueSelector(Table.MENUE_SEGMENT.getValue()));
     }
 
     @Override
     public Result requestSubjectMenue() {
-        return null;
+        return Result
+                .ok(Message.GET_SUBJECT_MENUE_SUCCESS.getValue())
+                .data("menue", subMenueSelector(Table.MENUE_SUBJECT.getValue()));
     }
 
     @Override
     public Result requestSystemMenue() {
-        return null;
+        return Result
+                .ok(Message.GET_SUBJECT_MENUE_SUCCESS.getValue())
+                .data("menue", subMenueSelector(Table.MENUE_SYSTEM.getValue()));
+    }
+
+    @Override
+    public Result requestRoleSubMenue() {
+        QueryWrapper<Role> roleSubWrapper = new QueryWrapper<>();
+        roleSubWrapper.eq("del", 0);
+        List<Role> roleSubMenue = roleMapper.selectList(roleSubWrapper);
+        return Result
+                .ok(Message.GET_ROLE_SUB_SUCCESS.getValue())
+                .data("menue", roleSubMenue);
+    }
+
+    @Override
+    public Result requestEnterpriseMenue(String keyword) {
+        return Result
+                .ok(Message.GET_ENTERPRISE_SUB_SUCCESS.getValue())
+                .data("menue", enterpriseMapper.selectEnterpriseByConditionForMenue(keyword));
+    }
+
+    @Override
+    public Result requestRoleTreeMenue() {
+        List<Menue> menueList = menueMapper.selectList(null);
+        List<Menue> treeList = new ArrayList<>();
+        menueList.forEach(menue -> {
+            if (menue.getParent().equals(0)) {
+                Menue base = Menue.builder()
+                        .value(menue.getMid())
+                        .label(menue.getName())
+                        .children(new ArrayList<>()).build();
+                treeList.add(base);
+            } else {
+                treeList.forEach(children -> {
+                    if (children.getValue().equals(menue.getParent())) {
+                        Menue child = Menue.builder()
+                                .value(menue.getMid())
+                                .label(menue.getName())
+                                .children(new ArrayList<>()).build();
+                        children.getChildren().add(child);
+                    } else {
+                        children.getChildren().forEach(son -> {
+                            if (son.getValue().equals(menue.getParent())) {
+                                Menue sonChild = Menue.builder()
+                                        .value(menue.getMid())
+                                        .label(menue.getName()).build();
+                                son.getChildren().add(sonChild);
+                            }
+                        });
+                    }
+                });
+            }
+        });
+        return Result
+                .ok(Message.GET_TREE_ROLE_MENUE.getValue())
+                .data("tree", treeList);
+    }
+
+    private List<Menue> subMenueSelector(Integer target) {
+        Integer currentAccountId = Integer.valueOf(JwtUtil.parseJWT(OnlineContext.getCurrent()).getSubject());
+        List<Menue> baseMenue = menueMapper.selectChildMenueByFatherId(target, currentAccountId);
+        if (!baseMenue.isEmpty()) {
+            baseMenue.forEach(menue -> {
+                menue.setChildren(menueMapper.selectChildMenueByFatherId(menue.getMid(), currentAccountId));
+            });
+        }
+        return baseMenue;
     }
 }

@@ -12,9 +12,10 @@ public enum Statue {
 
     SUCCESS(200),
     FAIL(500),
+    WRONG_AES(403),
     WRONG_TOKEN(402),
     EXPIRE_TOKEN(401);
 
-    private Integer value;
+    private final Integer value;
 
 }

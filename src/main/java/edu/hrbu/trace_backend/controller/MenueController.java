@@ -42,54 +42,14 @@ public class MenueController {
         return menueService.requestSubjectMenue();
     }
 
-    @GetMapping("/quality")
-    @ApiOperation(
-            value = "数据质量管理菜单请求接口",
-            notes = "数据质量管理菜单请求接口，需要登录验证，" +
-                    "返回数据质量管理菜单请求接口渲染功能菜单所需要的菜单数据"
-    )
-    public Result getQualityMenue(){
-        return menueService.requestQualityMenue();
-    }
-
-    @GetMapping("/emergency")
-    @ApiOperation(
-            value = "数据质量管理菜单请求接口",
-            notes = "数据质量管理菜单请求接口，需要登录验证，" +
-                    "返回数据质量管理菜单请求接口渲染功能菜单所需要的菜单数据"
-    )
-    public Result getEmergencyMenue(){
-        return menueService.requestEmergencyMenue();
-    }
-
     @GetMapping("/analysis")
     @ApiOperation(
-            value = "追溯数据管理菜单请求接口",
-            notes = "追溯数据管理菜单请求接口，需要登录验证，" +
+            value = "追溯数据分析菜单请求接口",
+            notes = "追溯数据分析菜单请求接口，需要登录验证，" +
                     "返回追溯数据管理菜单请求接口渲染功能菜单所需要的菜单数据"
     )
     public Result getAnalysisMenue(){
         return menueService.requestAnalysisMenue();
-    }
-
-    @GetMapping("/construct")
-    @ApiOperation(
-            value = "体系建设管理菜单请求接口",
-            notes = "体系建设管理菜单请求接口，需要登录验证，" +
-                    "返回体系统建设管理菜单请求接口渲染功能菜单所需要的菜单数据"
-    )
-    public Result getConstructMenue(){
-        return menueService.requestConstructMenue();
-    }
-
-    @GetMapping("/device")
-    @ApiOperation(
-            value = "追溯设备管理菜单请求接口",
-            notes = "追溯设备管理菜单请求接口，需要登录验证，" +
-                    "返回体追溯设备管理菜单请求接口渲染功能菜单所需要的菜单数据"
-    )
-    public Result getDeviceMenue(){
-        return menueService.requestDeviceMenue();
     }
 
     @GetMapping("/monitor")
@@ -112,16 +72,6 @@ public class MenueController {
         return menueService.requestSegmentMenue();
     }
 
-    @GetMapping("/operation")
-    @ApiOperation(
-            value = "追溯运维管理菜单请求接口",
-            notes = "追溯运维管理菜单请求接口，需要登录验证，" +
-                    "返回运行运维管理菜单请求接口渲染功能菜单所需要的菜单数据"
-    )
-    public Result getOperationMenue(){
-        return menueService.requestOperationMenue();
-    }
-
     @GetMapping("/system")
     @ApiOperation(
             value = "系统设置管理菜单请求接口",
@@ -130,6 +80,36 @@ public class MenueController {
     )
     public Result getSystemMenue(){
         return menueService.requestSystemMenue();
+    }
+
+    @GetMapping("/sub/role")
+    @ApiOperation(
+            value = "角色菜单数据接口",
+            notes = "角色菜单数据接口，需要登录验证，" +
+                    "返回角色选择菜单，包括rid和name值"
+    )
+    public Result getAccountRoleMenue(){
+        return menueService.requestRoleSubMenue();
+    }
+
+    @GetMapping("/sub/enterprise")
+    @ApiOperation(
+            value = "公司菜单数据接口",
+            notes = "公司菜单数据接口，需要登录验证，" +
+                    "返回角色选择菜单，包括eid和name值"
+    )
+    public Result getAccountEnterpriseMenue(String keyword){
+        return menueService.requestEnterpriseMenue(keyword);
+    }
+
+    @GetMapping("/tree/role")
+    @ApiOperation(
+            value = "权限树形菜单接口",
+            notes = "权限树形菜单接口，需要登录验证，" +
+                    "返回添加角色时需要的权限树形菜单"
+    )
+    public Result getRoleTreeMenue(){
+        return menueService.requestRoleTreeMenue();
     }
 
 }

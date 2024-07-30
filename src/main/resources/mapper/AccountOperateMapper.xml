@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="edu.hrbu.trace_backend.mapper.AccountOperateMapper">
+
+    <resultMap id="operateResult" type="edu.hrbu.trace_backend.entity.po.AccountOperate">
+        <id property="iid" column="iid"/>
+        <result property="oid" column="oid"/>
+        <result property="aid" column="aid"/>
+        <result property="operate" column="operate"/>
+        <result property="operateTime" column="operate_time"/>
+        <association property="operator" javaType="edu.hrbu.trace_backend.entity.po.AccountInfo">
+            <result property="name" column="operate_name"/>
+            <result property="avatar" column="operate_avatar"/>
+        </association>
+        <association property="account" javaType="edu.hrbu.trace_backend.entity.po.AccountInfo">
+            <result property="name" column="account_name"/>
+            <result property="avatar" column="account_avatar"/>
+        </association>
+    </resultMap>
+
+    <select id="selectAccountOperateByCondition" resultMap="operateResult">
+        SELECT
+            account_operate.iid,
+            account_operate.oid,
+            account_operate.aid,
+            account_operate.operate,
+            account_operate.operate_time,
+            operate_table.name              AS operate_name,
+            operate_table.avatar            AS operate_avatar,
+            account_table.name              AS account_name,
+            account_table.avatar            AS account_avatar
+        FROM
+            account_operate
+        LEFT JOIN account_info AS operate_table on account_operate.oid = operate_table.aid
+        LEFT JOIN account_info AS account_table on account_operate.aid = account_table.aid
+        <where>
+            <if test="condition != null and condition != ''">
+                operate_table.name LIKE CONCAT('%',#{condition},'%') OR account_table.name LIKE CONCAT('%',#{condition},'%')
+            </if>
+        </where>
+        ORDER BY account_operate.operate_time DESC
+    </select>
+
+</mapper>

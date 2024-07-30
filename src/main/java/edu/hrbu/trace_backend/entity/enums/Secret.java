@@ -14,6 +14,6 @@ public enum Secret {
     AES("sxbagtlSXBAGTL318957%@^&" ),
     JWT_EXPIRE("3600000");
 
-    private String value;
+    private final String value;
 
 }

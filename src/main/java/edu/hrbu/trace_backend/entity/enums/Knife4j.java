@@ -18,6 +18,6 @@ public enum Knife4j {
     DESCRIPTION("这是重要产品溯源管理系统项目接口文档"),
     GROUP("开发版本");
 
-    private String value;
+    private final String value;
 
 }
