@@ -13,4 +13,7 @@ public interface MenueMapper extends BaseMapper<Menue> {
 
     List<MenueReverse> selectMenueIdReverseBySon(@Param("condition") List<Integer> sonIds);
 
+    List<Integer> selectChildMenueIdByRoleId(@Param("condition") Integer childId);
+
+    List<Menue> selectChildMenueByFatherId(@Param("condition") Integer parent, @Param("current") Integer accountId);
 }

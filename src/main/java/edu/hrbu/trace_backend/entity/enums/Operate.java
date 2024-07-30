@@ -10,6 +10,10 @@ import lombok.ToString;
 // 操作枚举
 public enum Operate {
 
+    ENABLE_ALL_ROLE("启用所有角色"),
+    DISABLE_ALL_ROLE("禁用所有角色"),
+    ROLE_EDIT("修改角色信息"),
+    ROLE_STATUE_SET("修改角色状态"),
     ROLE_ADD("创建角色"),
     ROLE_ADD_FAIL("创建角色失败"),
     ENABLE_ALL_ACCOUNT("启用所有账户"),

@@ -18,4 +18,33 @@
         </foreach>
     </select>
 
+    <select id="selectChildMenueIdByRoleId" resultType="java.lang.Integer">
+        SELECT
+            menue.mid
+        FROM
+            menue
+        JOIN role_menue_contrast ON menue.mid = role_menue_contrast.mid
+        JOIN role ON role_menue_contrast.rid = role.rid
+        WHERE
+            role.rid = #{condition}
+            AND menue.parent NOT IN (0, 1, 4, 7, 8, 10)
+    </select>
+
+    <select id="selectChildMenueByFatherId" resultType="edu.hrbu.trace_backend.entity.po.Menue">
+        SELECT
+            menue.mid,
+            menue.name,
+            menue.path,
+            menue.icon,
+            menue.parent,
+            menue.memo,
+            menue.del
+        FROM menue
+        JOIN role_menue_contrast ON menue.mid = role_menue_contrast.mid
+        JOIN role ON role_menue_contrast.rid = role.rid
+        JOIN account ON account.rid = role.rid
+        WHERE
+            account.aid = #{current} AND menue.parent = #{condition} AND menue.del = 0
+    </select>
+
 </mapper>

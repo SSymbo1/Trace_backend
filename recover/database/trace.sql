@@ -11,7 +11,7 @@
  Target Server Version : 80032
  File Encoding         : 65001
 
- Date: 29/07/2024 21:17:48
+ Date: 30/07/2024 14:13:44
 */
 
 SET NAMES utf8mb4;
@@ -32,15 +32,15 @@ CREATE TABLE `account`  (
   PRIMARY KEY (`aid`) USING BTREE,
   INDEX `rid`(`rid`) USING BTREE,
   CONSTRAINT `account_ibfk_1` FOREIGN KEY (`rid`) REFERENCES `role` (`rid`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of account
 -- ----------------------------
 INSERT INTO `account` VALUES (1, 'admin', '0aeef548aa12f11f8ab83facc27a8179', 1, 0, 0, NULL);
-INSERT INTO `account` VALUES (3, 'test1', '0b3f05baf34ee47287713733c47fd426', 1, 0, 0, NULL);
-INSERT INTO `account` VALUES (4, 'test2', '0b3f05baf34ee47287713733c47fd426', 1, 0, 0, NULL);
-INSERT INTO `account` VALUES (5, 'test3', '0b3f05baf34ee47287713733c47fd426', 1, 0, 0, NULL);
+INSERT INTO `account` VALUES (3, 'test1', '0b3f05baf34ee47287713733c47fd426', 10, 0, 0, NULL);
+INSERT INTO `account` VALUES (4, 'test2', '0b3f05baf34ee47287713733c47fd426', 9, 0, 0, NULL);
+INSERT INTO `account` VALUES (5, 'test3', '0b3f05baf34ee47287713733c47fd426', 8, 0, 0, NULL);
 
 -- ----------------------------
 -- Table structure for account_info
@@ -69,9 +69,9 @@ CREATE TABLE `account_info`  (
 -- Records of account_info
 -- ----------------------------
 INSERT INTO `account_info` VALUES (1, 22, 1, 'SSymbol', '男', '13612345611', 'admin.jpg', '1277820742@qq.com', '黑龙江省佳木斯市', '100861');
-INSERT INTO `account_info` VALUES (3, 1, 1, 'Jon Stewart Doe', '女', '60195213251', '18b7e2ad-8b3c-4f88-b9e4-4d68410453bb_user1.png', 'test@example.us', '黑龙江省佳木斯市', '94043');
-INSERT INTO `account_info` VALUES (4, 1, 1, 'qwe', '女', '12345678901', 'bf7db45d-72b6-4dc0-b1da-d2720ab28f28_89f5d904-d2d0-4889-a096-91ac35165375_user6.jpg', 'test@mail.com', 'address', '123112');
-INSERT INTO `account_info` VALUES (5, 1, 1, 'qwerty', '男', '12345678901', 'e3564293-aafc-43f4-b004-7bcb178d89fb_user5.JPG', 'test@test.com', 'address', '131536');
+INSERT INTO `account_info` VALUES (3, 1, 10, 'Jon Stewart Doe', '女', '60195213251', '18b7e2ad-8b3c-4f88-b9e4-4d68410453bb_user1.png', 'test@example.us', '黑龙江省佳木斯市', '94043');
+INSERT INTO `account_info` VALUES (4, 1, 9, 'qwe', '女', '12345678901', 'bf7db45d-72b6-4dc0-b1da-d2720ab28f28_89f5d904-d2d0-4889-a096-91ac35165375_user6.jpg', 'test@mail.com', 'address', '123112');
+INSERT INTO `account_info` VALUES (5, 1, 8, 'qwerty', '男', '12345678901', 'e3564293-aafc-43f4-b004-7bcb178d89fb_user5.JPG', 'test@test.com', 'address', '131536');
 
 -- ----------------------------
 -- Table structure for account_operate
@@ -88,7 +88,7 @@ CREATE TABLE `account_operate`  (
   INDEX `aid`(`aid`) USING BTREE,
   CONSTRAINT `account_operate_ibfk_1` FOREIGN KEY (`oid`) REFERENCES `account` (`aid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `account_operate_ibfk_2` FOREIGN KEY (`aid`) REFERENCES `account` (`aid`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 36 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 59 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of account_operate
@@ -129,6 +129,26 @@ INSERT INTO `account_operate` VALUES (35, 1, 1, '启用所有账户', '2024-07-2
 INSERT INTO `account_operate` VALUES (36, 1, 4, '修改账号信息', '2024-07-29 17:42:04');
 INSERT INTO `account_operate` VALUES (37, 1, 3, '修改账号信息', '2024-07-29 17:42:09');
 INSERT INTO `account_operate` VALUES (38, 1, 5, '修改账号信息', '2024-07-29 17:42:13');
+INSERT INTO `account_operate` VALUES (39, 1, 5, '修改账号信息', '2024-07-30 09:01:17');
+INSERT INTO `account_operate` VALUES (40, 1, 4, '修改账号信息', '2024-07-30 09:02:05');
+INSERT INTO `account_operate` VALUES (41, 1, 3, '修改账号信息', '2024-07-30 09:02:52');
+INSERT INTO `account_operate` VALUES (42, 1, 5, '修改账号状态', '2024-07-30 10:24:16');
+INSERT INTO `account_operate` VALUES (43, 1, 5, '修改账号信息', '2024-07-30 10:24:38');
+INSERT INTO `account_operate` VALUES (44, 1, 5, '修改账号状态', '2024-07-30 10:24:45');
+INSERT INTO `account_operate` VALUES (45, 1, 5, '修改账号信息', '2024-07-30 10:24:49');
+INSERT INTO `account_operate` VALUES (46, 1, 5, '修改账号状态', '2024-07-30 10:27:48');
+INSERT INTO `account_operate` VALUES (47, 1, 5, '修改账号状态', '2024-07-30 10:31:30');
+INSERT INTO `account_operate` VALUES (48, 1, 5, '修改账号信息', '2024-07-30 10:37:59');
+INSERT INTO `account_operate` VALUES (49, 1, 5, '修改账号状态', '2024-07-30 10:38:23');
+INSERT INTO `account_operate` VALUES (50, 1, 1, '禁用所有账户', '2024-07-30 12:55:27');
+INSERT INTO `account_operate` VALUES (51, 1, 1, '启用所有账户', '2024-07-30 12:55:39');
+INSERT INTO `account_operate` VALUES (52, 1, 3, '修改账号状态', '2024-07-30 13:08:54');
+INSERT INTO `account_operate` VALUES (53, 1, 4, '修改账号状态', '2024-07-30 13:08:59');
+INSERT INTO `account_operate` VALUES (54, 1, 5, '修改账号状态', '2024-07-30 13:09:02');
+INSERT INTO `account_operate` VALUES (55, 1, 3, '修改账号信息', '2024-07-30 13:09:08');
+INSERT INTO `account_operate` VALUES (56, 1, 1, '启用所有账户', '2024-07-30 13:13:32');
+INSERT INTO `account_operate` VALUES (57, 1, 1, '启用所有账户', '2024-07-30 13:33:55');
+INSERT INTO `account_operate` VALUES (58, 1, 1, '启用所有账户', '2024-07-30 13:34:26');
 
 -- ----------------------------
 -- Table structure for enterprise
@@ -144,7 +164,7 @@ CREATE TABLE `enterprise`  (
   `zip_code` varchar(6) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `del` int(0) NOT NULL DEFAULT 0,
   PRIMARY KEY (`eid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 352 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 353 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of enterprise
@@ -511,7 +531,7 @@ CREATE TABLE `menue`  (
   `memo` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
   `del` smallint(0) NOT NULL DEFAULT 0,
   PRIMARY KEY (`mid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 40 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 41 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of menue
@@ -563,13 +583,15 @@ CREATE TABLE `role`  (
   `del` smallint(0) NULL DEFAULT 0,
   `ban` smallint(0) NULL DEFAULT 0,
   PRIMARY KEY (`rid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of role
 -- ----------------------------
 INSERT INTO `role` VALUES (1, '超级系统管理员', '开发人员', 0, 0);
-INSERT INTO `role` VALUES (8, '企业用户', '', 0, 0);
+INSERT INTO `role` VALUES (8, '企业用户', '普通用户', 0, 0);
+INSERT INTO `role` VALUES (9, '系统管理员', '维护溯源系统人员', 0, 0);
+INSERT INTO `role` VALUES (10, '监管人员', '分析追溯数据人员', 0, 0);
 
 -- ----------------------------
 -- Table structure for role_menue_contrast
@@ -590,23 +612,45 @@ CREATE TABLE `role_menue_contrast`  (
 INSERT INTO `role_menue_contrast` VALUES (1, 1);
 INSERT INTO `role_menue_contrast` VALUES (8, 1);
 INSERT INTO `role_menue_contrast` VALUES (1, 4);
+INSERT INTO `role_menue_contrast` VALUES (10, 4);
 INSERT INTO `role_menue_contrast` VALUES (1, 7);
+INSERT INTO `role_menue_contrast` VALUES (8, 7);
+INSERT INTO `role_menue_contrast` VALUES (10, 7);
 INSERT INTO `role_menue_contrast` VALUES (1, 8);
+INSERT INTO `role_menue_contrast` VALUES (10, 8);
 INSERT INTO `role_menue_contrast` VALUES (1, 10);
+INSERT INTO `role_menue_contrast` VALUES (9, 10);
 INSERT INTO `role_menue_contrast` VALUES (1, 11);
+INSERT INTO `role_menue_contrast` VALUES (10, 11);
 INSERT INTO `role_menue_contrast` VALUES (1, 12);
+INSERT INTO `role_menue_contrast` VALUES (10, 12);
 INSERT INTO `role_menue_contrast` VALUES (1, 13);
+INSERT INTO `role_menue_contrast` VALUES (10, 13);
 INSERT INTO `role_menue_contrast` VALUES (1, 14);
+INSERT INTO `role_menue_contrast` VALUES (8, 14);
+INSERT INTO `role_menue_contrast` VALUES (10, 14);
 INSERT INTO `role_menue_contrast` VALUES (1, 15);
+INSERT INTO `role_menue_contrast` VALUES (8, 15);
+INSERT INTO `role_menue_contrast` VALUES (10, 15);
 INSERT INTO `role_menue_contrast` VALUES (1, 16);
+INSERT INTO `role_menue_contrast` VALUES (8, 16);
+INSERT INTO `role_menue_contrast` VALUES (10, 16);
 INSERT INTO `role_menue_contrast` VALUES (1, 17);
+INSERT INTO `role_menue_contrast` VALUES (10, 17);
 INSERT INTO `role_menue_contrast` VALUES (1, 18);
+INSERT INTO `role_menue_contrast` VALUES (10, 18);
 INSERT INTO `role_menue_contrast` VALUES (1, 19);
+INSERT INTO `role_menue_contrast` VALUES (10, 19);
 INSERT INTO `role_menue_contrast` VALUES (1, 20);
+INSERT INTO `role_menue_contrast` VALUES (10, 20);
 INSERT INTO `role_menue_contrast` VALUES (1, 21);
+INSERT INTO `role_menue_contrast` VALUES (10, 21);
 INSERT INTO `role_menue_contrast` VALUES (1, 22);
+INSERT INTO `role_menue_contrast` VALUES (10, 22);
 INSERT INTO `role_menue_contrast` VALUES (1, 23);
+INSERT INTO `role_menue_contrast` VALUES (10, 23);
 INSERT INTO `role_menue_contrast` VALUES (1, 24);
+INSERT INTO `role_menue_contrast` VALUES (10, 24);
 INSERT INTO `role_menue_contrast` VALUES (1, 25);
 INSERT INTO `role_menue_contrast` VALUES (8, 25);
 INSERT INTO `role_menue_contrast` VALUES (1, 26);
@@ -618,14 +662,26 @@ INSERT INTO `role_menue_contrast` VALUES (8, 28);
 INSERT INTO `role_menue_contrast` VALUES (1, 29);
 INSERT INTO `role_menue_contrast` VALUES (8, 29);
 INSERT INTO `role_menue_contrast` VALUES (1, 30);
+INSERT INTO `role_menue_contrast` VALUES (10, 30);
 INSERT INTO `role_menue_contrast` VALUES (1, 31);
+INSERT INTO `role_menue_contrast` VALUES (10, 31);
 INSERT INTO `role_menue_contrast` VALUES (1, 32);
+INSERT INTO `role_menue_contrast` VALUES (10, 32);
 INSERT INTO `role_menue_contrast` VALUES (1, 33);
+INSERT INTO `role_menue_contrast` VALUES (9, 33);
 INSERT INTO `role_menue_contrast` VALUES (1, 34);
 INSERT INTO `role_menue_contrast` VALUES (1, 35);
+INSERT INTO `role_menue_contrast` VALUES (9, 35);
 INSERT INTO `role_menue_contrast` VALUES (1, 36);
+INSERT INTO `role_menue_contrast` VALUES (9, 36);
 INSERT INTO `role_menue_contrast` VALUES (1, 37);
+INSERT INTO `role_menue_contrast` VALUES (9, 37);
 INSERT INTO `role_menue_contrast` VALUES (1, 38);
+INSERT INTO `role_menue_contrast` VALUES (9, 38);
+INSERT INTO `role_menue_contrast` VALUES (1, 39);
+INSERT INTO `role_menue_contrast` VALUES (9, 39);
+INSERT INTO `role_menue_contrast` VALUES (1, 40);
+INSERT INTO `role_menue_contrast` VALUES (9, 40);
 
 -- ----------------------------
 -- Table structure for role_operate
@@ -642,11 +698,35 @@ CREATE TABLE `role_operate`  (
   INDEX `rid`(`rid`) USING BTREE,
   CONSTRAINT `role_operate_ibfk_1` FOREIGN KEY (`oid`) REFERENCES `account` (`aid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `role_operate_ibfk_2` FOREIGN KEY (`rid`) REFERENCES `role` (`rid`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 26 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of role_operate
 -- ----------------------------
 INSERT INTO `role_operate` VALUES (1, 1, 8, '创建角色', '2024-07-29 19:36:29');
+INSERT INTO `role_operate` VALUES (2, 1, 9, '创建角色', '2024-07-30 09:01:50');
+INSERT INTO `role_operate` VALUES (3, 1, 10, '创建角色', '2024-07-30 09:02:41');
+INSERT INTO `role_operate` VALUES (4, 1, 8, '修改角色状态', '2024-07-30 10:24:08');
+INSERT INTO `role_operate` VALUES (5, 1, 8, '修改角色状态', '2024-07-30 10:25:23');
+INSERT INTO `role_operate` VALUES (6, 1, 8, '修改角色状态', '2024-07-30 10:27:07');
+INSERT INTO `role_operate` VALUES (7, 1, 8, '修改角色状态', '2024-07-30 10:29:42');
+INSERT INTO `role_operate` VALUES (8, 1, 8, '修改角色状态', '2024-07-30 10:29:58');
+INSERT INTO `role_operate` VALUES (9, 1, 8, '修改角色状态', '2024-07-30 10:30:02');
+INSERT INTO `role_operate` VALUES (10, 1, 8, '修改角色状态', '2024-07-30 10:31:21');
+INSERT INTO `role_operate` VALUES (11, 1, 8, '修改角色状态', '2024-07-30 10:36:19');
+INSERT INTO `role_operate` VALUES (12, 1, 8, '修改角色状态', '2024-07-30 10:38:17');
+INSERT INTO `role_operate` VALUES (13, 1, 8, '修改角色信息', '2024-07-30 12:20:31');
+INSERT INTO `role_operate` VALUES (14, 1, 8, '修改角色信息', '2024-07-30 12:20:51');
+INSERT INTO `role_operate` VALUES (15, 1, 1, '禁用所有角色', '2024-07-30 13:08:46');
+INSERT INTO `role_operate` VALUES (16, 1, 1, '启用所有角色', '2024-07-30 13:09:21');
+INSERT INTO `role_operate` VALUES (17, 1, 1, '启用所有角色', '2024-07-30 13:10:07');
+INSERT INTO `role_operate` VALUES (18, 1, 1, '启用所有角色', '2024-07-30 13:10:35');
+INSERT INTO `role_operate` VALUES (19, 1, 8, '修改角色状态', '2024-07-30 13:13:10');
+INSERT INTO `role_operate` VALUES (20, 1, 9, '修改角色状态', '2024-07-30 13:13:12');
+INSERT INTO `role_operate` VALUES (21, 1, 10, '修改角色状态', '2024-07-30 13:13:16');
+INSERT INTO `role_operate` VALUES (22, 1, 1, '启用所有角色', '2024-07-30 13:13:23');
+INSERT INTO `role_operate` VALUES (23, 1, 8, '修改角色状态', '2024-07-30 13:33:43');
+INSERT INTO `role_operate` VALUES (24, 1, 8, '修改角色状态', '2024-07-30 13:34:12');
+INSERT INTO `role_operate` VALUES (25, 1, 9, '修改角色信息', '2024-07-30 14:08:38');
 
 SET FOREIGN_KEY_CHECKS = 1;

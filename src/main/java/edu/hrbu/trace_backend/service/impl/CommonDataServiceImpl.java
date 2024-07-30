@@ -5,13 +5,8 @@ import edu.hrbu.trace_backend.entity.OnlineContext;
 import edu.hrbu.trace_backend.entity.Result;
 import edu.hrbu.trace_backend.entity.dto.Decode;
 import edu.hrbu.trace_backend.entity.enums.Message;
-import edu.hrbu.trace_backend.entity.po.Account;
-import edu.hrbu.trace_backend.entity.po.AccountInfo;
-import edu.hrbu.trace_backend.entity.po.Enterprise;
-import edu.hrbu.trace_backend.mapper.AccountInfoMapper;
-import edu.hrbu.trace_backend.mapper.AccountMapper;
-import edu.hrbu.trace_backend.mapper.AccountOperateMapper;
-import edu.hrbu.trace_backend.mapper.EnterpriseMapper;
+import edu.hrbu.trace_backend.entity.po.*;
+import edu.hrbu.trace_backend.mapper.*;
 import edu.hrbu.trace_backend.service.CommonDataService;
 import edu.hrbu.trace_backend.util.AesUtil;
 import edu.hrbu.trace_backend.util.JwtUtil;
@@ -21,7 +16,9 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -31,6 +28,10 @@ public class CommonDataServiceImpl implements CommonDataService {
     private AccountInfoMapper accountInfoMapper;
     @Resource
     private AccountMapper accountMapper;
+    @Resource
+    private RoleMapper roleMapper;
+    @Resource
+    private MenueMapper menueMapper;
     @Resource
     private EnterpriseMapper enterpriseMapper;
     @Value("${resources.avatar}")
@@ -81,15 +82,15 @@ public class CommonDataServiceImpl implements CommonDataService {
         AccountInfo accountInfo = accountInfoMapper.selectById(accountId);
         data.put("username", account.getUsername());
         data.put("password", AesUtil.decryptStr(account.getPassword()));
-        data.put("role",account.getRid());
-        data.put("enterprise",accountInfo.getEid());
-        data.put("name",accountInfo.getName());
-        data.put("gander",accountInfo.getGander());
-        data.put("tel",accountInfo.getTel());
-        data.put("email",accountInfo.getEmail());
-        data.put("address",accountInfo.getAddress());
-        data.put("zipCode",accountInfo.getZipCode());
-        data.put("avatar",avatarPath+accountInfo.getAvatar());
+        data.put("role", account.getRid());
+        data.put("enterprise", accountInfo.getEid());
+        data.put("name", accountInfo.getName());
+        data.put("gander", accountInfo.getGander());
+        data.put("tel", accountInfo.getTel());
+        data.put("email", accountInfo.getEmail());
+        data.put("address", accountInfo.getAddress());
+        data.put("zipCode", accountInfo.getZipCode());
+        data.put("avatar", avatarPath + accountInfo.getAvatar());
         return Result
                 .ok(Message.GET_ACCOUNT_EDIT_DATA.getValue())
                 .data("form", data);
@@ -99,6 +100,21 @@ public class CommonDataServiceImpl implements CommonDataService {
     public Result requestEditEnterpriseInfo(Integer enterpriseId) {
         return Result
                 .ok(Message.GET_ENTERPRISE_EDIT_DATA.getValue())
-                .data("form",enterpriseMapper.selectById(enterpriseId));
+                .data("form", enterpriseMapper.selectById(enterpriseId));
+    }
+
+    @Override
+    public Result requestEditRoleInfo(Integer roleId) {
+        Map<String, Object> data = new HashMap<>();
+        Role role = roleMapper.selectById(roleId);
+        QueryWrapper<RoleMenueContrast> roleMenueContrastQueryWrapper = new QueryWrapper<>();
+        roleMenueContrastQueryWrapper.eq("rid", roleId);
+        List<Integer> menuIds = menueMapper.selectChildMenueIdByRoleId(roleId);
+        data.put("name", role.getName());
+        data.put("memo", role.getMemo());
+        data.put("menues", menuIds);
+        return Result
+                .ok(Message.GET_ROLE_EDIT_DATA.getValue())
+                .data("form", data);
     }
 }

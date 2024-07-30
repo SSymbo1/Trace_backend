@@ -19,4 +19,6 @@ public interface CommonDataService {
 
     Result requestEditEnterpriseInfo(Integer enterpriseId);
 
+    Result requestEditRoleInfo(Integer roleId);
+
 }

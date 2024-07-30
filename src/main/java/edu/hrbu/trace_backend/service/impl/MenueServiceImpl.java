@@ -133,7 +133,7 @@ public class MenueServiceImpl implements MenueService {
                         children.getChildren().add(child);
                     } else {
                         children.getChildren().forEach(son -> {
-                            if(son.getValue().equals(menue.getParent())){
+                            if (son.getValue().equals(menue.getParent())) {
                                 Menue sonChild = Menue.builder()
                                         .value(menue.getMid())
                                         .label(menue.getName()).build();
@@ -146,30 +146,17 @@ public class MenueServiceImpl implements MenueService {
         });
         return Result
                 .ok(Message.GET_TREE_ROLE_MENUE.getValue())
-                .data("tree",treeList);
+                .data("tree", treeList);
     }
 
     private List<Menue> subMenueSelector(Integer target) {
-        QueryWrapper<Menue> baseWrapper = new QueryWrapper<>();
-        baseWrapper
-                .eq("mid", target)
-                .and(condition -> condition.eq("del", 0));
-        Menue baseTree = menueMapper.selectOne(baseWrapper);
-        QueryWrapper<Menue> treeWrapper = new QueryWrapper<>();
-        treeWrapper
-                .eq("parent", baseTree.getMid())
-                .and(condition -> condition.eq("del", 0));
-        List<Menue> subMenue = menueMapper.selectList(treeWrapper);
-        if (!subMenue.isEmpty()) {
-            subMenue.forEach(menue -> {
-                QueryWrapper<Menue> childrenWrapper = new QueryWrapper<>();
-                childrenWrapper
-                        .eq("parent", menue.getMid())
-                        .and(condition -> condition.eq("del", 0));
-                List<Menue> childrenTree = menueMapper.selectList(childrenWrapper);
-                menue.setChildren(childrenTree);
+        Integer currentAccountId = Integer.valueOf(JwtUtil.parseJWT(OnlineContext.getCurrent()).getSubject());
+        List<Menue> baseMenue = menueMapper.selectChildMenueByFatherId(target, currentAccountId);
+        if (!baseMenue.isEmpty()) {
+            baseMenue.forEach(menue -> {
+                menue.setChildren(menueMapper.selectChildMenueByFatherId(menue.getMid(), currentAccountId));
             });
         }
-        return subMenue;
+        return baseMenue;
     }
 }

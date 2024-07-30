@@ -64,6 +64,12 @@ public class SystemServiceImpl implements SystemService {
         Integer currentAccountId = Integer.valueOf(JwtUtil.parseJWT(OnlineContext.getCurrent()).getSubject());
         QueryWrapper<edu.hrbu.trace_backend.entity.po.Account> existAccountWrapper = new QueryWrapper<>();
         existAccountWrapper.eq("username", account.getUsername());
+        edu.hrbu.trace_backend.entity.po.Role role = roleMapper.selectById(account.getRole());
+        if (role.getBan().equals(1)) {
+            return Result
+                    .fail(Message.CANNOT_EDIT_BAN_ROLE_ACCOUNT.getValue())
+                    .data("createAid", currentAccountId);
+        }
         if (accountMapper.selectOne(existAccountWrapper) != null) {
             return Result
                     .fail(Message.ACCOUNT_USER_EXIST.getValue())
@@ -116,6 +122,14 @@ public class SystemServiceImpl implements SystemService {
                     .del(statue.getDel())
                     .ban(statue.getBan()).build();
         }
+        if (statue.getBan().equals(0)) {
+            edu.hrbu.trace_backend.entity.po.Account account = accountMapper.selectById(statue.getAid());
+            QueryWrapper<edu.hrbu.trace_backend.entity.po.Role> roleQueryWrapper = new QueryWrapper<>();
+            roleQueryWrapper.eq("rid", account.getRid());
+            if (roleMapper.selectOne(roleQueryWrapper).getBan().equals(1)) {
+                return Result.fail(Message.CANNOT_SET_BAN_ROLE_ACCOUNT.getValue());
+            }
+        }
         int updateStatue = accountMapper.updateById(updateAccountStatue);
         if (updateStatue <= 0) {
             return Result.fail(Message.SET_ACCOUNT_STATUE_FAIL.getValue());
@@ -125,6 +139,12 @@ public class SystemServiceImpl implements SystemService {
 
     @Override
     public Result requestAccountEdit(Account account) {
+        edu.hrbu.trace_backend.entity.po.Role role = roleMapper.selectById(account.getRole());
+        if (role.getBan().equals(1)) {
+            return Result
+                    .fail(Message.CANNOT_EDIT_BAN_ROLE_ACCOUNT.getValue())
+                    .data("createAid", account.getAid());
+        }
         edu.hrbu.trace_backend.entity.po.Account updateAccount = edu.hrbu.trace_backend.entity.po.Account.builder()
                 .aid(account.getAid())
                 .username(account.getUsername())
@@ -151,8 +171,8 @@ public class SystemServiceImpl implements SystemService {
                             .data("createAid", account.getAid())
                     :
                     Result
-                            .fail(Message.EDIT_ACCOUNT_FAIL.getValue()).
-                            data("createAid", account.getAid());
+                            .fail(Message.EDIT_ACCOUNT_FAIL.getValue())
+                            .data("createAid", account.getAid());
         } else {
             QueryWrapper<edu.hrbu.trace_backend.entity.po.Account> existWrapper = new QueryWrapper<>();
             existWrapper.eq("username", account.getUsername());
@@ -207,6 +227,15 @@ public class SystemServiceImpl implements SystemService {
                 .ne("rid", 1)
                 .and(ban -> ban.ne("ban", 0))
                 .and(del -> del.ne("del", 1));
+        List<edu.hrbu.trace_backend.entity.po.Account> accounts = accountMapper.selectList(queryWrapper);
+        if (!accounts.isEmpty()) {
+            for (edu.hrbu.trace_backend.entity.po.Account account : accounts) {
+                edu.hrbu.trace_backend.entity.po.Role role = roleMapper.selectById(account.getRid());
+                if (role.getBan().equals(1)) {
+                    return Result.fail(Message.CANNOT_ENABLE_ALL_ACCOUNT.getValue());
+                }
+            }
+        }
         edu.hrbu.trace_backend.entity.po.Account updateBan = edu.hrbu.trace_backend.entity.po.Account.builder()
                 .ban(0).build();
         accountMapper.update(updateBan, queryWrapper);
@@ -293,7 +322,36 @@ public class SystemServiceImpl implements SystemService {
 
     @Override
     public Result requestRoleStatueSet(RoleStatue statue) {
-        return null;
+        edu.hrbu.trace_backend.entity.po.Role updateRoleStatue = null;
+        if (statue.getDel().equals(1)) {
+            updateRoleStatue = edu.hrbu.trace_backend.entity.po.Role.builder()
+                    .rid(statue.getRid())
+                    .del(statue.getDel())
+                    .ban(1).build();
+        } else {
+            updateRoleStatue = edu.hrbu.trace_backend.entity.po.Role.builder()
+                    .rid(statue.getRid())
+                    .del(statue.getDel())
+                    .ban(statue.getBan()).build();
+        }
+        if (updateRoleStatue.getBan().equals(1)) {
+            QueryWrapper<edu.hrbu.trace_backend.entity.po.Account> accountQueryWrapper = new QueryWrapper<>();
+            accountQueryWrapper.eq("rid", updateRoleStatue.getRid());
+            List<edu.hrbu.trace_backend.entity.po.Account> accounts = accountMapper.selectList(accountQueryWrapper);
+            if (!accounts.isEmpty()) {
+                accounts.forEach(account -> {
+                    edu.hrbu.trace_backend.entity.po.Account updateAccount = edu.hrbu.trace_backend.entity.po.Account.builder()
+                            .aid(account.getAid())
+                            .ban(1).build();
+                    accountMapper.updateById(updateAccount);
+                });
+            }
+        }
+        int updateStatue = roleMapper.updateById(updateRoleStatue);
+        if (updateStatue <= 0) {
+            return Result.fail(Message.SET_ROLE_STATUE_FAIL.getValue());
+        }
+        return Result.ok(Message.SET_ROLE_STATUE_SUCCESS.getValue());
     }
 
     @Override
@@ -311,7 +369,62 @@ public class SystemServiceImpl implements SystemService {
 
     @Override
     public Result requestRoleEdit(Role role) {
-        return null;
+        List<Integer> menues = role.getMenues();
+        Set<Integer> midSet = new HashSet<>(menues);
+        List<MenueReverse> reverseList = menueMapper.selectMenueIdReverseBySon(menues);
+        reverseList.forEach(reverse -> {
+            midSet.add(reverse.getParent());
+            midSet.add(reverse.getFather());
+        });
+        QueryWrapper<RoleMenueContrast> deleterContrastWrapper = new QueryWrapper<>();
+        deleterContrastWrapper.eq("rid", role.getRid());
+        edu.hrbu.trace_backend.entity.po.Role updateRole = edu.hrbu.trace_backend.entity.po.Role.builder()
+                .rid(role.getRid())
+                .name(role.getName())
+                .memo(role.getMemo()).build();
+        edu.hrbu.trace_backend.entity.po.Role exist = roleMapper.selectById(role.getRid());
+        if (exist.getName().equals(role.getName())) {
+            int updateRoleStatue = roleMapper.updateById(updateRole);
+            roleMenueContrastMapper.delete(deleterContrastWrapper);
+            midSet.forEach(mid -> {
+                RoleMenueContrast insertContrast = RoleMenueContrast.builder()
+                        .rid(role.getRid())
+                        .mid(mid).build();
+                roleMenueContrastMapper.insert(insertContrast);
+            });
+            return updateRoleStatue > 0 ?
+                    Result
+                            .ok(Message.EDIT_ROLE_SUCCESS.getValue())
+                            .data("createAid", role.getRid())
+                    :
+                    Result
+                            .fail(Message.EDIT_ROLE_FAIL.getValue())
+                            .data("createAid", role.getRid());
+        } else {
+            QueryWrapper<edu.hrbu.trace_backend.entity.po.Role> existWrapper = new QueryWrapper<>();
+            existWrapper.eq("name", role.getName());
+            if (!roleMapper.selectList(existWrapper).isEmpty()) {
+                return Result
+                        .fail(Message.ROLE_EXIST.getValue())
+                        .data("createAid", role.getRid());
+            }
+            int updateRoleStatue = roleMapper.updateById(updateRole);
+            roleMenueContrastMapper.delete(deleterContrastWrapper);
+            midSet.forEach(mid -> {
+                RoleMenueContrast insertContrast = RoleMenueContrast.builder()
+                        .rid(role.getRid())
+                        .mid(mid).build();
+                roleMenueContrastMapper.insert(insertContrast);
+            });
+            return updateRoleStatue > 0 ?
+                    Result
+                            .ok(Message.EDIT_ROLE_SUCCESS.getValue())
+                            .data("createAid", role.getRid())
+                    :
+                    Result
+                            .fail(Message.EDIT_ROLE_FAIL.getValue())
+                            .data("createAid", role.getRid());
+        }
     }
 
     @Override
@@ -344,7 +457,7 @@ public class SystemServiceImpl implements SystemService {
             RoleMenueContrast insertContrast = RoleMenueContrast.builder()
                     .rid(addRole.getRid())
                     .mid(mid).build();
-            int insertContrastStatue = roleMenueContrastMapper.insert(insertContrast);
+            roleMenueContrastMapper.insert(insertContrast);
         });
         return Result
                 .ok(Message.ADD_ROLE_SUCCESS.getValue())
@@ -353,12 +466,52 @@ public class SystemServiceImpl implements SystemService {
 
     @Override
     public Result requestEnableAllRole(Able able) {
-        return null;
+        if (!able.getVerify().equalsIgnoreCase(able.getCaptcha())) {
+            return Result.fail(Message.WRONG_CAPTCHA.getValue());
+        }
+        long currentTimeStamp = System.currentTimeMillis();
+        if (currentTimeStamp - able.getTimestamp() > 60000) {
+            return Result.fail(Message.TIMESTAMP_TIMEOUT.getValue());
+        }
+        QueryWrapper<edu.hrbu.trace_backend.entity.po.Role> queryWrapper = new QueryWrapper<>();
+        queryWrapper
+                .ne("rid", 1)
+                .and(ban -> ban.ne("ban", 0))
+                .and(del -> del.ne("del", 1));
+        edu.hrbu.trace_backend.entity.po.Role updateRole = edu.hrbu.trace_backend.entity.po.Role.builder()
+                .ban(0).build();
+        roleMapper.update(updateRole, queryWrapper);
+        return Result.ok(Message.ENABLE_ALL_ROLE.getValue());
     }
 
     @Override
     public Result requestDisableAllRole(Able able) {
-        return null;
+        if (!able.getVerify().equalsIgnoreCase(able.getCaptcha())) {
+            return Result.fail(Message.WRONG_CAPTCHA.getValue());
+        }
+        long currentTimeStamp = System.currentTimeMillis();
+        if (currentTimeStamp - able.getTimestamp() > 60000) {
+            return Result.fail(Message.TIMESTAMP_TIMEOUT.getValue());
+        }
+        QueryWrapper<edu.hrbu.trace_backend.entity.po.Account> accountQueryWrapper = new QueryWrapper<>();
+        accountQueryWrapper.ne("rid", 1);
+        List<edu.hrbu.trace_backend.entity.po.Account> accounts = accountMapper.selectList(accountQueryWrapper);
+        if (!accounts.isEmpty()) {
+            accounts.forEach(account -> {
+                edu.hrbu.trace_backend.entity.po.Account updateAccount = edu.hrbu.trace_backend.entity.po.Account.builder()
+                        .aid(account.getAid())
+                        .ban(1).build();
+                accountMapper.updateById(updateAccount);
+            });
+        }
+        QueryWrapper<edu.hrbu.trace_backend.entity.po.Role> queryWrapper = new QueryWrapper<>();
+        queryWrapper
+                .ne("rid", 1)
+                .and(ban -> ban.ne("ban", 1));
+        edu.hrbu.trace_backend.entity.po.Role updateRole = edu.hrbu.trace_backend.entity.po.Role.builder()
+                .ban(1).build();
+        roleMapper.update(updateRole, queryWrapper);
+        return Result.ok(Message.DISABLE_ALL_ROLE.getValue());
     }
 
     @Override
@@ -398,7 +551,7 @@ public class SystemServiceImpl implements SystemService {
     @Override
     public Result requestSensitiveRoleInfoPaged(String keyword, Integer currentPage, Integer pageSize) {
         IPage<RoleOperate> page = new Page<>(currentPage, pageSize);
-        IPage<RoleOperate> roleOperatePage =roleOperateMapper.selectRoleOperateByCondition(page, keyword);
+        IPage<RoleOperate> roleOperatePage = roleOperateMapper.selectRoleOperateByCondition(page, keyword);
         if (!roleOperatePage.getRecords().isEmpty()) {
             roleOperatePage.getRecords().forEach(record -> {
                 AccountInfo operate = record.getOperator();

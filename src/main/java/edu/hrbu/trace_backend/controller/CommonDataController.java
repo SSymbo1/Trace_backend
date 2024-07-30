@@ -82,4 +82,14 @@ public class CommonDataController {
         return commonDataService.requestEditEnterpriseInfo(enterpriseId);
     }
 
+    @GetMapping("/role")
+    @ApiOperation(
+            value = "获取角色修改信息接口",
+            notes = "获取角色修改信息接口，需要登陆验证，" +
+                    "在需要修改角色信息时，请求该接口获取修改前数据"
+    )
+    public Result getEditRoleInfo(Integer roleId){
+        return commonDataService.requestEditRoleInfo(roleId);
+    }
+
 }

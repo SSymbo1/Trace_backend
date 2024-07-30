@@ -60,7 +60,7 @@ public class OperateRecordAspect {
         accountOperateService.requestRecordAccountEdit(joinPoint, result);
     }
 
-    //  当执行添加账户状态操作时写入敏感操作日志
+    //  当执行添加账户操作时写入敏感操作日志
     @AfterReturning(pointcut = "recordAddAccountInfoExecution()", returning = "result")
     public void recordAddAccountInfo(JoinPoint joinPoint, Object result) {
         accountOperateService.requestRecordAccountAdd(joinPoint, result);

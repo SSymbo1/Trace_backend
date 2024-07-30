@@ -10,6 +10,17 @@ import lombok.ToString;
 // 通讯消息枚举
 public enum Message {
 
+    CANNOT_ENABLE_ALL_ACCOUNT("启用所用账户失败,存在绑定角色被禁用的账户!"),
+    DISABLE_ALL_ROLE("已禁用所有角色!"),
+    ENABLE_ALL_ROLE("已启用所有角色!"),
+    EDIT_ROLE_SUCCESS("编辑角色成功!"),
+    EDIT_ROLE_FAIL("编辑角色失败!"),
+    ROLE_EXIST("所更改的角色已存在!"),
+    GET_ROLE_EDIT_DATA("获取指定角色信息成功!"),
+    CANNOT_EDIT_BAN_ROLE_ACCOUNT("该账号所绑定的角色被禁用,请绑定为其他角色!"),
+    CANNOT_SET_BAN_ROLE_ACCOUNT("该账号所绑定的角色被禁用,无法启用该账户!"),
+    SET_ROLE_STATUE_SUCCESS("设置角色状态成功!"),
+    SET_ROLE_STATUE_FAIL("设置角色状态失败!"),
     GET_ROLE_OPERATE_SUCCESS("查询角色敏感操作记录成功!"),
     ADD_ROLE_FAIL("添加角色失败!"),
     ADD_ROLE_SUCCESS("添加角色成功!"),

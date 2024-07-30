@@ -3,6 +3,8 @@ package edu.hrbu.trace_backend.service.impl;
 import cn.hutool.core.date.DateTime;
 import edu.hrbu.trace_backend.entity.OnlineContext;
 import edu.hrbu.trace_backend.entity.Result;
+import edu.hrbu.trace_backend.entity.dto.system.Role;
+import edu.hrbu.trace_backend.entity.dto.system.RoleStatue;
 import edu.hrbu.trace_backend.entity.enums.Operate;
 import edu.hrbu.trace_backend.entity.po.RoleOperate;
 import edu.hrbu.trace_backend.service.RoleOperateService;
@@ -44,22 +46,64 @@ public class RoleOperateServiceImpl implements RoleOperateService {
 
     @Override
     public void requestRecordDisableAllRole(JoinPoint joinPoint) {
-
+        Object[] args = joinPoint.getArgs();
+        Integer currentAccountId = Integer.valueOf(JwtUtil.parseJWT(OnlineContext.getCurrent()).getSubject());
+        DateTime operateTime = new DateTime(DateTime.now());
+        RoleOperate record = null;
+        record = RoleOperate.builder()
+                .oid(currentAccountId)
+                .rid(1)
+                .operate(Operate.DISABLE_ALL_ROLE.getValue())
+                .operateTime(operateTime.toString("yyyy-MM-dd HH:mm:ss")).build();
+        roleOperateMapper.insert(record);
+        log.info("已记录敏感操作:禁用所有角色");
     }
 
     @Override
     public void requestRecordEditRole(JoinPoint joinPoint, Object result) {
-
+        Object[] args = joinPoint.getArgs();
+        Integer currentAccountId = Integer.valueOf(JwtUtil.parseJWT(OnlineContext.getCurrent()).getSubject());
+        Role role = (Role) args[0];
+        DateTime operateTime = new DateTime(DateTime.now());
+        RoleOperate record = null;
+        record = RoleOperate.builder()
+                .oid(currentAccountId)
+                .rid(role.getRid())
+                .operate(Operate.ROLE_EDIT.getValue())
+                .operateTime(operateTime.toString("yyyy-MM-dd HH:mm:ss")).build();
+        roleOperateMapper.insert(record);
+        log.info("已记录敏感操作:修改角色信息");
     }
 
     @Override
     public void requestRecordEnableAllRole(JoinPoint joinPoint) {
-
+        Object[] args = joinPoint.getArgs();
+        Integer currentAccountId = Integer.valueOf(JwtUtil.parseJWT(OnlineContext.getCurrent()).getSubject());
+        DateTime operateTime = new DateTime(DateTime.now());
+        RoleOperate record = null;
+        record = RoleOperate.builder()
+                .oid(currentAccountId)
+                .rid(1)
+                .operate(Operate.ENABLE_ALL_ROLE.getValue())
+                .operateTime(operateTime.toString("yyyy-MM-dd HH:mm:ss")).build();
+        roleOperateMapper.insert(record);
+        log.info("已记录敏感操作:启用所有角色");
     }
 
     @Override
     public void requestRecordRoleStatueSet(JoinPoint joinPoint) {
-
+        Object[] args = joinPoint.getArgs();
+        Integer currentAccountId = Integer.valueOf(JwtUtil.parseJWT(OnlineContext.getCurrent()).getSubject());
+        RoleStatue roleStatue = (RoleStatue) args[0];
+        DateTime operateTime = new DateTime(DateTime.now());
+        RoleOperate record = null;
+        record = RoleOperate.builder()
+                .oid(currentAccountId)
+                .rid(roleStatue.getRid())
+                .operate(Operate.ROLE_STATUE_SET.getValue())
+                .operateTime(operateTime.toString("yyyy-MM-dd HH:mm:ss")).build();
+        roleOperateMapper.insert(record);
+        log.info("已记录敏感操作:修改角色状态");
     }
 }
 
