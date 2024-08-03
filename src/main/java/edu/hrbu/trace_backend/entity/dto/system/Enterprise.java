@@ -14,6 +14,7 @@ import lombok.experimental.Accessors;
 public class Enterprise {
     private Integer eid;
     private String name;
+    private Integer type;
     private String legalPerson;
     private String tel;
     private String socialCode;

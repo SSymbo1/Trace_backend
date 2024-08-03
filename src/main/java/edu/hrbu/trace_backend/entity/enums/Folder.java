@@ -11,6 +11,8 @@ public enum Folder {
 
     WINDOWS("D:/trace/"),
     LINUX("/media/vdc/trace/"),
-    AVATAR("avatar");
+    AVATAR("avatar"),
+    GOODS("goods"),
+    LOG("log");
     private final String value;
 }

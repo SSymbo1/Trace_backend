@@ -34,6 +34,8 @@ public class CommonDataServiceImpl implements CommonDataService {
     private MenueMapper menueMapper;
     @Resource
     private EnterpriseMapper enterpriseMapper;
+    @Resource
+    private SupplierMapper supplierMapper;
     @Value("${resources.avatar}")
     private String avatarPath;
 
@@ -98,9 +100,14 @@ public class CommonDataServiceImpl implements CommonDataService {
 
     @Override
     public Result requestEditEnterpriseInfo(Integer enterpriseId) {
+        Enterprise data = enterpriseMapper.selectById(enterpriseId);
+        QueryWrapper<Supplier> supplierQueryWrapper = new QueryWrapper<>();
+        supplierQueryWrapper.eq("eid", enterpriseId);
+        Supplier supplier = supplierMapper.selectOne(supplierQueryWrapper);
+        data.setType(supplier.getType());
         return Result
                 .ok(Message.GET_ENTERPRISE_EDIT_DATA.getValue())
-                .data("form", enterpriseMapper.selectById(enterpriseId));
+                .data("form", data);
     }
 
     @Override

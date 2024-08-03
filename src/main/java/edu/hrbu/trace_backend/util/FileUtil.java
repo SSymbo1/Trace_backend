@@ -42,6 +42,15 @@ public class FileUtil {
         return Result.ok(Message.SAVE_SUCCESS.getValue()).data("name", fileName);
     }
 
+    public static void createFolder(String folder) {
+        if (!cn.hutool.core.io.FileUtil.isDirectory(getSystemPath() + folder)) {
+            cn.hutool.core.io.FileUtil.mkdir(getSystemPath() + folder);
+            log.info("已初始化资源文件夹:{}", folder);
+        } else {
+            log.info("已存在资源文件夹:{}", folder);
+        }
+    }
+
     private static void createFolderIfNotExist(String folder) {
         File root = new File(getSystemPath() + folder);
         if (!root.exists()) {

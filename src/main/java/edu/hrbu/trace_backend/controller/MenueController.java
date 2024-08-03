@@ -82,7 +82,7 @@ public class MenueController {
         return menueService.requestSystemMenue();
     }
 
-    @GetMapping("/sub/role")
+    @GetMapping("/popup/role")
     @ApiOperation(
             value = "角色菜单数据接口",
             notes = "角色菜单数据接口，需要登录验证，" +
@@ -92,7 +92,7 @@ public class MenueController {
         return menueService.requestRoleSubMenue();
     }
 
-    @GetMapping("/sub/enterprise")
+    @GetMapping("/popup/enterprise")
     @ApiOperation(
             value = "公司菜单数据接口",
             notes = "公司菜单数据接口，需要登录验证，" +
@@ -110,6 +110,16 @@ public class MenueController {
     )
     public Result getRoleTreeMenue(){
         return menueService.requestRoleTreeMenue();
+    }
+
+    @GetMapping("/tree/classification")
+    @ApiOperation(
+            value = "产品分类树形菜单接口",
+            notes = "产品分类树形菜单接口，需要登录验证，" +
+                    "返回添加产品备案时需要的产品分类树形菜单"
+    )
+    public Result getClassificationTreeMenue(){
+        return menueService.requestClassificationTreeMenue();
     }
 
 }
