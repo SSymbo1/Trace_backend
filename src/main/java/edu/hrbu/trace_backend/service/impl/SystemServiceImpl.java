@@ -1,5 +1,6 @@
 package edu.hrbu.trace_backend.service.impl;
 
+import cn.hutool.core.lang.ObjectId;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -43,6 +44,8 @@ public class SystemServiceImpl implements SystemService {
     private RoleOperateMapper roleOperateMapper;
     @Resource
     private EnterpriseMapper enterpriseMapper;
+    @Resource
+    private SupplierMapper supplierMapper;
     @Value("${resources.avatar}")
     private String avatarPath;
 
@@ -274,6 +277,11 @@ public class SystemServiceImpl implements SystemService {
                     .fail(Message.ADD_ENTERPRISE_FAIL.getValue())
                     .data("createAid", currentAccountId);
         }
+        Supplier insertSupplier = Supplier.builder()
+                .eid(insertEnterprise.getEid())
+                .code(ObjectId.next())
+                .type(enterprise.getType()).build();
+        supplierMapper.insert(insertSupplier);
         return Result
                 .ok(Message.ADD_ENTERPRISE_SUCCESS.getValue())
                 .data("createAid", insertEnterprise.getEid());
@@ -290,8 +298,13 @@ public class SystemServiceImpl implements SystemService {
                 .address(enterprise.getAddress())
                 .zipCode(enterprise.getZipCode()).build();
         edu.hrbu.trace_backend.entity.po.Enterprise exist = enterpriseMapper.selectById(enterprise.getEid());
+        QueryWrapper<Supplier> supplierQueryWrapper = new QueryWrapper<>();
+        supplierQueryWrapper.eq("eid", enterprise.getEid());
+        Supplier updateSupplier = Supplier.builder()
+                .type(enterprise.getType()).build();
         if (exist.getName().equals(enterprise.getName())) {
             int updateStatue = enterpriseMapper.updateById(updateEnterprise);
+            supplierMapper.update(updateSupplier, supplierQueryWrapper);
             return updateStatue > 0 ?
                     Result
                             .ok(Message.EDIT_ENTERPRISE_SUCCESS.getValue())
@@ -309,6 +322,7 @@ public class SystemServiceImpl implements SystemService {
                         .data("createAid", enterprise.getEid());
             }
             int updateStatue = enterpriseMapper.updateById(updateEnterprise);
+            supplierMapper.update(updateSupplier, supplierQueryWrapper);
             return updateStatue > 0 ?
                     Result
                             .ok(Message.EDIT_ENTERPRISE_SUCCESS.getValue())

@@ -17,7 +17,11 @@ public class ResourcesConfig implements WebMvcConfigurer {
     @SneakyThrows
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/avatar/**")
-                .addResourceLocations("file:///"+ BASE_PATH+"avatar/");
+                .addResourceLocations("file:///" + BASE_PATH + "avatar/");
         log.info("用户头像资源映射路径拦截器启动,路径:file:///{}avatar/", BASE_PATH);
+
+        registry.addResourceHandler("/goods/**")
+                .addResourceLocations("file:///" + BASE_PATH + "goods/");
+        log.info("商品图像资源映射路径拦截器启动,路径:file:///{}goods/",BASE_PATH);
     }
 }

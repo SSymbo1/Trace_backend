@@ -34,6 +34,12 @@ public class CommonDataServiceImpl implements CommonDataService {
     private MenueMapper menueMapper;
     @Resource
     private EnterpriseMapper enterpriseMapper;
+    @Resource
+    private SupplierMapper supplierMapper;
+    @Resource
+    private ProductMapper productMapper;
+    @Resource
+    private ProductRecordMapper productRecordMapper;
     @Value("${resources.avatar}")
     private String avatarPath;
 
@@ -98,9 +104,14 @@ public class CommonDataServiceImpl implements CommonDataService {
 
     @Override
     public Result requestEditEnterpriseInfo(Integer enterpriseId) {
+        Enterprise data = enterpriseMapper.selectById(enterpriseId);
+        QueryWrapper<Supplier> supplierQueryWrapper = new QueryWrapper<>();
+        supplierQueryWrapper.eq("eid", enterpriseId);
+        Supplier supplier = supplierMapper.selectOne(supplierQueryWrapper);
+        data.setType(supplier.getType());
         return Result
                 .ok(Message.GET_ENTERPRISE_EDIT_DATA.getValue())
-                .data("form", enterpriseMapper.selectById(enterpriseId));
+                .data("form", data);
     }
 
     @Override
@@ -116,5 +127,29 @@ public class CommonDataServiceImpl implements CommonDataService {
         return Result
                 .ok(Message.GET_ROLE_EDIT_DATA.getValue())
                 .data("form", data);
+    }
+
+    @Override
+    public Result requestProductInfo(Integer productId) {
+        Map<String, Object> data = new HashMap<>();
+        Product product = productMapper.selectOne(new QueryWrapper<Product>().eq("pid", productId));
+        ProductRecord productRecord = productRecordMapper.selectOne(new QueryWrapper<ProductRecord>().eq("pid", productId));
+        data.put("name",product.getName());
+        data.put("code",product.getCode());
+        data.put("enterprise",product.getEid());
+        data.put("num",productRecord.getNum());
+        data.put("unit",product.getUnit());
+        data.put("isMajor",product.getIsMajor());
+        data.put("cid",product.getCid());
+        return Result
+                .ok(Message.GET_PRODUCT_EDIT_DATA.getValue())
+                .data("form", data);
+    }
+
+    @Override
+    public Result requestApproveInfo(Integer approverId) {
+        return Result
+                .ok(Message.GET_ACCOUNT_INFO_SUCCESS.getValue())
+                .data("data",accountInfoMapper.selectById(approverId));
     }
 }

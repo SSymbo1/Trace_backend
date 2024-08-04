@@ -1,6 +1,7 @@
 package edu.hrbu.trace_backend.entity.po;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.models.auth.In;
 import lombok.AllArgsConstructor;
@@ -15,7 +16,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Enterprise {
-    @TableId(value = "eid",type = IdType.AUTO)
+    @TableId(value = "eid", type = IdType.AUTO)
     private Integer eid;
     private String name;
     private String legalPerson;
@@ -24,4 +25,6 @@ public class Enterprise {
     private String address;
     private String zipCode;
     private Integer del;
+    @TableField(exist = false)
+    private Integer type;
 }

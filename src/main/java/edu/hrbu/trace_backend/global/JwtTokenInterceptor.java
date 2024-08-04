@@ -24,7 +24,6 @@ public class JwtTokenInterceptor implements HandlerInterceptor {
             return true;
         }
         String token = request.getHeader("token");
-        log.info("jwt校验:{}", token);
         String user = JwtUtil.parseJWT(token).getSubject();
         log.info("调用接口用户的aid为:{}", user);
         OnlineContext.setCurrent(token);

@@ -1,9 +1,15 @@
 package edu.hrbu.trace_backend.global;
 
+import cn.hutool.core.io.IORuntimeException;
 import cn.hutool.crypto.CryptoException;
 import edu.hrbu.trace_backend.entity.Result;
 import edu.hrbu.trace_backend.entity.enums.Message;
 import edu.hrbu.trace_backend.entity.enums.Statue;
+import edu.hrbu.trace_backend.global.exception.ExcelException;
+import edu.hrbu.trace_backend.global.exception.excel.ExcelNullException;
+import edu.hrbu.trace_backend.global.exception.excel.ExcelStructException;
+import edu.hrbu.trace_backend.global.exception.excel.ExcelTimeoutException;
+import edu.hrbu.trace_backend.global.exception.excel.ExcelTypeException;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import lombok.extern.slf4j.Slf4j;
@@ -39,8 +45,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = {
             IllegalArgumentException.class,
             MalformedJwtException.class,
-            io.jsonwebtoken.SignatureException.class}
-    )
+            io.jsonwebtoken.SignatureException.class
+    })
     public Result wrongTokenException(HttpServletResponse response, Exception exception) {
         log.error("token不合法：{}", exception.getMessage());
         response.setStatus(Statue.WRONG_TOKEN.getValue());
@@ -74,6 +80,33 @@ public class GlobalExceptionHandler {
                                 false
                         )
                 );
+    }
+
+    @ExceptionHandler(value = {
+            ExcelException.class,
+            ExcelTypeException.class,
+            ExcelStructException.class,
+            ExcelNullException.class,
+            ExcelTimeoutException.class
+    })
+    public Result excelException(HttpServletResponse response, Exception exception) {
+        log.error("上传表格异常：{}", exception.getMessage());
+        response.setStatus(Statue.TABLE_WRONG.getValue());
+        return Result.fail(Message.TABLE_WRONG.getValue())
+                .data(
+                        "info",
+                        Result.custom(
+                                exception.getMessage(),
+                                Statue.TABLE_WRONG.getValue(),
+                                false
+                        )
+                );
+    }
+
+    @ExceptionHandler(value = IORuntimeException.class)
+    public Result IOException(Exception exception) {
+        log.error("服务器读写操作错误：{}", exception.getMessage());
+        return Result.fail(Message.SERVER_IO_ERROR.getValue()).data("code", Statue.FAIL.getValue());
     }
 
     @ExceptionHandler(value = Exception.class)

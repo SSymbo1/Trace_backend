@@ -4,10 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import edu.hrbu.trace_backend.entity.OnlineContext;
 import edu.hrbu.trace_backend.entity.Result;
 import edu.hrbu.trace_backend.entity.enums.Table;
-import edu.hrbu.trace_backend.entity.po.Account;
-import edu.hrbu.trace_backend.entity.po.Menue;
-import edu.hrbu.trace_backend.entity.po.Role;
-import edu.hrbu.trace_backend.entity.po.RoleMenueContrast;
+import edu.hrbu.trace_backend.entity.po.*;
 import edu.hrbu.trace_backend.entity.enums.Message;
 import edu.hrbu.trace_backend.mapper.*;
 import edu.hrbu.trace_backend.service.MenueService;
@@ -35,6 +32,8 @@ public class MenueServiceImpl implements MenueService {
     private RoleMapper roleMapper;
     @Resource
     private EnterpriseMapper enterpriseMapper;
+    @Resource
+    private ClassificationMapper classificationMapper;
 
     @Override
     public Result requestHomeMenue() {
@@ -146,6 +145,33 @@ public class MenueServiceImpl implements MenueService {
         });
         return Result
                 .ok(Message.GET_TREE_ROLE_MENUE.getValue())
+                .data("tree", treeList);
+    }
+
+    @Override
+    public Result requestClassificationTreeMenue() {
+        List<Classification> menueList = classificationMapper.selectList(null);
+        List<Classification> treeList = new ArrayList<>();
+        menueList.forEach(menue -> {
+            if (menue.getParent().equals(0)) {
+                Classification base = Classification.builder()
+                        .value(menue.getCid())
+                        .label(menue.getName())
+                        .children(new ArrayList<>()).build();
+                treeList.add(base);
+            } else {
+                treeList.forEach(children -> {
+                    if (children.getValue().equals(menue.getParent())) {
+                        Classification child = Classification.builder()
+                                .value(menue.getCid())
+                                .label(menue.getName()).build();
+                        children.getChildren().add(child);
+                    }
+                });
+            }
+        });
+        return Result
+                .ok(Message.GET_TREE_CLASSIFICATION_MENUE.getValue())
                 .data("tree", treeList);
     }
 

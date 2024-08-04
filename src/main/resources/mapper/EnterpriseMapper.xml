@@ -11,10 +11,9 @@
         <where>
             del = 0
             <if test="keyword != null and keyword != ''">
-               AND name LIKE CONCAT('%',#{keyword},'%') OR social_code LIKE CONCAT('%',#{keyword},'%')
+               AND `name` LIKE CONCAT('%',#{keyword},'%') OR social_code LIKE CONCAT('%',#{keyword},'%')
             </if>
         </where>
-        LIMIT 5
     </select>
 
     <select id="selectEnterpriseByCondition" resultType="edu.hrbu.trace_backend.entity.po.Enterprise">

@@ -23,4 +23,6 @@ public interface MenueService {
 
     Result requestRoleTreeMenue();
 
+    Result requestClassificationTreeMenue();
+
 }
