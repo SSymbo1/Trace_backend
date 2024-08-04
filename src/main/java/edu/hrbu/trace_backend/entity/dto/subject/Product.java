@@ -19,4 +19,6 @@ public class Product {
     private Integer isMajor;
     private Integer cid;
     private Integer num;
+    private Integer enterprise;
+    private Integer statue;
 }

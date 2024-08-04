@@ -11,7 +11,7 @@
  Target Server Version : 80032
  File Encoding         : 65001
 
- Date: 03/08/2024 19:46:19
+ Date: 04/08/2024 16:32:30
 */
 
 SET NAMES utf8mb4;
@@ -32,7 +32,7 @@ CREATE TABLE `account`  (
   PRIMARY KEY (`aid`) USING BTREE,
   INDEX `rid`(`rid`) USING BTREE,
   CONSTRAINT `account_ibfk_1` FOREIGN KEY (`rid`) REFERENCES `role` (`rid`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of account
@@ -88,7 +88,7 @@ CREATE TABLE `account_operate`  (
   INDEX `aid`(`aid`) USING BTREE,
   CONSTRAINT `account_operate_ibfk_1` FOREIGN KEY (`oid`) REFERENCES `account` (`aid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `account_operate_ibfk_2` FOREIGN KEY (`aid`) REFERENCES `account` (`aid`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 58 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 61 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of account_operate
@@ -149,6 +149,8 @@ INSERT INTO `account_operate` VALUES (55, 1, 3, '修改账号信息', '2024-07-3
 INSERT INTO `account_operate` VALUES (56, 1, 1, '启用所有账户', '2024-07-30 13:13:32');
 INSERT INTO `account_operate` VALUES (57, 1, 1, '启用所有账户', '2024-07-30 13:33:55');
 INSERT INTO `account_operate` VALUES (58, 1, 1, '启用所有账户', '2024-07-30 13:34:26');
+INSERT INTO `account_operate` VALUES (59, 1, 5, '修改账号状态', '2024-08-04 11:24:47');
+INSERT INTO `account_operate` VALUES (60, 1, 5, '修改账号状态', '2024-08-04 11:25:04');
 
 -- ----------------------------
 -- Table structure for classification
@@ -161,7 +163,7 @@ CREATE TABLE `classification`  (
   `memo` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
   `del` smallint(0) NOT NULL DEFAULT 0,
   PRIMARY KEY (`cid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 18 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 19 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of classification
@@ -199,7 +201,7 @@ CREATE TABLE `enterprise`  (
   `zip_code` varchar(6) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `del` int(0) NOT NULL DEFAULT 0,
   PRIMARY KEY (`eid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 352 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 353 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of enterprise
@@ -542,7 +544,7 @@ CREATE TABLE `enterprise_operate`  (
   INDEX `eid`(`eid`) USING BTREE,
   CONSTRAINT `enterprise_operate_ibfk_1` FOREIGN KEY (`oid`) REFERENCES `account` (`aid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `enterprise_operate_ibfk_2` FOREIGN KEY (`eid`) REFERENCES `enterprise` (`eid`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of enterprise_operate
@@ -567,7 +569,7 @@ CREATE TABLE `menue`  (
   `memo` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
   `del` smallint(0) NOT NULL DEFAULT 0,
   PRIMARY KEY (`mid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 40 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 41 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of menue
@@ -626,21 +628,21 @@ CREATE TABLE `product`  (
   INDEX `cid`(`cid`) USING BTREE,
   CONSTRAINT `product_ibfk_1` FOREIGN KEY (`eid`) REFERENCES `enterprise` (`eid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `product_ibfk_2` FOREIGN KEY (`cid`) REFERENCES `classification` (`cid`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 32 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of product
 -- ----------------------------
-INSERT INTO `product` VALUES (11, 1, 352, 'default.png', 'FS001', '新鲜草莓礼盒', '件', 0);
-INSERT INTO `product` VALUES (12, 1, 352, 'default.png', 'OG002', '有机菠菜500g', '件', 0);
-INSERT INTO `product` VALUES (13, 1, 352, 'default.png', 'MB003', '精选牛肉块', '件', 0);
-INSERT INTO `product` VALUES (14, 1, 352, 'default.png', 'WB004', '野生蓝莓200g', '件', 0);
-INSERT INTO `product` VALUES (15, 1, 352, 'default.png', 'FJ005', '农家土鸡蛋12枚', '件', 0);
-INSERT INTO `product` VALUES (16, 1, 352, 'default.png', 'OJ006', '鲜榨橙汁1L', '件', 0);
-INSERT INTO `product` VALUES (17, 1, 352, 'default.png', 'CF007', '深海鳕鱼片', '件', 0);
-INSERT INTO `product` VALUES (18, 1, 352, 'default.png', 'GV008', '绿叶蔬菜混合包', '件', 0);
-INSERT INTO `product` VALUES (19, 1, 352, 'default.png', 'OP009', '有机黑猪肉', '件', 0);
-INSERT INTO `product` VALUES (20, 1, 352, 'default.png', 'CT010', '散养土鸡整只', '件', 0);
+INSERT INTO `product` VALUES (32, 5, 352, 'default.png', 'FS001', '新鲜草莓礼盒', '件', 1);
+INSERT INTO `product` VALUES (33, 5, 352, 'default.png', 'OG002', '有机菠菜500g', '件', 0);
+INSERT INTO `product` VALUES (34, 5, 352, 'default.png', 'MB003', '精选牛肉块', '件', 0);
+INSERT INTO `product` VALUES (35, 5, 352, 'default.png', 'WB004', '野生蓝莓200g', '件', 0);
+INSERT INTO `product` VALUES (36, 5, 352, 'default.png', 'FJ005', '农家土鸡蛋12枚', '件', 0);
+INSERT INTO `product` VALUES (37, 5, 352, 'default.png', 'OJ006', '鲜榨橙汁1L', '件', 0);
+INSERT INTO `product` VALUES (38, 5, 352, 'default.png', 'CF007', '深海鳕鱼片', '件', 0);
+INSERT INTO `product` VALUES (39, 5, 352, 'default.png', 'GV008', '绿叶蔬菜混合包', '件', 0);
+INSERT INTO `product` VALUES (40, 5, 352, 'default.png', 'OP009', '有机黑猪肉', '件', 0);
+INSERT INTO `product` VALUES (41, 5, 352, 'default.png', 'CT010', '散养土鸡整只', '件', 0);
 
 -- ----------------------------
 -- Table structure for product_record
@@ -663,21 +665,21 @@ CREATE TABLE `product_record`  (
   CONSTRAINT `product_record_ibfk_1` FOREIGN KEY (`aid`) REFERENCES `account` (`aid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `product_record_ibfk_2` FOREIGN KEY (`approver`) REFERENCES `account` (`aid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `product_record_ibfk_3` FOREIGN KEY (`pid`) REFERENCES `product` (`pid`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 32 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of product_record
 -- ----------------------------
-INSERT INTO `product_record` VALUES (11, 11, 1, 50, NULL, '', '2024-08-03 13:48:47', 0, 0);
-INSERT INTO `product_record` VALUES (12, 12, 1, 50, NULL, '', '2024-08-03 13:48:47', 0, 0);
-INSERT INTO `product_record` VALUES (13, 13, 1, 50, NULL, '', '2024-08-03 13:48:47', 0, 0);
-INSERT INTO `product_record` VALUES (14, 14, 1, 50, NULL, '', '2024-08-03 13:48:47', 0, 0);
-INSERT INTO `product_record` VALUES (15, 15, 1, 50, NULL, '', '2024-08-03 13:48:47', 0, 0);
-INSERT INTO `product_record` VALUES (16, 16, 1, 50, NULL, '', '2024-08-03 13:48:47', 0, 0);
-INSERT INTO `product_record` VALUES (17, 17, 1, 50, NULL, '', '2024-08-03 13:48:47', 0, 0);
-INSERT INTO `product_record` VALUES (18, 18, 1, 50, NULL, '', '2024-08-03 13:48:47', 0, 0);
-INSERT INTO `product_record` VALUES (19, 19, 1, 50, NULL, '', '2024-08-03 13:48:47', 0, 0);
-INSERT INTO `product_record` VALUES (20, 20, 1, 50, NULL, '', '2024-08-03 13:48:47', 0, 0);
+INSERT INTO `product_record` VALUES (32, 32, 1, 50, 1, '2024-08-04 15:47:18', '2024-08-04 11:20:07', 0, 1);
+INSERT INTO `product_record` VALUES (33, 33, 1, 50, 1, '2024-08-04 16:03:29', '2024-08-04 11:01:22', 0, 2);
+INSERT INTO `product_record` VALUES (34, 34, 1, 50, 1, '2024-08-04 16:24:02', '2024-08-04 11:01:22', 0, 1);
+INSERT INTO `product_record` VALUES (35, 35, 1, 50, 1, '2024-08-04 16:24:02', '2024-08-04 11:01:22', 0, 1);
+INSERT INTO `product_record` VALUES (36, 36, 1, 50, 1, '2024-08-04 16:24:02', '2024-08-04 11:01:22', 0, 1);
+INSERT INTO `product_record` VALUES (37, 37, 1, 50, 1, '2024-08-04 16:24:02', '2024-08-04 11:01:22', 0, 1);
+INSERT INTO `product_record` VALUES (38, 38, 1, 50, 1, '2024-08-04 16:24:02', '2024-08-04 11:01:22', 0, 1);
+INSERT INTO `product_record` VALUES (39, 39, 1, 50, 1, '2024-08-04 16:24:45', '2024-08-04 11:01:22', 0, 2);
+INSERT INTO `product_record` VALUES (40, 40, 1, 50, 1, '2024-08-04 16:24:45', '2024-08-04 11:01:22', 0, 2);
+INSERT INTO `product_record` VALUES (41, 41, 1, 50, 1, '2024-08-04 16:24:45', '2024-08-04 11:01:22', 0, 2);
 
 -- ----------------------------
 -- Table structure for role
@@ -690,7 +692,7 @@ CREATE TABLE `role`  (
   `del` smallint(0) NULL DEFAULT 0,
   `ban` smallint(0) NULL DEFAULT 0,
   PRIMARY KEY (`rid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of role
@@ -805,7 +807,7 @@ CREATE TABLE `role_operate`  (
   INDEX `rid`(`rid`) USING BTREE,
   CONSTRAINT `role_operate_ibfk_1` FOREIGN KEY (`oid`) REFERENCES `account` (`aid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `role_operate_ibfk_2` FOREIGN KEY (`rid`) REFERENCES `role` (`rid`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 25 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 28 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of role_operate
@@ -835,6 +837,8 @@ INSERT INTO `role_operate` VALUES (22, 1, 1, '启用所有角色', '2024-07-30 1
 INSERT INTO `role_operate` VALUES (23, 1, 8, '修改角色状态', '2024-07-30 13:33:43');
 INSERT INTO `role_operate` VALUES (24, 1, 8, '修改角色状态', '2024-07-30 13:34:12');
 INSERT INTO `role_operate` VALUES (25, 1, 9, '修改角色信息', '2024-07-30 14:08:38');
+INSERT INTO `role_operate` VALUES (26, 1, 8, '修改角色状态', '2024-08-04 11:24:41');
+INSERT INTO `role_operate` VALUES (27, 1, 8, '修改角色状态', '2024-08-04 11:24:58');
 
 -- ----------------------------
 -- Table structure for supplier
@@ -851,7 +855,7 @@ CREATE TABLE `supplier`  (
   PRIMARY KEY (`sid`) USING BTREE,
   INDEX `eid`(`eid`) USING BTREE,
   CONSTRAINT `supplier_ibfk_1` FOREIGN KEY (`eid`) REFERENCES `enterprise` (`eid`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 322 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 323 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of supplier

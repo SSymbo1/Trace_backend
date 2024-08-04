@@ -10,6 +10,13 @@ import lombok.ToString;
 // 通讯消息枚举
 public enum Message {
 
+    PROCESS_APPROVE("已经审批!"),
+    PROCESS_REJECT("审批被拒!"),
+    EDIT_PRODUCT_SUCCESS("修改产品信息成功!"),
+    EDIT_PRODUCT_FAIL("修改产品信息失败!"),
+    GET_PRODUCT_EDIT_DATA("获取指定产品信息成功!"),
+    ADD_PRODUCT_SUCCESS("添加商品备案成功!"),
+    ADD_PRODUCT_FAIL("添加商品备案失败!"),
     GET_PRODUCT_SUCCESS("获取产品备案信息成功!"),
     BATCH_IMPORT_PRODUCT("批量导入产品备案信息成功!"),
     GET_VENDORS_SUCCESS("查询供销商信息成功!"),

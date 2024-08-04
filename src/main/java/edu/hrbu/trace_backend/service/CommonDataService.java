@@ -21,4 +21,7 @@ public interface CommonDataService {
 
     Result requestEditRoleInfo(Integer roleId);
 
+    Result requestProductInfo(Integer productId);
+
+    Result requestApproveInfo(Integer approverId);
 }

@@ -48,7 +48,7 @@ public class CommonDataController {
             notes = "当用户登录成功时，前端从该接口可以获取用户的详细信息，" +
                     "需要登陆验证"
     )
-    public Result getLoginUserInfo(){
+    public Result getLoginUserInfo() {
         return commonDataService.requestWhoIs();
     }
 
@@ -58,7 +58,7 @@ public class CommonDataController {
             notes = "解码加密后密码接口，前端从该接口可以获取提供密码的解码，" +
                     "需要登陆验证以及角色验证"
     )
-    public Result decodePassword(@RequestBody Decode decode){
+    public Result decodePassword(@RequestBody Decode decode) {
         return commonDataService.requestDecodePass(decode);
     }
 
@@ -68,7 +68,7 @@ public class CommonDataController {
             notes = "获取用户修改信息接口，需要登陆验证，" +
                     "在需要修改账户信息时，请求该接口获取修改前数据"
     )
-    public Result getEditAccountInfo(Integer accountId){
+    public Result getEditAccountInfo(Integer accountId) {
         return commonDataService.requestEditAccountInfo(accountId);
     }
 
@@ -78,7 +78,7 @@ public class CommonDataController {
             notes = "获取企业修改信息接口，需要登陆验证，" +
                     "在需要修改企业信息时，请求该接口获取修改前数据"
     )
-    public Result getEditEnterpriseInfo(Integer enterpriseId){
+    public Result getEditEnterpriseInfo(Integer enterpriseId) {
         return commonDataService.requestEditEnterpriseInfo(enterpriseId);
     }
 
@@ -88,8 +88,28 @@ public class CommonDataController {
             notes = "获取角色修改信息接口，需要登陆验证，" +
                     "在需要修改角色信息时，请求该接口获取修改前数据"
     )
-    public Result getEditRoleInfo(Integer roleId){
+    public Result getEditRoleInfo(Integer roleId) {
         return commonDataService.requestEditRoleInfo(roleId);
+    }
+
+    @GetMapping("/product")
+    @ApiOperation(
+            value = "获取产品修改信息接口",
+            notes = "获取产品修改信息接口，需要登陆验证，" +
+                    "在需要修改产品信息时，请求该接口获取修改前数据"
+    )
+    public Result getEditProductInfo(Integer productId) {
+        return commonDataService.requestProductInfo(productId);
+    }
+
+    @GetMapping("/approver")
+    @ApiOperation(
+            value = "获取审批人员信息接口",
+            notes = "获取审批人员信息接口，需要登陆验证，" +
+                    "在查看产品详细信息时，请求该接口获取修改前数据"
+    )
+    public Result getApproverName(Integer approverId) {
+        return commonDataService.requestApproveInfo(approverId);
     }
 
 }

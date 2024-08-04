@@ -16,4 +16,14 @@ public interface SubjectService {
 
     Result requestProductPaged(ProductQuery query);
 
+    Result requestEditProduct(Product product);
+
+    Result requestProductRecordPaged(ProductQuery query);
+
+    Result requestProcessProductRecordBatched(Product[] products);
+
+    Result requestApproveProductRecord(Product product);
+
+    Result requestRejectProductRecord(Product product);
+
 }
