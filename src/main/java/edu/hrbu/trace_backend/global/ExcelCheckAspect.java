@@ -26,4 +26,14 @@ public class ExcelCheckAspect {
         excelCheckService.requestProductExcelCheck(joinPoint);
     }
 
+    @Before("execution(* edu.hrbu.trace_backend.controller.FileController.addApproachByExcel(..))")
+    public void checkApproachExcel(JoinPoint joinPoint) {
+        excelCheckService.requestApproachExcelCheck(joinPoint);
+    }
+
+    @Before("execution(* edu.hrbu.trace_backend.controller.FileController.addEntranceByExcel(..))")
+    public void checkEntranceExcel(JoinPoint joinPoint) {
+        excelCheckService.requestEntranceExcelCheck(joinPoint);
+    }
+
 }

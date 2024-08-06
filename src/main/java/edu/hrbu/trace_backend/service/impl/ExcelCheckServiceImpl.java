@@ -1,7 +1,11 @@
 package edu.hrbu.trace_backend.service.impl;
 
 import com.alibaba.excel.EasyExcel;
+import edu.hrbu.trace_backend.entity.excel.Approach;
+import edu.hrbu.trace_backend.entity.excel.Entrance;
 import edu.hrbu.trace_backend.entity.excel.ProductRecord;
+import edu.hrbu.trace_backend.global.checker.ApproachExcelChecker;
+import edu.hrbu.trace_backend.global.checker.EntranceExcelChecker;
 import edu.hrbu.trace_backend.global.exception.excel.ExcelTypeException;
 import edu.hrbu.trace_backend.global.checker.ProductExcelChecker;
 import edu.hrbu.trace_backend.service.ExcelCheckService;
@@ -28,6 +32,34 @@ public class ExcelCheckServiceImpl implements ExcelCheckService {
         }
         InputStream inputStream = file[0].getInputStream();
         EasyExcel.read(inputStream, ProductRecord.class, new ProductExcelChecker())
+                .sheet("sheet")
+                .doRead();
+    }
+
+    @Override
+    @SneakyThrows
+    public void requestApproachExcelCheck(JoinPoint joinPoint) {
+        Object[] args = joinPoint.getArgs();
+        MultipartFile[] file = (MultipartFile[]) args[0];
+        if (!Objects.equals(file[0].getContentType(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")) {
+            throw new ExcelTypeException("上传的电子表格格式不正确,应为.xlsx格式");
+        }
+        InputStream inputStream = file[0].getInputStream();
+        EasyExcel.read(inputStream, Approach.class, new ApproachExcelChecker())
+                .sheet("sheet")
+                .doRead();
+    }
+
+    @Override
+    @SneakyThrows
+    public void requestEntranceExcelCheck(JoinPoint joinPoint) {
+        Object[] args = joinPoint.getArgs();
+        MultipartFile[] file = (MultipartFile[]) args[0];
+        if (!Objects.equals(file[0].getContentType(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")) {
+            throw new ExcelTypeException("上传的电子表格格式不正确,应为.xlsx格式");
+        }
+        InputStream inputStream = file[0].getInputStream();
+        EasyExcel.read(inputStream, Entrance.class, new EntranceExcelChecker())
                 .sheet("sheet")
                 .doRead();
     }

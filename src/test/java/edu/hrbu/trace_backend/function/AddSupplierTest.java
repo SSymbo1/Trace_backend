@@ -44,7 +44,7 @@ public class AddSupplierTest {
             QueryWrapper<Supplier> updateSupplierWrapper = new QueryWrapper<>();
             updateSupplierWrapper.eq("eid", list.getEid());
             Supplier updateType = Supplier.builder()
-                    .type(RandomUtil.randomInt(1, 3)).build();
+                    .type(RandomUtil.randomInt(0, 3)).build();
             supplierMapper.update(updateType, updateSupplierWrapper);
         });
     }

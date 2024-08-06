@@ -11,7 +11,7 @@
  Target Server Version : 80032
  File Encoding         : 65001
 
- Date: 04/08/2024 16:32:30
+ Date: 06/08/2024 16:17:09
 */
 
 SET NAMES utf8mb4;
@@ -68,7 +68,7 @@ CREATE TABLE `account_info`  (
 -- ----------------------------
 -- Records of account_info
 -- ----------------------------
-INSERT INTO `account_info` VALUES (1, 22, 1, 'SSymbol', '男', '13612345611', 'admin.jpg', '1277820742@qq.com', '黑龙江省佳木斯市', '100861');
+INSERT INTO `account_info` VALUES (1, 1, 1, 'SSymbol', '男', '13612345611', 'admin.jpg', '1277820742@qq.com', '黑龙江省佳木斯市', '100861');
 INSERT INTO `account_info` VALUES (3, 1, 10, 'Jon Stewart Doe', '女', '60195213251', '18b7e2ad-8b3c-4f88-b9e4-4d68410453bb_user1.png', 'test@example.us', '黑龙江省佳木斯市', '94043');
 INSERT INTO `account_info` VALUES (4, 1, 9, 'qwe', '女', '12345678901', 'bf7db45d-72b6-4dc0-b1da-d2720ab28f28_89f5d904-d2d0-4889-a096-91ac35165375_user6.jpg', 'test@mail.com', 'address', '123112');
 INSERT INTO `account_info` VALUES (5, 1, 8, 'qwerty', '男', '12345678901', 'e3564293-aafc-43f4-b004-7bcb178d89fb_user5.JPG', 'test@test.com', 'address', '131536');
@@ -151,6 +151,42 @@ INSERT INTO `account_operate` VALUES (57, 1, 1, '启用所有账户', '2024-07-3
 INSERT INTO `account_operate` VALUES (58, 1, 1, '启用所有账户', '2024-07-30 13:34:26');
 INSERT INTO `account_operate` VALUES (59, 1, 5, '修改账号状态', '2024-08-04 11:24:47');
 INSERT INTO `account_operate` VALUES (60, 1, 5, '修改账号状态', '2024-08-04 11:25:04');
+INSERT INTO `account_operate` VALUES (61, 1, 1, '修改账号信息', '2024-08-06 13:19:51');
+
+-- ----------------------------
+-- Table structure for approach
+-- ----------------------------
+DROP TABLE IF EXISTS `approach`;
+CREATE TABLE `approach`  (
+  `aid` int(0) NOT NULL AUTO_INCREMENT,
+  `eid` int(0) NOT NULL,
+  `name` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `code` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `batch` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `num` int(0) NOT NULL,
+  `unit` varchar(8) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `trace` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `cid` int(0) NOT NULL,
+  `sid` int(0) NOT NULL,
+  `business_time` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  PRIMARY KEY (`aid`) USING BTREE,
+  INDEX `eid`(`eid`) USING BTREE,
+  INDEX `cid`(`cid`) USING BTREE,
+  INDEX `sid`(`sid`) USING BTREE,
+  CONSTRAINT `approach_ibfk_1` FOREIGN KEY (`eid`) REFERENCES `enterprise` (`eid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `approach_ibfk_2` FOREIGN KEY (`cid`) REFERENCES `classification` (`cid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `approach_ibfk_3` FOREIGN KEY (`sid`) REFERENCES `supplier` (`eid`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of approach
+-- ----------------------------
+INSERT INTO `approach` VALUES (1, 352, '新鲜草莓礼盒', 'FS001', 'bc001', 50, '件', 'trace-66b1b6a03726a542d854b215', 5, 58, '2024-08-06 13:40:33');
+INSERT INTO `approach` VALUES (2, 352, '精选牛肉块', 'MB003', 'bc002', 50, '件', 'trace-66b1b6a03726a542d854b216', 5, 58, '2024-08-06 13:40:33');
+INSERT INTO `approach` VALUES (3, 352, '野生蓝莓200g', 'WB004', 'bc003', 50, '件', 'trace-66b1b6a03726a542d854b217', 5, 58, '2024-08-06 13:40:33');
+INSERT INTO `approach` VALUES (4, 352, '农家土鸡蛋12枚', 'FJ005', 'bc004', 50, '件', 'trace-66b1b6a03726a542d854b218', 5, 58, '2024-08-06 13:40:33');
+INSERT INTO `approach` VALUES (5, 352, '鲜榨橙汁1L', 'OJ006', 'bc005', 50, '件', 'trace-66b1b6a03726a542d854b219', 5, 58, '2024-08-06 13:40:33');
+INSERT INTO `approach` VALUES (6, 352, '深海鳕鱼片', 'CF007', 'bc006', 50, '件', 'trace-66b1b6a03726a542d854b21a', 5, 58, '2024-08-06 13:40:33');
 
 -- ----------------------------
 -- Table structure for classification
@@ -207,26 +243,6 @@ CREATE TABLE `enterprise`  (
 -- Records of enterprise
 -- ----------------------------
 INSERT INTO `enterprise` VALUES (1, '无所属公司', '无法人', '无', '无', '无', '无', 0);
-INSERT INTO `enterprise` VALUES (22, 'Sem Egestas Blandit LLC', 'Dong', '002-334-4915', '4936 9364 5699 8489', 'Heilongjiang', '528286', 0);
-INSERT INTO `enterprise` VALUES (23, 'Mauris Sapien Consulting', 'Qiu', '035-354-3217', '675925787857444288', 'Jiangxi', '841998', 0);
-INSERT INTO `enterprise` VALUES (24, 'Blandit Nam Associates', 'Quon', '027-113-5356', '4905592532713935361', 'Shanxi', '352662', 0);
-INSERT INTO `enterprise` VALUES (25, 'Neque Pellentesque Foundation', 'Biming', '011-964-9518', '6706 7642 3555 7829', 'Shanghai', '366255', 0);
-INSERT INTO `enterprise` VALUES (26, 'Penatibus Et Inc.', 'Hui', '064-166-1462', '676722 2782442891', 'Yunnan', '268340', 0);
-INSERT INTO `enterprise` VALUES (27, 'Donec Nibh LLC', 'Hop', '028-227-4862', '402625 8639387717', 'Zhejiang', '682238', 0);
-INSERT INTO `enterprise` VALUES (28, 'Auctor Non LLC', 'Qing', '024-886-2631', '514451 4363527249', 'Shandong', '135492', 0);
-INSERT INTO `enterprise` VALUES (29, 'Urna Et Incorporated', 'Jinhai', '086-858-8627', '3654 484161 54755', 'Xinjiang', '775267', 0);
-INSERT INTO `enterprise` VALUES (30, 'Diam Sed Diam LLC', 'Cheng', '054-253-9084', '4911 3744 7392 3257', 'Hebei', '868668', 0);
-INSERT INTO `enterprise` VALUES (31, 'Lobortis Tellus Industries', 'Shoi-ming', '015-159-8323', '4532 2295 5215 1163', 'Gansu', '771721', 0);
-INSERT INTO `enterprise` VALUES (32, 'Fringilla Purus Institute', 'Biming', '054-672-5120', '6333466121371999', 'Fujian', '824262', 0);
-INSERT INTO `enterprise` VALUES (33, 'Eu Tempor LLP', 'Chun', '068-709-7674', '4539856987287', 'Inner Mongolia', '635136', 0);
-INSERT INTO `enterprise` VALUES (34, 'Scelerisque Neque Ltd', 'Mingyu', '063-366-2602', '6767595755492393', 'Anhui', '564273', 0);
-INSERT INTO `enterprise` VALUES (35, 'Egestas Consulting', 'Hao', '055-572-3882', '450833 7256942553', 'Yunnan', '754428', 0);
-INSERT INTO `enterprise` VALUES (36, 'Lobortis LLC', 'Ping', '095-251-2774', '3046 473665 38628', 'Hubei', '626655', 0);
-INSERT INTO `enterprise` VALUES (37, 'Lorem Tristique Corp.', 'Sying', '048-686-4234', '6574975348825734', 'Sichuan', '822742', 0);
-INSERT INTO `enterprise` VALUES (38, 'Risus Nulla Eget LLC', 'Lei', '082-645-3416', '2014 382658 89153', 'Ningxia', '325747', 0);
-INSERT INTO `enterprise` VALUES (39, 'Quis Pede Associates', 'Chao', '043-738-8734', '6304825557552283667', 'Fujian', '951415', 0);
-INSERT INTO `enterprise` VALUES (40, 'Mauris Rhoncus Id Company', 'Biming', '061-471-4673', '6767493616869621', 'Shandong', '362904', 0);
-INSERT INTO `enterprise` VALUES (41, 'Auctor Quis Tristique Limited', 'Zihao', '071-943-0255', '4929 6938 3797 3520', 'Ningxia', '478454', 0);
 INSERT INTO `enterprise` VALUES (52, 'Sem Egestas Blandit LLC', 'Dong', '002-334-4915', '4936 9364 5699 8489', 'Hong Kong', '528286', 0);
 INSERT INTO `enterprise` VALUES (53, 'Mauris Sapien Consulting', 'Qiu', '035-354-3217', '675925787857444288', 'Jiangxi', '841998', 0);
 INSERT INTO `enterprise` VALUES (54, 'Blandit Nam Associates', 'Quon', '027-113-5356', '4905592532713935361', 'Shanxi', '352662', 0);
@@ -324,7 +340,6 @@ INSERT INTO `enterprise` VALUES (145, 'Class Aptent Taciti Corp.', 'Wenyan', '03
 INSERT INTO `enterprise` VALUES (146, 'Ac Feugiat Company', 'Ling', '013-891-3885', '676347822997720', 'Guangxi', '416288', 0);
 INSERT INTO `enterprise` VALUES (147, 'Donec Consectetuer LLC', 'Zihao', '096-447-2000', '646 73362 74566 646', 'Inner Mongolia', '778895', 0);
 INSERT INTO `enterprise` VALUES (148, 'Lacus Limited', 'Wen', '026-491-5303', '3034 885862 63973', 'Hebei', '466494', 0);
-INSERT INTO `enterprise` VALUES (149, 'Dictum Associates', 'Ling', '073-887-5115', '5568 8927 7278 5682', 'Tibet', '164368', 0);
 INSERT INTO `enterprise` VALUES (150, 'Imperdiet Institute', 'Yanlin', '053-858-6241', '3777 574314 18755', 'Heilongjiang', '805468', 0);
 INSERT INTO `enterprise` VALUES (151, 'Duis A Incorporated', 'Kuo', '064-957-7575', '4024007128181996', 'Jilin', '383657', 0);
 INSERT INTO `enterprise` VALUES (152, 'Eget Corporation', 'Gan', '036-397-0153', '491 34885 68286 483', 'Ningxia', '845559', 0);
@@ -488,7 +503,6 @@ INSERT INTO `enterprise` VALUES (309, 'Sapien Imperdiet Corporation', 'Duyi', '0
 INSERT INTO `enterprise` VALUES (310, 'Vivamus Associates', 'Qi', '058-251-3882', '490525 14 2276 6362 428', 'Ningxia', '334854', 0);
 INSERT INTO `enterprise` VALUES (311, 'Tincidunt Foundation', 'Jinhai', '052-486-8286', '3623 652868 66487', 'Shanghai', '318906', 0);
 INSERT INTO `enterprise` VALUES (312, 'Lorem Ipsum Dolor Corporation', 'Ning', '067-486-3858', '450 86574 38443 984', 'Macau', '849123', 0);
-INSERT INTO `enterprise` VALUES (313, 'Cursus In LLC', 'Chen', '073-053-5246', '300415652811586', 'Hebei', '415492', 0);
 INSERT INTO `enterprise` VALUES (314, 'Vulputate Lacus Inc.', 'Ru', '078-322-0285', '670644 41 1532 2584 885', 'Shanxi', '812384', 0);
 INSERT INTO `enterprise` VALUES (315, 'Luctus Et Ultrices LLP', 'Hong', '049-487-7761', '5656 865 47 8360', 'Hainan', '828492', 0);
 INSERT INTO `enterprise` VALUES (316, 'Purus Maecenas Libero Corp.', 'Jin', '070-999-7238', '6451 4374 3814 8772', 'Tianjin', '418533', 0);
@@ -549,11 +563,42 @@ CREATE TABLE `enterprise_operate`  (
 -- ----------------------------
 -- Records of enterprise_operate
 -- ----------------------------
-INSERT INTO `enterprise_operate` VALUES (1, 1, 352, '创建企业', '2024-07-27 11:26:52');
-INSERT INTO `enterprise_operate` VALUES (2, 1, 352, '修改企业信息', '2024-07-28 09:51:16');
-INSERT INTO `enterprise_operate` VALUES (3, 1, 22, '修改企业信息', '2024-07-28 09:59:32');
-INSERT INTO `enterprise_operate` VALUES (4, 1, 22, '修改企业信息', '2024-07-28 09:59:55');
-INSERT INTO `enterprise_operate` VALUES (5, 1, 24, '修改企业信息', '2024-08-01 10:26:18');
+
+-- ----------------------------
+-- Table structure for entrance
+-- ----------------------------
+DROP TABLE IF EXISTS `entrance`;
+CREATE TABLE `entrance`  (
+  `eid` int(0) NOT NULL AUTO_INCREMENT,
+  `bid` int(0) NOT NULL,
+  `business_time` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `name` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `code` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `batch` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `num` int(0) NOT NULL,
+  `unit` varchar(8) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `trace` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `buyer_type` smallint(0) NOT NULL DEFAULT 0,
+  `cid` int(0) NOT NULL,
+  `sid` int(0) NOT NULL,
+  PRIMARY KEY (`eid`) USING BTREE,
+  INDEX `cid`(`cid`) USING BTREE,
+  INDEX `sid`(`sid`) USING BTREE,
+  INDEX `bid`(`bid`) USING BTREE,
+  CONSTRAINT `entrance_ibfk_1` FOREIGN KEY (`cid`) REFERENCES `classification` (`cid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `entrance_ibfk_2` FOREIGN KEY (`sid`) REFERENCES `supplier` (`eid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `entrance_ibfk_3` FOREIGN KEY (`bid`) REFERENCES `enterprise` (`eid`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of entrance
+-- ----------------------------
+INSERT INTO `entrance` VALUES (1, 352, '2024-08-06 13:37:36', '新鲜草莓礼盒', 'FS001', 'bc001', 50, '件', 'trace-66b1b6a03726a542d854b215', 1, 5, 58);
+INSERT INTO `entrance` VALUES (2, 352, '2024-08-06 13:37:36', '精选牛肉块', 'MB003', 'bc002', 50, '件', 'trace-66b1b6a03726a542d854b216', 1, 5, 58);
+INSERT INTO `entrance` VALUES (3, 352, '2024-08-06 13:37:36', '野生蓝莓200g', 'WB004', 'bc003', 50, '件', 'trace-66b1b6a03726a542d854b217', 1, 5, 58);
+INSERT INTO `entrance` VALUES (4, 352, '2024-08-06 13:37:36', '农家土鸡蛋12枚', 'FJ005', 'bc004', 50, '件', 'trace-66b1b6a03726a542d854b218', 1, 5, 58);
+INSERT INTO `entrance` VALUES (5, 352, '2024-08-06 13:37:36', '鲜榨橙汁1L', 'OJ006', 'bc005', 50, '件', 'trace-66b1b6a03726a542d854b219', 1, 5, 58);
+INSERT INTO `entrance` VALUES (6, 352, '2024-08-06 13:37:36', '深海鳕鱼片', 'CF007', 'bc006', 50, '件', 'trace-66b1b6a03726a542d854b21a', 1, 5, 58);
 
 -- ----------------------------
 -- Table structure for menue
@@ -580,8 +625,8 @@ INSERT INTO `menue` VALUES (7, '运行监测管理', '/monitor', 'OperationMonit
 INSERT INTO `menue` VALUES (8, '追溯环节管理', '/segment', 'TraceabilityProcess.svg', '#40c9c6', 0, NULL, 0);
 INSERT INTO `menue` VALUES (10, '系统设置管理', '/system', 'SystemSet.svg', '#f4516c', 0, NULL, 0);
 INSERT INTO `menue` VALUES (11, '环节管理', '/segment/manage', 'Connection', 'none', 8, NULL, 0);
-INSERT INTO `menue` VALUES (12, '超市进场', '/segment/manage/entry', 'Connection', 'none', 11, NULL, 0);
-INSERT INTO `menue` VALUES (13, '超市出场', '/segment/manage/appears', 'Connection', 'none', 11, NULL, 0);
+INSERT INTO `menue` VALUES (12, '超市出场', '/segment/manage/entry', 'Connection', 'none', 11, NULL, 0);
+INSERT INTO `menue` VALUES (13, '超市进场', '/segment/manage/appears', 'Connection', 'none', 11, NULL, 0);
 INSERT INTO `menue` VALUES (14, '运行监测管理', '/monitor/manage', 'Monitor', 'none', 7, NULL, 0);
 INSERT INTO `menue` VALUES (15, '采集数据汇总', '/monitor/manage/summary', 'Monitor', 'none', 14, NULL, 0);
 INSERT INTO `menue` VALUES (16, '环节类型数据', '/monitor/manage/data', 'Monitor', 'none', 14, NULL, 0);
@@ -628,7 +673,7 @@ CREATE TABLE `product`  (
   INDEX `cid`(`cid`) USING BTREE,
   CONSTRAINT `product_ibfk_1` FOREIGN KEY (`eid`) REFERENCES `enterprise` (`eid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `product_ibfk_2` FOREIGN KEY (`cid`) REFERENCES `classification` (`cid`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 32 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 42 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of product
@@ -665,7 +710,7 @@ CREATE TABLE `product_record`  (
   CONSTRAINT `product_record_ibfk_1` FOREIGN KEY (`aid`) REFERENCES `account` (`aid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `product_record_ibfk_2` FOREIGN KEY (`approver`) REFERENCES `account` (`aid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `product_record_ibfk_3` FOREIGN KEY (`pid`) REFERENCES `product` (`pid`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 32 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 42 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of product_record
@@ -860,327 +905,305 @@ CREATE TABLE `supplier`  (
 -- ----------------------------
 -- Records of supplier
 -- ----------------------------
-INSERT INTO `supplier` VALUES (1, 1, '66aaeecfad66b14d35536ffe', 0, 0, 0, 0);
-INSERT INTO `supplier` VALUES (2, 22, '66aaeecfad66b14d35536fff', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (3, 23, '66aaeecfad66b14d35537000', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (4, 24, '66aaeecfad66b14d35537001', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (5, 25, '66aaeecfad66b14d35537002', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (6, 26, '66aaeecfad66b14d35537003', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (7, 27, '66aaeecfad66b14d35537004', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (8, 28, '66aaeecfad66b14d35537005', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (9, 29, '66aaeecfad66b14d35537006', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (10, 30, '66aaeecfad66b14d35537007', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (11, 31, '66aaeecfad66b14d35537008', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (12, 32, '66aaeecfad66b14d35537009', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (13, 33, '66aaeecfad66b14d3553700a', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (14, 34, '66aaeecfad66b14d3553700b', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (15, 35, '66aaeecfad66b14d3553700c', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (16, 36, '66aaeecfad66b14d3553700d', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (17, 37, '66aaeecfad66b14d3553700e', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (18, 38, '66aaeecfad66b14d3553700f', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (19, 39, '66aaeecfad66b14d35537010', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (20, 40, '66aaeecfad66b14d35537011', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (21, 41, '66aaeecfad66b14d35537012', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (22, 52, '66aaeecfad66b14d35537013', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (23, 53, '66aaeecfad66b14d35537014', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (24, 54, '66aaeecfad66b14d35537015', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (25, 55, '66aaeecfad66b14d35537016', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (26, 56, '66aaeecfad66b14d35537017', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (27, 57, '66aaeecfad66b14d35537018', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (28, 58, '66aaeecfad66b14d35537019', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (29, 59, '66aaeecfad66b14d3553701a', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (30, 60, '66aaeecfad66b14d3553701b', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (31, 61, '66aaeecfad66b14d3553701c', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (32, 62, '66aaeecfad66b14d3553701d', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (33, 63, '66aaeecfad66b14d3553701e', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (34, 64, '66aaeecfad66b14d3553701f', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (35, 65, '66aaeecfad66b14d35537020', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (36, 66, '66aaeecfad66b14d35537021', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (37, 67, '66aaeecfad66b14d35537022', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (38, 68, '66aaeecfad66b14d35537023', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (39, 69, '66aaeecfad66b14d35537024', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (40, 70, '66aaeecfad66b14d35537025', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (41, 71, '66aaeecfad66b14d35537026', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (42, 72, '66aaeecfad66b14d35537027', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (43, 73, '66aaeecfad66b14d35537028', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (44, 74, '66aaeecfad66b14d35537029', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (45, 75, '66aaeecfad66b14d3553702a', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (46, 76, '66aaeecfad66b14d3553702b', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (47, 77, '66aaeecfad66b14d3553702c', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (48, 78, '66aaeecfad66b14d3553702d', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (49, 79, '66aaeecfad66b14d3553702e', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (50, 80, '66aaeecfad66b14d3553702f', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (51, 81, '66aaeecfad66b14d35537030', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (52, 82, '66aaeecfad66b14d35537031', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (53, 83, '66aaeecfad66b14d35537032', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (54, 84, '66aaeecfad66b14d35537033', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (55, 85, '66aaeecfad66b14d35537034', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (56, 86, '66aaeecfad66b14d35537035', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (57, 87, '66aaeecfad66b14d35537036', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (58, 88, '66aaeecfad66b14d35537037', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (59, 89, '66aaeecfad66b14d35537038', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (60, 90, '66aaeecfad66b14d35537039', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (61, 91, '66aaeecfad66b14d3553703a', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (62, 92, '66aaeecfad66b14d3553703b', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (63, 93, '66aaeecfad66b14d3553703c', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (64, 94, '66aaeecfad66b14d3553703d', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (65, 95, '66aaeecfad66b14d3553703e', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (66, 96, '66aaeecfad66b14d3553703f', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (67, 97, '66aaeecfad66b14d35537040', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (68, 98, '66aaeecfad66b14d35537041', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (69, 99, '66aaeecfad66b14d35537042', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (70, 100, '66aaeecfad66b14d35537043', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (71, 101, '66aaeecfad66b14d35537044', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (72, 102, '66aaeecfad66b14d35537045', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (73, 103, '66aaeecfad66b14d35537046', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (74, 104, '66aaeecfad66b14d35537047', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (75, 105, '66aaeecfad66b14d35537048', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (76, 106, '66aaeecfad66b14d35537049', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (77, 107, '66aaeecfad66b14d3553704a', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (78, 108, '66aaeecfad66b14d3553704b', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (79, 109, '66aaeecfad66b14d3553704c', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (80, 110, '66aaeecfad66b14d3553704d', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (81, 111, '66aaeecfad66b14d3553704e', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (82, 112, '66aaeecfad66b14d3553704f', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (83, 113, '66aaeecfad66b14d35537050', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (84, 114, '66aaeecfad66b14d35537051', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (85, 115, '66aaeecfad66b14d35537052', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (86, 116, '66aaeecfad66b14d35537053', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (87, 117, '66aaeecfad66b14d35537054', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (88, 118, '66aaeecfad66b14d35537055', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (89, 119, '66aaeecfad66b14d35537056', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (90, 120, '66aaeecfad66b14d35537057', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (91, 121, '66aaeecfad66b14d35537058', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (92, 122, '66aaeecfad66b14d35537059', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (93, 123, '66aaeecfad66b14d3553705a', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (94, 124, '66aaeecfad66b14d3553705b', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (95, 125, '66aaeecfad66b14d3553705c', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (96, 126, '66aaeecfad66b14d3553705d', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (97, 127, '66aaeecfad66b14d3553705e', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (98, 128, '66aaeecfad66b14d3553705f', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (99, 129, '66aaeecfad66b14d35537060', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (100, 130, '66aaeecfad66b14d35537061', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (101, 131, '66aaeecfad66b14d35537062', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (102, 132, '66aaeecfad66b14d35537063', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (103, 133, '66aaeecfad66b14d35537064', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (104, 134, '66aaeecfad66b14d35537065', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (105, 135, '66aaeecfad66b14d35537066', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (106, 136, '66aaeecfad66b14d35537067', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (107, 137, '66aaeecfad66b14d35537068', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (108, 138, '66aaeecfad66b14d35537069', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (109, 139, '66aaeecfad66b14d3553706a', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (110, 140, '66aaeed0ad66b14d3553706b', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (111, 141, '66aaeed0ad66b14d3553706c', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (112, 142, '66aaeed0ad66b14d3553706d', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (113, 143, '66aaeed0ad66b14d3553706e', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (114, 144, '66aaeed0ad66b14d3553706f', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (115, 145, '66aaeed0ad66b14d35537070', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (116, 146, '66aaeed0ad66b14d35537071', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (117, 147, '66aaeed0ad66b14d35537072', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (118, 148, '66aaeed0ad66b14d35537073', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (119, 149, '66aaeed0ad66b14d35537074', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (120, 150, '66aaeed0ad66b14d35537075', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (121, 151, '66aaeed0ad66b14d35537076', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (122, 152, '66aaeed0ad66b14d35537077', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (123, 153, '66aaeed0ad66b14d35537078', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (124, 154, '66aaeed0ad66b14d35537079', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (125, 155, '66aaeed0ad66b14d3553707a', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (126, 156, '66aaeed0ad66b14d3553707b', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (127, 157, '66aaeed0ad66b14d3553707c', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (128, 158, '66aaeed0ad66b14d3553707d', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (129, 159, '66aaeed0ad66b14d3553707e', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (130, 160, '66aaeed0ad66b14d3553707f', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (131, 161, '66aaeed0ad66b14d35537080', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (132, 162, '66aaeed0ad66b14d35537081', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (133, 163, '66aaeed0ad66b14d35537082', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (134, 164, '66aaeed0ad66b14d35537083', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (135, 165, '66aaeed0ad66b14d35537084', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (136, 166, '66aaeed0ad66b14d35537085', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (137, 167, '66aaeed0ad66b14d35537086', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (138, 168, '66aaeed0ad66b14d35537087', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (139, 169, '66aaeed0ad66b14d35537088', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (140, 170, '66aaeed0ad66b14d35537089', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (141, 171, '66aaeed0ad66b14d3553708a', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (142, 172, '66aaeed0ad66b14d3553708b', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (143, 173, '66aaeed0ad66b14d3553708c', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (144, 174, '66aaeed0ad66b14d3553708d', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (145, 175, '66aaeed0ad66b14d3553708e', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (146, 176, '66aaeed0ad66b14d3553708f', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (147, 177, '66aaeed0ad66b14d35537090', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (148, 178, '66aaeed0ad66b14d35537091', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (149, 179, '66aaeed0ad66b14d35537092', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (150, 180, '66aaeed0ad66b14d35537093', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (151, 181, '66aaeed0ad66b14d35537094', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (152, 182, '66aaeed0ad66b14d35537095', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (153, 183, '66aaeed0ad66b14d35537096', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (154, 184, '66aaeed0ad66b14d35537097', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (155, 185, '66aaeed0ad66b14d35537098', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (156, 186, '66aaeed0ad66b14d35537099', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (157, 187, '66aaeed0ad66b14d3553709a', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (158, 188, '66aaeed0ad66b14d3553709b', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (159, 189, '66aaeed0ad66b14d3553709c', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (160, 190, '66aaeed0ad66b14d3553709d', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (161, 191, '66aaeed0ad66b14d3553709e', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (162, 192, '66aaeed0ad66b14d3553709f', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (163, 193, '66aaeed0ad66b14d355370a0', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (164, 194, '66aaeed0ad66b14d355370a1', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (165, 195, '66aaeed0ad66b14d355370a2', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (166, 196, '66aaeed0ad66b14d355370a3', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (167, 197, '66aaeed0ad66b14d355370a4', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (168, 198, '66aaeed0ad66b14d355370a5', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (169, 199, '66aaeed0ad66b14d355370a6', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (170, 200, '66aaeed0ad66b14d355370a7', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (171, 201, '66aaeed0ad66b14d355370a8', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (172, 202, '66aaeed0ad66b14d355370a9', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (173, 203, '66aaeed0ad66b14d355370aa', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (174, 204, '66aaeed0ad66b14d355370ab', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (175, 205, '66aaeed0ad66b14d355370ac', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (176, 206, '66aaeed0ad66b14d355370ad', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (177, 207, '66aaeed0ad66b14d355370ae', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (178, 208, '66aaeed0ad66b14d355370af', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (179, 209, '66aaeed0ad66b14d355370b0', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (180, 210, '66aaeed0ad66b14d355370b1', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (181, 211, '66aaeed0ad66b14d355370b2', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (182, 212, '66aaeed0ad66b14d355370b3', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (183, 213, '66aaeed0ad66b14d355370b4', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (184, 214, '66aaeed0ad66b14d355370b5', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (185, 215, '66aaeed0ad66b14d355370b6', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (186, 216, '66aaeed0ad66b14d355370b7', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (187, 217, '66aaeed0ad66b14d355370b8', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (188, 218, '66aaeed0ad66b14d355370b9', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (189, 219, '66aaeed0ad66b14d355370ba', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (190, 220, '66aaeed0ad66b14d355370bb', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (191, 221, '66aaeed0ad66b14d355370bc', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (192, 222, '66aaeed0ad66b14d355370bd', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (193, 223, '66aaeed0ad66b14d355370be', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (194, 224, '66aaeed0ad66b14d355370bf', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (195, 225, '66aaeed0ad66b14d355370c0', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (196, 226, '66aaeed0ad66b14d355370c1', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (197, 227, '66aaeed0ad66b14d355370c2', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (198, 228, '66aaeed0ad66b14d355370c3', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (199, 229, '66aaeed0ad66b14d355370c4', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (200, 230, '66aaeed0ad66b14d355370c5', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (201, 231, '66aaeed0ad66b14d355370c6', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (202, 232, '66aaeed0ad66b14d355370c7', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (203, 233, '66aaeed0ad66b14d355370c8', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (204, 234, '66aaeed0ad66b14d355370c9', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (205, 235, '66aaeed0ad66b14d355370ca', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (206, 236, '66aaeed0ad66b14d355370cb', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (207, 237, '66aaeed0ad66b14d355370cc', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (208, 238, '66aaeed0ad66b14d355370cd', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (209, 239, '66aaeed0ad66b14d355370ce', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (210, 240, '66aaeed0ad66b14d355370cf', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (211, 241, '66aaeed0ad66b14d355370d0', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (212, 242, '66aaeed0ad66b14d355370d1', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (213, 243, '66aaeed0ad66b14d355370d2', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (214, 244, '66aaeed0ad66b14d355370d3', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (215, 245, '66aaeed0ad66b14d355370d4', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (216, 246, '66aaeed0ad66b14d355370d5', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (217, 247, '66aaeed0ad66b14d355370d6', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (218, 248, '66aaeed0ad66b14d355370d7', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (219, 249, '66aaeed0ad66b14d355370d8', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (220, 250, '66aaeed0ad66b14d355370d9', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (221, 251, '66aaeed0ad66b14d355370da', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (222, 252, '66aaeed0ad66b14d355370db', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (223, 253, '66aaeed0ad66b14d355370dc', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (224, 254, '66aaeed0ad66b14d355370dd', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (225, 255, '66aaeed0ad66b14d355370de', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (226, 256, '66aaeed0ad66b14d355370df', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (227, 257, '66aaeed0ad66b14d355370e0', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (228, 258, '66aaeed0ad66b14d355370e1', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (229, 259, '66aaeed0ad66b14d355370e2', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (230, 260, '66aaeed0ad66b14d355370e3', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (231, 261, '66aaeed0ad66b14d355370e4', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (232, 262, '66aaeed0ad66b14d355370e5', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (233, 263, '66aaeed0ad66b14d355370e6', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (234, 264, '66aaeed0ad66b14d355370e7', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (235, 265, '66aaeed0ad66b14d355370e8', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (236, 266, '66aaeed0ad66b14d355370e9', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (237, 267, '66aaeed0ad66b14d355370ea', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (238, 268, '66aaeed0ad66b14d355370eb', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (239, 269, '66aaeed0ad66b14d355370ec', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (240, 270, '66aaeed0ad66b14d355370ed', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (241, 271, '66aaeed0ad66b14d355370ee', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (242, 272, '66aaeed0ad66b14d355370ef', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (243, 273, '66aaeed0ad66b14d355370f0', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (244, 274, '66aaeed0ad66b14d355370f1', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (245, 275, '66aaeed0ad66b14d355370f2', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (246, 276, '66aaeed0ad66b14d355370f3', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (247, 277, '66aaeed0ad66b14d355370f4', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (248, 278, '66aaeed0ad66b14d355370f5', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (249, 279, '66aaeed0ad66b14d355370f6', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (250, 280, '66aaeed0ad66b14d355370f7', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (251, 281, '66aaeed0ad66b14d355370f8', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (252, 282, '66aaeed0ad66b14d355370f9', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (253, 283, '66aaeed0ad66b14d355370fa', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (254, 284, '66aaeed0ad66b14d355370fb', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (255, 285, '66aaeed0ad66b14d355370fc', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (256, 286, '66aaeed0ad66b14d355370fd', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (257, 287, '66aaeed0ad66b14d355370fe', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (258, 288, '66aaeed0ad66b14d355370ff', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (259, 289, '66aaeed0ad66b14d35537100', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (260, 290, '66aaeed0ad66b14d35537101', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (261, 291, '66aaeed0ad66b14d35537102', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (262, 292, '66aaeed0ad66b14d35537103', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (263, 293, '66aaeed0ad66b14d35537104', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (264, 294, '66aaeed0ad66b14d35537105', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (265, 295, '66aaeed0ad66b14d35537106', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (266, 296, '66aaeed0ad66b14d35537107', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (267, 297, '66aaeed0ad66b14d35537108', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (268, 298, '66aaeed0ad66b14d35537109', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (269, 299, '66aaeed0ad66b14d3553710a', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (270, 300, '66aaeed0ad66b14d3553710b', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (271, 301, '66aaeed0ad66b14d3553710c', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (272, 302, '66aaeed0ad66b14d3553710d', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (273, 303, '66aaeed0ad66b14d3553710e', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (274, 304, '66aaeed0ad66b14d3553710f', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (275, 305, '66aaeed0ad66b14d35537110', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (276, 306, '66aaeed0ad66b14d35537111', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (277, 307, '66aaeed0ad66b14d35537112', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (278, 308, '66aaeed0ad66b14d35537113', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (279, 309, '66aaeed0ad66b14d35537114', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (280, 310, '66aaeed0ad66b14d35537115', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (281, 311, '66aaeed0ad66b14d35537116', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (282, 312, '66aaeed0ad66b14d35537117', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (283, 313, '66aaeed0ad66b14d35537118', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (284, 314, '66aaeed0ad66b14d35537119', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (285, 315, '66aaeed0ad66b14d3553711a', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (286, 316, '66aaeed0ad66b14d3553711b', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (287, 317, '66aaeed0ad66b14d3553711c', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (288, 318, '66aaeed0ad66b14d3553711d', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (289, 319, '66aaeed0ad66b14d3553711e', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (290, 320, '66aaeed0ad66b14d3553711f', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (291, 321, '66aaeed0ad66b14d35537120', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (292, 322, '66aaeed0ad66b14d35537121', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (293, 323, '66aaeed0ad66b14d35537122', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (294, 324, '66aaeed0ad66b14d35537123', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (295, 325, '66aaeed0ad66b14d35537124', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (296, 326, '66aaeed0ad66b14d35537125', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (297, 327, '66aaeed0ad66b14d35537126', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (298, 328, '66aaeed0ad66b14d35537127', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (299, 329, '66aaeed0ad66b14d35537128', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (300, 330, '66aaeed0ad66b14d35537129', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (301, 331, '66aaeed0ad66b14d3553712a', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (302, 332, '66aaeed0ad66b14d3553712b', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (303, 333, '66aaeed0ad66b14d3553712c', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (304, 334, '66aaeed0ad66b14d3553712d', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (305, 335, '66aaeed0ad66b14d3553712e', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (306, 336, '66aaeed0ad66b14d3553712f', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (307, 337, '66aaeed0ad66b14d35537130', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (308, 338, '66aaeed0ad66b14d35537131', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (309, 339, '66aaeed0ad66b14d35537132', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (310, 340, '66aaeed0ad66b14d35537133', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (311, 341, '66aaeed0ad66b14d35537134', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (312, 342, '66aaeed0ad66b14d35537135', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (313, 343, '66aaeed0ad66b14d35537136', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (314, 344, '66aaeed0ad66b14d35537137', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (315, 345, '66aaeed0ad66b14d35537138', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (316, 346, '66aaeed0ad66b14d35537139', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (317, 347, '66aaeed0ad66b14d3553713a', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (318, 348, '66aaeed0ad66b14d3553713b', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (319, 349, '66aaeed0ad66b14d3553713c', 2, 0, 0, 0);
-INSERT INTO `supplier` VALUES (320, 350, '66aaeed0ad66b14d3553713d', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (321, 351, '66aaeed0ad66b14d3553713e', 1, 0, 0, 0);
-INSERT INTO `supplier` VALUES (322, 352, '66aaeed0ad66b14d3553713f', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (323, 1, '66b1b4cb37265bde76e247c6', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (324, 52, '66b1b4cb37265bde76e247c7', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (325, 53, '66b1b4cb37265bde76e247c8', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (326, 54, '66b1b4cb37265bde76e247c9', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (327, 55, '66b1b4cb37265bde76e247ca', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (328, 56, '66b1b4cb37265bde76e247cb', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (329, 57, '66b1b4cb37265bde76e247cc', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (330, 58, '66b1b4cb37265bde76e247cd', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (331, 59, '66b1b4cb37265bde76e247ce', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (332, 60, '66b1b4cb37265bde76e247cf', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (333, 61, '66b1b4cb37265bde76e247d0', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (334, 62, '66b1b4cb37265bde76e247d1', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (335, 63, '66b1b4cb37265bde76e247d2', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (336, 64, '66b1b4cb37265bde76e247d3', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (337, 65, '66b1b4cb37265bde76e247d4', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (338, 66, '66b1b4cb37265bde76e247d5', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (339, 67, '66b1b4cb37265bde76e247d6', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (340, 68, '66b1b4cb37265bde76e247d7', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (341, 69, '66b1b4cb37265bde76e247d8', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (342, 70, '66b1b4cb37265bde76e247d9', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (343, 71, '66b1b4cb37265bde76e247da', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (344, 72, '66b1b4cb37265bde76e247db', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (345, 73, '66b1b4cb37265bde76e247dc', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (346, 74, '66b1b4cb37265bde76e247dd', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (347, 75, '66b1b4cb37265bde76e247de', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (348, 76, '66b1b4cb37265bde76e247df', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (349, 77, '66b1b4cb37265bde76e247e0', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (350, 78, '66b1b4cb37265bde76e247e1', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (351, 79, '66b1b4cb37265bde76e247e2', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (352, 80, '66b1b4cb37265bde76e247e3', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (353, 81, '66b1b4cb37265bde76e247e4', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (354, 82, '66b1b4cb37265bde76e247e5', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (355, 83, '66b1b4cb37265bde76e247e6', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (356, 84, '66b1b4cb37265bde76e247e7', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (357, 85, '66b1b4cb37265bde76e247e8', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (358, 86, '66b1b4cb37265bde76e247e9', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (359, 87, '66b1b4cb37265bde76e247ea', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (360, 88, '66b1b4cb37265bde76e247eb', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (361, 89, '66b1b4cb37265bde76e247ec', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (362, 90, '66b1b4cb37265bde76e247ed', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (363, 91, '66b1b4cb37265bde76e247ee', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (364, 92, '66b1b4cb37265bde76e247ef', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (365, 93, '66b1b4cb37265bde76e247f0', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (366, 94, '66b1b4cb37265bde76e247f1', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (367, 95, '66b1b4cb37265bde76e247f2', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (368, 96, '66b1b4cb37265bde76e247f3', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (369, 97, '66b1b4cb37265bde76e247f4', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (370, 98, '66b1b4cb37265bde76e247f5', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (371, 99, '66b1b4cb37265bde76e247f6', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (372, 100, '66b1b4cb37265bde76e247f7', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (373, 101, '66b1b4cb37265bde76e247f8', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (374, 102, '66b1b4cb37265bde76e247f9', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (375, 103, '66b1b4cb37265bde76e247fa', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (376, 104, '66b1b4cb37265bde76e247fb', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (377, 105, '66b1b4cb37265bde76e247fc', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (378, 106, '66b1b4cb37265bde76e247fd', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (379, 107, '66b1b4cb37265bde76e247fe', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (380, 108, '66b1b4cb37265bde76e247ff', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (381, 109, '66b1b4cb37265bde76e24800', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (382, 110, '66b1b4cb37265bde76e24801', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (383, 111, '66b1b4cb37265bde76e24802', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (384, 112, '66b1b4cb37265bde76e24803', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (385, 113, '66b1b4cb37265bde76e24804', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (386, 114, '66b1b4cb37265bde76e24805', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (387, 115, '66b1b4cb37265bde76e24806', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (388, 116, '66b1b4cb37265bde76e24807', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (389, 117, '66b1b4cb37265bde76e24808', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (390, 118, '66b1b4cb37265bde76e24809', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (391, 119, '66b1b4cb37265bde76e2480a', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (392, 120, '66b1b4cb37265bde76e2480b', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (393, 121, '66b1b4cb37265bde76e2480c', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (394, 122, '66b1b4cb37265bde76e2480d', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (395, 123, '66b1b4cb37265bde76e2480e', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (396, 124, '66b1b4cb37265bde76e2480f', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (397, 125, '66b1b4cb37265bde76e24810', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (398, 126, '66b1b4cb37265bde76e24811', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (399, 127, '66b1b4cb37265bde76e24812', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (400, 128, '66b1b4cb37265bde76e24813', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (401, 129, '66b1b4cb37265bde76e24814', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (402, 130, '66b1b4cb37265bde76e24815', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (403, 131, '66b1b4cb37265bde76e24816', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (404, 132, '66b1b4cb37265bde76e24817', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (405, 133, '66b1b4cb37265bde76e24818', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (406, 134, '66b1b4cb37265bde76e24819', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (407, 135, '66b1b4cb37265bde76e2481a', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (408, 136, '66b1b4cb37265bde76e2481b', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (409, 137, '66b1b4cb37265bde76e2481c', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (410, 138, '66b1b4cb37265bde76e2481d', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (411, 139, '66b1b4cb37265bde76e2481e', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (412, 140, '66b1b4cb37265bde76e2481f', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (413, 141, '66b1b4cb37265bde76e24820', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (414, 142, '66b1b4cb37265bde76e24821', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (415, 143, '66b1b4cb37265bde76e24822', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (416, 144, '66b1b4cb37265bde76e24823', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (417, 145, '66b1b4cb37265bde76e24824', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (418, 146, '66b1b4cb37265bde76e24825', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (419, 147, '66b1b4cb37265bde76e24826', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (420, 148, '66b1b4cb37265bde76e24827', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (421, 150, '66b1b4cb37265bde76e24828', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (422, 151, '66b1b4cb37265bde76e24829', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (423, 152, '66b1b4cb37265bde76e2482a', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (424, 153, '66b1b4cb37265bde76e2482b', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (425, 154, '66b1b4cb37265bde76e2482c', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (426, 155, '66b1b4cb37265bde76e2482d', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (427, 156, '66b1b4cb37265bde76e2482e', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (428, 157, '66b1b4cb37265bde76e2482f', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (429, 158, '66b1b4cb37265bde76e24830', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (430, 159, '66b1b4cb37265bde76e24831', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (431, 160, '66b1b4cb37265bde76e24832', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (432, 161, '66b1b4cb37265bde76e24833', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (433, 162, '66b1b4cb37265bde76e24834', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (434, 163, '66b1b4cb37265bde76e24835', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (435, 164, '66b1b4cb37265bde76e24836', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (436, 165, '66b1b4cb37265bde76e24837', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (437, 166, '66b1b4cb37265bde76e24838', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (438, 167, '66b1b4cb37265bde76e24839', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (439, 168, '66b1b4cb37265bde76e2483a', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (440, 169, '66b1b4cb37265bde76e2483b', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (441, 170, '66b1b4cb37265bde76e2483c', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (442, 171, '66b1b4cb37265bde76e2483d', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (443, 172, '66b1b4cb37265bde76e2483e', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (444, 173, '66b1b4cb37265bde76e2483f', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (445, 174, '66b1b4cb37265bde76e24840', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (446, 175, '66b1b4cb37265bde76e24841', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (447, 176, '66b1b4cb37265bde76e24842', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (448, 177, '66b1b4cb37265bde76e24843', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (449, 178, '66b1b4cb37265bde76e24844', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (450, 179, '66b1b4cb37265bde76e24845', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (451, 180, '66b1b4cb37265bde76e24846', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (452, 181, '66b1b4cb37265bde76e24847', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (453, 182, '66b1b4cb37265bde76e24848', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (454, 183, '66b1b4cb37265bde76e24849', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (455, 184, '66b1b4cb37265bde76e2484a', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (456, 185, '66b1b4cb37265bde76e2484b', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (457, 186, '66b1b4cb37265bde76e2484c', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (458, 187, '66b1b4cb37265bde76e2484d', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (459, 188, '66b1b4cb37265bde76e2484e', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (460, 189, '66b1b4cb37265bde76e2484f', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (461, 190, '66b1b4cb37265bde76e24850', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (462, 191, '66b1b4cb37265bde76e24851', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (463, 192, '66b1b4cb37265bde76e24852', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (464, 193, '66b1b4cb37265bde76e24853', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (465, 194, '66b1b4cb37265bde76e24854', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (466, 195, '66b1b4cb37265bde76e24855', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (467, 196, '66b1b4cb37265bde76e24856', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (468, 197, '66b1b4cb37265bde76e24857', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (469, 198, '66b1b4cb37265bde76e24858', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (470, 199, '66b1b4cb37265bde76e24859', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (471, 200, '66b1b4cb37265bde76e2485a', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (472, 201, '66b1b4cb37265bde76e2485b', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (473, 202, '66b1b4cb37265bde76e2485c', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (474, 203, '66b1b4cb37265bde76e2485d', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (475, 204, '66b1b4cb37265bde76e2485e', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (476, 205, '66b1b4cb37265bde76e2485f', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (477, 206, '66b1b4cb37265bde76e24860', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (478, 207, '66b1b4cb37265bde76e24861', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (479, 208, '66b1b4cb37265bde76e24862', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (480, 209, '66b1b4cb37265bde76e24863', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (481, 210, '66b1b4cb37265bde76e24864', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (482, 211, '66b1b4cb37265bde76e24865', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (483, 212, '66b1b4cb37265bde76e24866', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (484, 213, '66b1b4cb37265bde76e24867', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (485, 214, '66b1b4cb37265bde76e24868', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (486, 215, '66b1b4cb37265bde76e24869', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (487, 216, '66b1b4cb37265bde76e2486a', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (488, 217, '66b1b4cb37265bde76e2486b', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (489, 218, '66b1b4cb37265bde76e2486c', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (490, 219, '66b1b4cb37265bde76e2486d', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (491, 220, '66b1b4cb37265bde76e2486e', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (492, 221, '66b1b4cb37265bde76e2486f', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (493, 222, '66b1b4cb37265bde76e24870', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (494, 223, '66b1b4cb37265bde76e24871', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (495, 224, '66b1b4cb37265bde76e24872', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (496, 225, '66b1b4cb37265bde76e24873', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (497, 226, '66b1b4cb37265bde76e24874', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (498, 227, '66b1b4cb37265bde76e24875', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (499, 228, '66b1b4cb37265bde76e24876', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (500, 229, '66b1b4cb37265bde76e24877', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (501, 230, '66b1b4cb37265bde76e24878', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (502, 231, '66b1b4cb37265bde76e24879', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (503, 232, '66b1b4cb37265bde76e2487a', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (504, 233, '66b1b4cb37265bde76e2487b', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (505, 234, '66b1b4cb37265bde76e2487c', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (506, 235, '66b1b4cb37265bde76e2487d', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (507, 236, '66b1b4cb37265bde76e2487e', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (508, 237, '66b1b4cb37265bde76e2487f', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (509, 238, '66b1b4cb37265bde76e24880', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (510, 239, '66b1b4cb37265bde76e24881', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (511, 240, '66b1b4cb37265bde76e24882', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (512, 241, '66b1b4cb37265bde76e24883', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (513, 242, '66b1b4cb37265bde76e24884', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (514, 243, '66b1b4cb37265bde76e24885', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (515, 244, '66b1b4cb37265bde76e24886', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (516, 245, '66b1b4cb37265bde76e24887', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (517, 246, '66b1b4cb37265bde76e24888', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (518, 247, '66b1b4cb37265bde76e24889', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (519, 248, '66b1b4cb37265bde76e2488a', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (520, 249, '66b1b4cb37265bde76e2488b', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (521, 250, '66b1b4cb37265bde76e2488c', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (522, 251, '66b1b4cb37265bde76e2488d', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (523, 252, '66b1b4cb37265bde76e2488e', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (524, 253, '66b1b4cb37265bde76e2488f', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (525, 254, '66b1b4cb37265bde76e24890', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (526, 255, '66b1b4cb37265bde76e24891', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (527, 256, '66b1b4cb37265bde76e24892', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (528, 257, '66b1b4cb37265bde76e24893', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (529, 258, '66b1b4cb37265bde76e24894', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (530, 259, '66b1b4cb37265bde76e24895', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (531, 260, '66b1b4cb37265bde76e24896', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (532, 261, '66b1b4cb37265bde76e24897', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (533, 262, '66b1b4cb37265bde76e24898', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (534, 263, '66b1b4cb37265bde76e24899', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (535, 264, '66b1b4cb37265bde76e2489a', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (536, 265, '66b1b4cb37265bde76e2489b', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (537, 266, '66b1b4cb37265bde76e2489c', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (538, 267, '66b1b4cb37265bde76e2489d', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (539, 268, '66b1b4cb37265bde76e2489e', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (540, 269, '66b1b4cb37265bde76e2489f', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (541, 270, '66b1b4cb37265bde76e248a0', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (542, 271, '66b1b4cb37265bde76e248a1', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (543, 272, '66b1b4cb37265bde76e248a2', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (544, 273, '66b1b4cb37265bde76e248a3', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (545, 274, '66b1b4cb37265bde76e248a4', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (546, 275, '66b1b4cb37265bde76e248a5', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (547, 276, '66b1b4cb37265bde76e248a6', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (548, 277, '66b1b4cb37265bde76e248a7', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (549, 278, '66b1b4cb37265bde76e248a8', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (550, 279, '66b1b4cb37265bde76e248a9', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (551, 280, '66b1b4cb37265bde76e248aa', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (552, 281, '66b1b4cb37265bde76e248ab', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (553, 282, '66b1b4cb37265bde76e248ac', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (554, 283, '66b1b4cb37265bde76e248ad', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (555, 284, '66b1b4cb37265bde76e248ae', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (556, 285, '66b1b4cb37265bde76e248af', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (557, 286, '66b1b4cb37265bde76e248b0', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (558, 287, '66b1b4cb37265bde76e248b1', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (559, 288, '66b1b4cb37265bde76e248b2', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (560, 289, '66b1b4cb37265bde76e248b3', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (561, 290, '66b1b4cb37265bde76e248b4', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (562, 291, '66b1b4cb37265bde76e248b5', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (563, 292, '66b1b4cb37265bde76e248b6', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (564, 293, '66b1b4cb37265bde76e248b7', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (565, 294, '66b1b4cb37265bde76e248b8', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (566, 295, '66b1b4cb37265bde76e248b9', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (567, 296, '66b1b4cb37265bde76e248ba', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (568, 297, '66b1b4cb37265bde76e248bb', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (569, 298, '66b1b4cb37265bde76e248bc', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (570, 299, '66b1b4cb37265bde76e248bd', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (571, 300, '66b1b4cb37265bde76e248be', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (572, 301, '66b1b4cb37265bde76e248bf', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (573, 302, '66b1b4cb37265bde76e248c0', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (574, 303, '66b1b4cb37265bde76e248c1', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (575, 304, '66b1b4cb37265bde76e248c2', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (576, 305, '66b1b4cb37265bde76e248c3', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (577, 306, '66b1b4cb37265bde76e248c4', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (578, 307, '66b1b4cb37265bde76e248c5', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (579, 308, '66b1b4cb37265bde76e248c6', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (580, 309, '66b1b4cb37265bde76e248c7', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (581, 310, '66b1b4cb37265bde76e248c8', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (582, 311, '66b1b4cb37265bde76e248c9', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (583, 312, '66b1b4cb37265bde76e248ca', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (584, 314, '66b1b4cb37265bde76e248cb', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (585, 315, '66b1b4cb37265bde76e248cc', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (586, 316, '66b1b4cb37265bde76e248cd', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (587, 317, '66b1b4cb37265bde76e248ce', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (588, 318, '66b1b4cb37265bde76e248cf', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (589, 319, '66b1b4cb37265bde76e248d0', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (590, 320, '66b1b4cb37265bde76e248d1', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (591, 321, '66b1b4cb37265bde76e248d2', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (592, 322, '66b1b4cb37265bde76e248d3', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (593, 323, '66b1b4cb37265bde76e248d4', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (594, 324, '66b1b4cb37265bde76e248d5', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (595, 325, '66b1b4cb37265bde76e248d6', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (596, 326, '66b1b4cb37265bde76e248d7', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (597, 327, '66b1b4cb37265bde76e248d8', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (598, 328, '66b1b4cb37265bde76e248d9', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (599, 329, '66b1b4cb37265bde76e248da', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (600, 330, '66b1b4cb37265bde76e248db', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (601, 331, '66b1b4cb37265bde76e248dc', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (602, 332, '66b1b4cb37265bde76e248dd', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (603, 333, '66b1b4cb37265bde76e248de', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (604, 334, '66b1b4cb37265bde76e248df', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (605, 335, '66b1b4cb37265bde76e248e0', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (606, 336, '66b1b4cb37265bde76e248e1', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (607, 337, '66b1b4cb37265bde76e248e2', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (608, 338, '66b1b4cb37265bde76e248e3', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (609, 339, '66b1b4cb37265bde76e248e4', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (610, 340, '66b1b4cb37265bde76e248e5', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (611, 341, '66b1b4cb37265bde76e248e6', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (612, 342, '66b1b4cb37265bde76e248e7', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (613, 343, '66b1b4cb37265bde76e248e8', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (614, 344, '66b1b4cb37265bde76e248e9', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (615, 345, '66b1b4cb37265bde76e248ea', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (616, 346, '66b1b4cb37265bde76e248eb', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (617, 347, '66b1b4cb37265bde76e248ec', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (618, 348, '66b1b4cb37265bde76e248ed', 1, 0, 0, 0);
+INSERT INTO `supplier` VALUES (619, 349, '66b1b4cb37265bde76e248ee', 2, 0, 0, 0);
+INSERT INTO `supplier` VALUES (620, 350, '66b1b4cb37265bde76e248ef', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (621, 351, '66b1b4cb37265bde76e248f0', 0, 0, 0, 0);
+INSERT INTO `supplier` VALUES (622, 352, '66b1b4cb37265bde76e248f1', 2, 0, 0, 0);
 
 SET FOREIGN_KEY_CHECKS = 1;

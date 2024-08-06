@@ -10,6 +10,11 @@ import lombok.ToString;
 // 通讯消息枚举
 public enum Message {
 
+    GET_TRACE_QR_SUCCESS("请求追溯二维码成功!"),
+    GET_ENTRANCE_SUCCESS("查询超市出场成功!"),
+    GET_APPROACH_SUCCESS("查询超市进场成功!"),
+    ENTRANCE_SUCCESS("超市出场导入成功!"),
+    APPROACH_SUCCESS("超市进场导入成功!"),
     PROCESS_APPROVE("已经审批!"),
     PROCESS_REJECT("审批被拒!"),
     EDIT_PRODUCT_SUCCESS("修改产品信息成功!"),
@@ -82,6 +87,7 @@ public enum Message {
     GET_CAPTCHA_SUCCESS("获取验证码成功!"),
     WRONG_CAPTCHA("验证码错误!"),
     ABSENT_USER("用户不存在!"),
+    GENERATE_QR("生成二维码"),
     WRONG_USERNAME_OR_PASSWORD("用户名或密码错误!"),
     ACCOUNT_DISABLE("该账号已被暂停使用，详情请联系管理员!"),
     ACCOUNT_DELETE("该账号已被删除，详情请联系管理员!"),

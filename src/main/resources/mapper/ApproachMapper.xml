@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.hrbu.trace_backend.mapper.ApproachMapper">
+
+    <resultMap id="approachResult" type="edu.hrbu.trace_backend.entity.po.Approach">
+        <id column="aid" property="aid"/>
+        <result column="enterprise_code" property="enterpriseCode"/>
+        <result column="enterprise_name" property="enterpriseName"/>
+        <result column="business_time" property="businessTime"/>
+        <result column="name" property="name"/>
+        <result column="code" property="code"/>
+        <result column="batch" property="batch"/>
+        <result column="num" property="num"/>
+        <result column="unit" property="unit"/>
+        <result column="trace" property="trace"/>
+        <result column="class_name" property="className"/>
+    </resultMap>
+
+    <select id="selectApproachInfoByCondition" resultMap="approachResult">
+        SELECT
+            approach.aid,
+            enterprise.social_code      AS enterprise_code,
+            enterprise.name             AS enterprise_name,
+            approach.business_time,
+            classification.name         AS class_name,
+            approach.code,
+            approach.batch,
+            approach.num,
+            approach.unit,
+            approach.name,
+            approach.trace
+        FROM approach
+        JOIN classification On classification.cid = approach.cid
+        JOIN enterprise ON enterprise.eid = approach.eid
+        JOIN supplier ON supplier.eid = approach.sid
+        <where>
+            1 = 1
+            <if test="condition.name != null and condition.name != ''">
+                AND approach.name LIKE CONCAT('%',#{condition.name},'%') OR approach.code LIKE CONCAT('%',#{condition.name},'%')
+            </if>
+            <if test="condition.batch != null and condition.batch != ''">
+                AND approach.batch LIKE CONCAT('%',#{condition.batch},'%')
+            </if>
+            <if test="condition.trace != null and condition.trace != ''">
+                AND approach.trace LIKE CONCAT('%',#{condition.trace},'%')
+            </if>
+        </where>
+    </select>
+
+</mapper>

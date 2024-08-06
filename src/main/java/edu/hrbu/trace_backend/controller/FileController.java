@@ -50,4 +50,24 @@ public class FileController {
         return fileService.requestProductAddByExcel(excel[0]);
     }
 
+    @PostMapping("/upload/approach")
+    @ApiOperation(
+            value = "超市进场表格导入接口",
+            notes = "超市进场表格导入接口，需要登录验证" +
+                    "上传超市进场备案表格，校验表格是否合法"
+    )
+    public Result addApproachByExcel(@RequestBody MultipartFile[] excel){
+        return fileService.requestApproachByExcel(excel[0]);
+    }
+
+    @PostMapping("/upload/entrance")
+    @ApiOperation(
+            value = "超市出场表格导入接口",
+            notes = "超市出场表格导入接口，需要登录验证" +
+                    "上传超市出场备案表格，校验表格是否合法"
+    )
+    public Result addEntranceByExcel(@RequestBody MultipartFile[] excel){
+        return fileService.requestEntranceByExcel(excel[0]);
+    }
+
 }
