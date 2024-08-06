@@ -12,6 +12,8 @@ import java.util.Map;
 @Mapper
 public interface ProductRecordMapper extends BaseMapper<ProductRecord> {
 
-    IPage<Product> selectProductRecordProcessByCondition(IPage<Product> page,@Param("condition") Map<String,Object> condition);
+    IPage<Product> selectProductRecordProcessByCondition(IPage<Product> page, @Param("condition") Map<String, Object> condition);
+
+    int selectProductRecordByCondition(@Param("productName") String name, @Param("productCode") String code);
 
 }

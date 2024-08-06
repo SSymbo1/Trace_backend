@@ -6,4 +6,8 @@ public interface ExcelCheckService {
 
     void requestProductExcelCheck(JoinPoint joinPoint);
 
+    void requestApproachExcelCheck(JoinPoint joinPoint);
+
+    void requestEntranceExcelCheck(JoinPoint joinPoint);
+
 }

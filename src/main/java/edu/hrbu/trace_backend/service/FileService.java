@@ -11,4 +11,8 @@ public interface FileService {
 
     Result requestProductAddByExcel(MultipartFile file);
 
+    Result requestApproachByExcel(MultipartFile file);
+
+    Result requestEntranceByExcel(MultipartFile file);
+
 }

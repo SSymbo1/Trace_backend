@@ -12,6 +12,7 @@ import lombok.experimental.Accessors;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+//  产品备案excel
 public class ProductRecord {
 
     @ColumnWidth(10)

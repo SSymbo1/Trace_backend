@@ -67,4 +67,16 @@
             ORDER BY product_record.insert_time DESC
         </where>
     </select>
+
+    <select id="selectProductRecordByCondition" resultType="int">
+        SELECT
+            COUNT(product.pid)
+        FROM
+            product
+        JOIN product_record ON product.pid = product_record.pid
+        WHERE
+            product_record.statue = 1
+            AND product.name = #{productName} AND product.code = #{productCode}
+    </select>
+
 </mapper>
