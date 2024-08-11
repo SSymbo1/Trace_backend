@@ -132,5 +132,4 @@ public class OperateRecordAspect {
         roleOperateService.requestRecordDisableAllRole(joinPoint);
     }
 
-
 }

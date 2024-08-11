@@ -4,7 +4,9 @@ import cn.hutool.captcha.CaptchaUtil;
 import cn.hutool.captcha.CircleCaptcha;
 import cn.hutool.captcha.ShearCaptcha;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import edu.hrbu.trace_backend.entity.OnlineContext;
 import edu.hrbu.trace_backend.entity.Result;
+import edu.hrbu.trace_backend.entity.dto.RePassword;
 import edu.hrbu.trace_backend.entity.po.Account;
 import edu.hrbu.trace_backend.entity.enums.Captcha;
 import edu.hrbu.trace_backend.entity.enums.Condition;
@@ -54,6 +56,23 @@ public class WelcomeServiceImpl implements WelcomeService {
         return Result
                 .ok(Message.LOGIN_SUCCESS.getValue() + userStatue.getUsername())
                 .data("token", JwtUtil.createJWT(String.valueOf(userStatue.getAid())));
+    }
+
+    @Override
+    public Result rePassword(RePassword rePassword) {
+        Integer currentAccountId = Integer.valueOf(JwtUtil.parseJWT(OnlineContext.getCurrent()).getSubject());
+        if (!rePassword.getVerify().equalsIgnoreCase(rePassword.getCaptcha())) {
+            return Result.fail(Message.WRONG_CAPTCHA.getValue());
+        }
+        long currentTimeStamp = System.currentTimeMillis();
+        if (currentTimeStamp - rePassword.getTimestamp() > 60000) {
+            return Result.fail(Message.TIMESTAMP_TIMEOUT.getValue());
+        }
+        Account account = Account.builder()
+                .aid(currentAccountId)
+                .password(AesUtil.encryptHex(rePassword.getPassword())).build();
+        accountMapper.updateById(account);
+        return Result.ok(Message.RE_PASSWORD_SUCCESS.getValue());
     }
 
     @Override

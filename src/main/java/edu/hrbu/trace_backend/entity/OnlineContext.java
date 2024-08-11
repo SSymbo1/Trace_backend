@@ -1,7 +1,7 @@
 package edu.hrbu.trace_backend.entity;
 
 public class OnlineContext {
-    public static ThreadLocal<String> threadLocal = new ThreadLocal<>();
+    private static ThreadLocal<String> threadLocal = new ThreadLocal<>();
 
     public static void setCurrent(String parse) {
         threadLocal.set(parse);

@@ -1,6 +1,7 @@
 package edu.hrbu.trace_backend.controller;
 
 import edu.hrbu.trace_backend.entity.Result;
+import edu.hrbu.trace_backend.entity.dto.RePassword;
 import edu.hrbu.trace_backend.entity.dto.Welcome;
 import edu.hrbu.trace_backend.service.WelcomeService;
 import io.swagger.annotations.Api;
@@ -26,8 +27,18 @@ public class WelcomeController {
             notes = "用户登录接口，请求这个接口时需要携带用户名，" +
                     "密码，验证码，登录成功返回token，失败返回错误信息"
     )
-    private Result login(@RequestBody Welcome welcome) {
+    public Result login(@RequestBody Welcome welcome) {
         return welcomeService.login(welcome);
+    }
+
+    @PostMapping("/password")
+    @ApiOperation(
+            value = "用户修改密码接口",
+            notes = "用户修改密码接口，调用这个接口时将会记录日志，" +
+                    "需要提供修改后的密码"
+    )
+    public Result rePassword(@RequestBody RePassword rePassword){
+        return welcomeService.rePassword(rePassword);
     }
 
     @GetMapping("/captcha")
@@ -35,7 +46,7 @@ public class WelcomeController {
             value = "图片验证码请求接口",
             notes = "图片验证码请求接口，请求接口时返回图片验证码的base64编码和验证码的值"
     )
-    private Result getPictureCaptcha() {
+    public Result getPictureCaptcha() {
         return welcomeService.pictureCaptcha();
     }
 }

@@ -7,6 +7,7 @@ import edu.hrbu.trace_backend.service.SegmentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,7 +41,7 @@ public class SegmentController {
             notes = "查询超市出场分页数据接口，需要登录验证," +
                     "除了分页参数外，不携带条件时全查询，携带条件则进行条件查询"
     )
-    public Result getEntranceInfoPaged(EntranceQuery query) {
+    public Result getEntranceInfoPaged(@Validated EntranceQuery query) {
         return segmentService.requestEntranceInfoPaged(query);
     }
 
@@ -50,7 +51,7 @@ public class SegmentController {
             notes = "查询超市进场分页数据接口，需要登录验证," +
                     "除了分页参数外，不携带条件时全查询，携带条件则进行条件查询"
     )
-    public Result getApproachInfoPaged(ApproachQuery query) {
+    public Result getApproachInfoPaged(@Validated ApproachQuery query) {
         return segmentService.requestApproachInfoPaged(query);
     }
 

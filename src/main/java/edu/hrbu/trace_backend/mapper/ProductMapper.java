@@ -10,7 +10,9 @@ import java.util.Map;
 
 @Mapper
 public interface ProductMapper extends BaseMapper<Product> {
+
     IPage<Product> selectProductByCondition(IPage<Product> page, @Param("condition") Map<String, Object> condition);
+
 }
 
 

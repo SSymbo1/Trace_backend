@@ -13,6 +13,7 @@ public enum Statue {
     SUCCESS(200),
     FAIL(500),
     TABLE_WRONG(410),
+    WRONG_ARGUMENT(405),
     WRONG_AES(403),
     WRONG_TOKEN(402),
     EXPIRE_TOKEN(401);
