@@ -1,4 +1,4 @@
-package edu.hrbu.trace_backend.entity.dto.system;
+package edu.hrbu.trace_backend.entity.dto.monitor;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,16 +13,11 @@ import javax.validation.constraints.NotNull;
 @Accessors(chain = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class EnterpriseQuery {
+public class SummaryQuery {
     @NotNull(message = "当前页码不能为空")
     private Integer currentPage;
     @NotNull(message = "分页大小不能为空")
     private Integer pageSize;
-    private String name;
-    private String legalPerson;
-    private String tel;
-    private String socialCode;
-    private String address;
-    private String zipCode;
-    private Integer del;
+    private String before;
+    private String now;
 }

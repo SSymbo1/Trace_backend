@@ -27,7 +27,10 @@ public class JwtTokenInterceptorConfig implements WebMvcConfigurer {
                 .addPathPatterns("/menue/**/**/**")
                 .addPathPatterns("/common/**/**/**")
                 .addPathPatterns("/system/**/**/**")
-                .excludePathPatterns("/welcome/**/**/**");
+                .excludePathPatterns("/welcome/**/**/**")
+                .excludePathPatterns("/wechat/**/**/**")
+                .excludePathPatterns("/avatar/**")
+                .excludePathPatterns("/goods/**");
     }
 
 }

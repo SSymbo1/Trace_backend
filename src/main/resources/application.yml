@@ -30,3 +30,7 @@ logging:
 resources:
   avatar: http://localhost:11451/avatar/
   goods: http://localhost:11451/goods/
+
+#resources:
+#  avatar: http://localhost:11451/avatar/
+#  goods: http://localhost:11451/goods/

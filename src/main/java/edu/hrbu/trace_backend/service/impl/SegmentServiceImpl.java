@@ -1,6 +1,5 @@
 package edu.hrbu.trace_backend.service.impl;
 
-import cn.hutool.core.img.ImgUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import edu.hrbu.trace_backend.entity.Result;

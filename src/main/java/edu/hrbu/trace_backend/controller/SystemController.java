@@ -6,6 +6,7 @@ import edu.hrbu.trace_backend.service.SystemService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -26,7 +27,7 @@ public class SystemController {
             notes = "查询分页用户信息接口，需要登录验证，" +
                     "除了分页参数外，不携带条件时全查询，携带条件则进行条件查询"
     )
-    public Result getAccountInfoPaged(UserQuery query) {
+    public Result getAccountInfoPaged(@Validated UserQuery query) {
         return systemService.requestAccountInfoPaged(query);
     }
 
@@ -86,7 +87,7 @@ public class SystemController {
             notes = "查询分页企业信息接口，需要登录验证，" +
                     "除了分页参数外，不携带条件时全查询，携带条件则进行条件查询"
     )
-    public Result getEnterpriseInfoPaged(EnterpriseQuery query) {
+    public Result getEnterpriseInfoPaged(@Validated EnterpriseQuery query) {
         return systemService.requestEnterpriseInfoPaged(query);
     }
 
@@ -116,7 +117,7 @@ public class SystemController {
             notes = "查询分页角色信息接口，需要登录验证，" +
                     "除了分页参数外，不携带条件时全查询，携带条件则进行条件查询"
     )
-    public Result getRoleInfoPaged(RoleQuery query) {
+    public Result getRoleInfoPaged(@Validated RoleQuery query) {
         return systemService.requestRoleInfoPaged(query);
     }
 

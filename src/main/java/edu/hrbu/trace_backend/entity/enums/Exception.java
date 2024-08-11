@@ -10,6 +10,7 @@ import lombok.ToString;
 //  异常信息枚举
 public enum Exception {
 
+    COMPARE_EXCEPTION("比较器异常，在比较两个Map时出现错误!"),
     EXCEL_BUYER_TYPE_ERROR("买方类型错误，应为'个人'或'组织'!"),
     EXCEL_PRODUCT_NO_PROCESS("商品未在系统中备案或未通过审批,无法导入!"),
     EXCEL_NAME_TOO_LONG("名称过长，请控制在25个字符以内!"),
