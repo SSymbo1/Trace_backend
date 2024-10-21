@@ -88,4 +88,12 @@
             ) AS entrance
     </select>
 
+    <select id="selectTraceDataCount" resultType="java.lang.Integer">
+        SELECT
+            (SELECT COUNT(*) FROM product_record) +
+            (SELECT COUNT(*) FROM product) +
+            (SELECT COUNT(*) FROM approach) +
+            (SELECT COUNT(*) FROM entrance)
+    </select>
+
 </mapper>

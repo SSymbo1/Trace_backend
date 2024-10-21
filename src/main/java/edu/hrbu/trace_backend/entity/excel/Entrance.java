@@ -38,24 +38,24 @@ public class Entrance {
     @ExcelProperty(value = "批次号", index = 5)
     private String batch;
 
+    @ColumnWidth(25)
+    @ExcelProperty(value = "追溯码", index = 6)
+    private String traceCode;
+
     @ColumnWidth(10)
-    @ExcelProperty(value = "数量", index = 6)
+    @ExcelProperty(value = "数量", index = 7)
     private Integer num;
 
     @ColumnWidth(10)
-    @ExcelProperty(value = "单位", index = 7)
+    @ExcelProperty(value = "单位", index = 8)
     private String unit;
 
     @ColumnWidth(15)
-    @ExcelProperty(value = "产品分类", index = 8)
+    @ExcelProperty(value = "产品分类", index = 9)
     private String className;
 
     @ColumnWidth(15)
-    @ExcelProperty(value = "买方类型", index = 9)
+    @ExcelProperty(value = "买方类型", index = 10)
     private String buyerType;
-
-    @ColumnWidth(25)
-    @ExcelProperty(value = "供应商名称", index = 10)
-    private String supplier;
 
 }

@@ -13,6 +13,7 @@ spring:
     restart:
       enabled: true
       additional-paths: src/main/
+
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher

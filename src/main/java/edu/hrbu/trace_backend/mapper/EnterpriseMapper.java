@@ -16,4 +16,8 @@ public interface EnterpriseMapper extends BaseMapper<Enterprise> {
 
     IPage<Enterprise> selectEnterpriseByCondition(IPage<Enterprise> page, @Param("condition") Map<String, Object> condition);
 
+    Integer selectEnterpriseCount();
+
+    Integer updateRandomEnterpriseAddress(int eid);
+
 }

@@ -4,4 +4,15 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="edu.hrbu.trace_backend.mapper.AccountMapper">
 
+    <select id="selectAccountCount" resultType="java.lang.Integer">
+        SELECT
+            COUNT(*)
+        FROM
+            account
+        WHERE
+            rid != 1
+            AND del = 0
+            AND ban = 0
+    </select>
+
 </mapper>

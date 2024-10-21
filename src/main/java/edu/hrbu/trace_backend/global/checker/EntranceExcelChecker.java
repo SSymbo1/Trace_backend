@@ -28,7 +28,7 @@ public class EntranceExcelChecker extends AnalysisEventListener<Entrance> {
     private final EnterpriseMapper enterpriseMapper = SpringUtil.getBean(EnterpriseMapper.class);
 
     private final List<String> TABLE_STRUCT = new ArrayList<>(Arrays.asList(
-            "编号", "经营商户代码", "经营商户名称", "产品代码", "产品名称", "批次号", "数量", "单位", "产品分类", "买方类型", "供应商名称"
+            "编号", "经营商户代码", "经营商户名称", "产品代码", "产品名称", "批次号", "追溯码", "数量", "单位", "产品分类", "买方类型"
     ));
     private int dataLine = 0;
 
@@ -44,25 +44,22 @@ public class EntranceExcelChecker extends AnalysisEventListener<Entrance> {
                 entrance.getNum(),
                 entrance.getUnit(),
                 entrance.getClassName(),
-                entrance.getBuyerType(),
-                entrance.getSupplier()
+                entrance.getBuyerType()
         ).anyMatch(Objects::isNull)) {
             log.error("第{}行数据存在空值", dataLine);
             throw new ExcelNullException(Exception.EXCEL_LINE_NULL.getValue());
         }
-        QueryWrapper<Classification> classificationQueryWrapper = new QueryWrapper<>();
-        QueryWrapper<Enterprise> enterpriseQueryWrapper = new QueryWrapper<>();
-        QueryWrapper<Enterprise> supplierQueryWrapper = new QueryWrapper<>();
-        classificationQueryWrapper.eq("name", entrance.getClassName());
-        enterpriseQueryWrapper
-                .eq("name", entrance.getBusinessName())
-                .and(eid -> eid.eq("social_code", entrance.getBusinessCode()));
-        supplierQueryWrapper.eq("name", entrance.getSupplier());
-        if (enterpriseMapper.selectList(enterpriseQueryWrapper).isEmpty()) {
+        if (enterpriseMapper.selectList(
+                new QueryWrapper<Enterprise>()
+                        .eq("name", entrance.getBusinessName())
+                        .and(eid -> eid.eq("social_code", entrance.getBusinessCode()))
+        ).isEmpty()) {
             log.error("企业未在系统注册，无法导入!");
             throw new ExcelTypeException(Exception.EXCEL_ENTERPRISE_REGISTERED.getValue());
         }
-        if (classificationMapper.selectList(classificationQueryWrapper).isEmpty()) {
+        if (classificationMapper.selectList(
+                new QueryWrapper<Classification>().eq("name", entrance.getClassName())
+        ).isEmpty()) {
             log.error("产品分类未在系统注册，无法导入!");
             throw new ExcelTypeException(Exception.EXCEL_CLASS.getValue());
         }
@@ -70,13 +67,17 @@ public class EntranceExcelChecker extends AnalysisEventListener<Entrance> {
             log.error("商品未在系统备案，无法导入!");
             throw new ExcelTypeException(Exception.EXCEL_PRODUCT_NO_PROCESS.getValue());
         }
-        if (enterpriseMapper.selectList(supplierQueryWrapper).isEmpty()) {
-            log.error("供销商未在系统注册，无法导入!");
-            throw new ExcelTypeException(Exception.EXCEL_ENTERPRISE_REGISTERED.getValue());
-        }
         if (!entrance.getBuyerType().equals("个人") && !entrance.getBuyerType().equals("组织")) {
             log.info("买方类型错误!");
             throw new ExcelTypeException(Exception.EXCEL_BUYER_TYPE_ERROR.getValue());
+        }
+        if (
+                (entrance.getTraceCode() == null || entrance.getTraceCode().isEmpty()) &&
+                        (productRecordMapper.selectExistProductRecordByCondition(
+                                entrance.getBusinessCode(), entrance.getCode(), entrance.getName()) == 0)
+        ) {
+            log.error("非产品生产商且未填写追溯码，无法导入!");
+            throw new ExcelTypeException(Exception.EXCEL_TRACE_ERROR.getValue());
         }
         dataLine++;
     }

@@ -31,7 +31,6 @@ public class Entrance {
     private String trace;
     private Integer buyerType;
     private Integer cid;
-    private Integer sid;
     @TableField(exist = false)
     private String enterpriseName;
     @TableField(exist = false)

@@ -62,16 +62,16 @@ public class AppletServiceImpl implements AppletService {
             Map<String, Object> data = new HashMap<>();
             data.put("time", entrance.getBusinessTime());
             data.put("enterprise", enterpriseMapper.selectOne(
-                    new QueryWrapper<Enterprise>().eq("eid", entrance.getSid())).getName()
-            );
+                    new QueryWrapper<Enterprise>().eq("eid", entrance.getBid())
+            ).getName());
             traceData.add(data);
         });
         approaches.forEach(approach -> {
             Map<String, Object> data = new HashMap<>();
             data.put("time", approach.getBusinessTime());
             data.put("enterprise", enterpriseMapper.selectOne(
-                    new QueryWrapper<Enterprise>().eq("eid", approach.getSid())).getName()
-            );
+                    new QueryWrapper<Enterprise>().eq("eid", approach.getEid())
+            ).getName());
             traceData.add(data);
         });
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -88,7 +88,7 @@ public class AppletServiceImpl implements AppletService {
         });
         TraceProduct traceProduct = TraceProduct.builder()
                 .trace(traceCode)
-                .batch(approaches.get(0).getBatch())
+                .batch(entrances.get(0).getBatch())
                 .product(product)
                 .traceData(traceData).build();
         return Result

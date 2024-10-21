@@ -21,26 +21,27 @@
 
     <select id="selectEntranceInfoByCondition" resultMap="entranceResult">
         SELECT
-            entrance.eid,
-            enterprise.social_code      AS enterprise_code,
-            entrance.business_time,
-            entrance.name,
-            entrance.code,
-            entrance.batch,
-            entrance.num,
-            entrance.unit,
-            entrance.trace,
-            entrance.buyer_type,
-            classification.name         AS class_name,
-            enterprise.name             AS enterprise_name,
-            entrance.buyer_type
+        entrance.eid,
+        enterprise.social_code AS enterprise_code,
+        entrance.business_time,
+        entrance.name,
+        entrance.code,
+        entrance.batch,
+        entrance.num,
+        entrance.unit,
+        entrance.trace,
+        entrance.buyer_type,
+        classification.name AS class_name,
+        enterprise.name AS enterprise_name,
+        entrance.buyer_type
         FROM entrance
         JOIN classification On classification.cid = entrance.cid
         JOIN enterprise ON enterprise.eid = entrance.bid
         <where>
             1 = 1
             <if test="condition.name != null and condition.name != ''">
-                AND entrance.name LIKE CONCAT('%',#{condition.name},'%') OR entrance.code LIKE CONCAT('%',#{condition.name},'%')
+                AND entrance.name LIKE CONCAT('%',#{condition.name},'%') OR entrance.code LIKE
+                CONCAT('%',#{condition.name},'%')
             </if>
             <if test="condition.batch != null and condition.batch != ''">
                 AND entrance.batch LIKE CONCAT('%',#{condition.batch},'%')
@@ -52,6 +53,177 @@
                 AND entrance.buyer_type = #{condition.buyerType}
             </if>
         </where>
+    </select>
+
+    <select id="selectTraceDataExistByCondition" resultType="java.lang.Integer">
+        SELECT COUNT(entrance.eid)
+        FROM entrance
+        WHERE name = #{name}
+          AND code = #{code}
+          AND trace = #{trace}
+    </select>
+
+    <select id="selectEntranceInfoByYearBetween" resultType="edu.hrbu.trace_backend.entity.po.Entrance">
+        SELECT *
+        FROM entrance
+        WHERE STR_TO_DATE(entrance.business_time, '%Y-%m-%d') BETWEEN #{start} AND #{end}
+    </select>
+
+    <select id="selectAnalysisClassCountByYearBetween" resultType="edu.hrbu.trace_backend.entity.po.EntranceClassCount">
+        SELECT STR_TO_DATE(entrance.business_time, '%Y-%m-%d') AS date,
+               SUM(IF(classification.parent = 1, 1, 0))        AS fresh,
+               SUM(IF(classification.parent = 2, 1, 0))        AS product,
+               SUM(IF(classification.parent = 3, 1, 0))        AS drink,
+               SUM(IF(classification.parent = 4, 1, 0))        AS food
+        FROM entrance
+                 JOIN classification ON entrance.cid = classification.cid
+                 JOIN enterprise ON entrance.bid = enterprise.eid
+        WHERE STR_TO_DATE(entrance.business_time, '%Y-%m-%d') BETWEEN #{start}
+            AND #{end}
+          AND enterprise.type = #{type}
+        GROUP BY date
+        ORDER BY date
+    </select>
+
+    <select id="selectAnalysisEntranceCountByYearBetween" resultType="edu.hrbu.trace_backend.entity.po.EntranceCount">
+        WITH daily_counts AS (SELECT STR_TO_DATE(entrance.business_time, '%Y-%m-%d') AS date,
+                                     COUNT(trace)                                    AS total
+                              FROM entrance
+                                       JOIN enterprise ON entrance.bid = enterprise.eid
+                              WHERE STR_TO_DATE(entrance.business_time, '%Y-%m-%d') BETWEEN #{start} AND #{end}
+                                AND enterprise.type = #{type}
+                              GROUP BY date),
+             daily_with_lag AS (SELECT date,
+                                       total,
+                                       LAG(total) OVER (ORDER BY date) AS previous_day_count
+                                FROM daily_counts)
+        SELECT date,
+               total,
+               IF(previous_day_count IS NULL, total, (total - previous_day_count) / previous_day_count * 100) AS qoq
+        FROM daily_with_lag
+        ORDER BY date
+    </select>
+
+    <select id="selectAnalysisEntranceMonthCountByYearBetween"
+            resultType="edu.hrbu.trace_backend.entity.po.EntranceCount">
+        WITH monthly_data AS (SELECT DATE_FORMAT(entrance.business_time, '%Y-%m') AS MONTH,
+                                     COUNT(*)                                     AS count
+                              FROM entrance
+                                       JOIN enterprise ON entrance.bid = enterprise.eid
+                              WHERE entrance.business_time >= #{start}
+                                AND entrance.business_time
+                                  &lt;
+                                    #{end}
+                                AND enterprise.type = #{type}
+                              GROUP BY MONTH),
+             last_year_data AS (SELECT DATE_FORMAT(entrance.business_time, '%Y-%m') AS MONTH,
+                                       COUNT(*)                                     AS count
+                                FROM entrance
+                                         JOIN enterprise ON entrance.bid = enterprise.eid
+                                WHERE entrance.business_time >= DATE_SUB(#{start}, INTERVAL 1 YEAR)
+                                  AND entrance.business_time &lt; DATE_SUB(#{end}, INTERVAL 1 YEAR)
+                                  AND enterprise.type = #{type}
+                                GROUP BY MONTH),
+             last_month_data AS (SELECT DATE_FORMAT(entrance.business_time, '%Y-%m') AS MONTH,
+                                        COUNT(*)                                     AS count
+                                 FROM entrance
+                                          JOIN enterprise ON entrance.bid = enterprise.eid
+                                 WHERE entrance.business_time >= DATE_SUB(#{start}, INTERVAL 1 MONTH)
+                                   AND entrance.business_time &lt; DATE_SUB(#{end}, INTERVAL 1 MONTH)
+                                   AND enterprise.type = #{type}
+                                 GROUP BY MONTH)
+        SELECT md.MONTH                                                           AS date,
+               md.count                                                           AS total,
+               IF(COALESCE(ly.count, 0) = 0, md.count, (md.count / ly.count) - 1) AS yoy,
+               IF(COALESCE(lm.count, 0) = 0, md.count, (md.count / lm.count) - 1) AS qoq
+        FROM monthly_data md
+                 LEFT JOIN last_year_data ly ON ly.MONTH = DATE_FORMAT(DATE_SUB(md.MONTH, INTERVAL 1 YEAR), '%Y-%m')
+                 LEFT JOIN last_month_data lm ON lm.MONTH = DATE_FORMAT(DATE_SUB(md.MONTH, INTERVAL 1 MONTH), '%Y-%m')
+        WHERE md.MONTH BETWEEN DATE_FORMAT(#{start}, '%Y-%m')
+                  AND DATE_FORMAT(#{end}, '%Y-%m')
+        ORDER BY md.MONTH
+    </select>
+
+    <select id="selectAnalysisClassCountMonthByYearBetween"
+            resultType="edu.hrbu.trace_backend.entity.po.EntranceClassCount">
+        SELECT DATE_FORMAT(STR_TO_DATE(entrance.business_time, '%Y-%m-%d'), '%Y-%m') AS date,
+               SUM(
+                       IF
+                       (classification.parent = 1, 1, 0))                            AS fresh,
+               SUM(
+                       IF
+                       (classification.parent = 2, 1, 0))                            AS product,
+               SUM(
+                       IF
+                       (classification.parent = 3, 1, 0))                            AS drink,
+               SUM(
+                       IF
+                       (classification.parent = 4, 1, 0))                            AS food
+        FROM entrance
+                 JOIN classification ON entrance.cid = classification.cid
+                 JOIN enterprise On entrance.bid = enterprise.eid
+        WHERE STR_TO_DATE(entrance.business_time, '%Y-%m-%d') BETWEEN #{start}
+            AND #{end}
+          AND enterprise.type = #{type}
+        GROUP BY date
+        ORDER BY date
+    </select>
+
+    <select id="selectAnalysisEntranceInfoMonthByYearBetween" resultType="edu.hrbu.trace_backend.entity.po.Entrance">
+        SELECT entrance.eid,
+               bid,
+               business_time,
+               entrance.name,
+               code,
+               batch,
+               num,
+               unit,
+               trace,
+               buyer_type,
+               cid
+        FROM entrance
+                 JOIN enterprise ON entrance.bid = enterprise.eid
+        WHERE entrance.business_time LIKE CONCAT(#{time}, '%')
+          AND enterprise.type = #{type}
+    </select>
+
+    <select id="selectAnalysisEntranceInfoByYearBetween"
+            resultType="edu.hrbu.trace_backend.entity.po.Entrance">
+        SELECT entrance.eid,
+               bid,
+               business_time,
+               entrance.name,
+               code,
+               batch,
+               num,
+               unit,
+               trace,
+               buyer_type,
+               cid
+        FROM entrance
+                 JOIN enterprise ON entrance.bid = enterprise.eid
+        WHERE STR_TO_DATE(entrance.business_time, '%Y-%m-%d') BETWEEN #{start} AND #{end}
+          AND enterprise.type = #{type}
+    </select>
+
+    <select id="selectBatchEntranceCountByYearBetween"
+            resultType="edu.hrbu.trace_backend.entity.po.EntranceCount">
+        WITH daily_counts AS (SELECT STR_TO_DATE(entrance.business_time, '%Y-%m-%d') AS date,
+                                     COUNT(trace)                                    AS total
+                              FROM entrance
+                                       JOIN enterprise ON entrance.bid = enterprise.eid
+                              WHERE STR_TO_DATE(entrance.business_time, '%Y-%m-%d') BETWEEN #{start} AND #{end}
+                                AND enterprise.type = 5
+                              GROUP BY date),
+             daily_with_lag AS (SELECT date,
+                                       total,
+                                       LAG(total) OVER (ORDER BY date) AS previous_day_count
+                                FROM daily_counts)
+        SELECT date,
+               total,
+               IF(previous_day_count IS NULL, total, (total - previous_day_count) / previous_day_count * 100) AS qoq
+        FROM daily_with_lag
+        ORDER BY date
     </select>
 
 </mapper>

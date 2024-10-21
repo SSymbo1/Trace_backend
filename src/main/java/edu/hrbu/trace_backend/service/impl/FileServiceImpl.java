@@ -105,81 +105,85 @@ public class FileServiceImpl implements FileService {
     @Override
     @SneakyThrows
     public Result requestApproachByExcel(MultipartFile file) {
-        DateTime localTime = new DateTime(DateTime.now());
-        List<edu.hrbu.trace_backend.entity.excel.Approach> excelData = ExcelUtil.importExcel(
+        List<edu.hrbu.trace_backend.entity.excel.Approach> approaches = ExcelUtil.importExcel(
                 file.getInputStream(),
                 edu.hrbu.trace_backend.entity.excel.Approach.class
         );
-        excelData.forEach(data -> {
-            Enterprise business = enterpriseMapper.selectOne(
-                    new QueryWrapper<Enterprise>().eq("name", data.getBusinessName())
-            );
-            Enterprise supplier = enterpriseMapper.selectOne(
-                    new QueryWrapper<Enterprise>().eq("name", data.getSupplier())
-            );
-            Classification classification = classificationMapper.selectOne(
-                    new QueryWrapper<Classification>().eq("name", data.getClassName())
-            );
-            Entrance exist = entranceMapper.selectOne(
-                    new QueryWrapper<Entrance>()
-                            .eq("sid", supplier.getEid())
-                            .and(name -> name.eq("name", data.getName()))
-                            .and(code -> code.eq("code", data.getCode()))
-            );
+        for (edu.hrbu.trace_backend.entity.excel.Approach approach : approaches) {
+            DateTime operateTime = new DateTime(DateTime.now());
             Approach insertApproach = Approach.builder()
-                    .eid(business.getEid())
-                    .name(data.getName())
-                    .code(data.getCode())
-                    .batch(data.getBatch())
-                    .num(data.getNum())
-                    .unit(data.getUnit())
-                    .trace(exist != null ? exist.getTrace() : "trace-" + ObjectId.next())
-                    .cid(classification.getCid())
-                    .sid(supplier.getEid())
-                    .businessTime(localTime.toString("yyyy-MM-dd HH:mm:ss")).build();
+                    .eid(enterpriseMapper.selectOne(
+                            new QueryWrapper<Enterprise>()
+                                    .eq("name", approach.getBusinessName())
+                                    .and(code -> code.eq("social_code", approach.getBusinessCode()))).getEid()
+                    )
+                    .name(approach.getName())
+                    .code(approach.getCode())
+                    .num(approach.getNum())
+                    .unit(approach.getUnit())
+                    .batch(approach.getBatch())
+                    .trace(approach.getTraceCode())
+                    .cid(classificationMapper.selectOne(
+                            new QueryWrapper<Classification>()
+                                    .eq("name", approach.getClassName())
+                    ).getCid())
+                    .businessTime(operateTime.toString("yyyy-MM-dd HH:mm:ss")).build();
             approachMapper.insert(insertApproach);
-        });
+        }
         return Result.ok(Message.APPROACH_SUCCESS.getValue());
     }
 
     @Override
     @SneakyThrows
     public Result requestEntranceByExcel(MultipartFile file) {
-        DateTime localTime = new DateTime(DateTime.now());
-        List<edu.hrbu.trace_backend.entity.excel.Entrance> excelData = ExcelUtil.importExcel(
+        List<edu.hrbu.trace_backend.entity.excel.Entrance> entrances = ExcelUtil.importExcel(
                 file.getInputStream(),
                 edu.hrbu.trace_backend.entity.excel.Entrance.class
         );
-        excelData.forEach(data -> {
-            Enterprise business = enterpriseMapper.selectOne(
-                    new QueryWrapper<Enterprise>().eq("name", data.getBusinessName())
-            );
-            Enterprise supplier = enterpriseMapper.selectOne(
-                    new QueryWrapper<Enterprise>().eq("name", data.getSupplier())
-            );
-            Classification classification = classificationMapper.selectOne(
-                    new QueryWrapper<Classification>().eq("name", data.getClassName())
-            );
-            Approach exist = approachMapper.selectOne(
-                    new QueryWrapper<Approach>()
-                            .eq("sid", supplier.getEid())
-                            .and(name -> name.eq("name", data.getName()))
-                            .and(code -> code.eq("code", data.getCode()))
-            );
-            Entrance insertEntrance = Entrance.builder()
-                    .bid(business.getEid())
-                    .name(data.getName())
-                    .code(data.getCode())
-                    .batch(data.getBatch())
-                    .num(data.getNum())
-                    .unit(data.getUnit())
-                    .trace(exist != null ? exist.getTrace() : "trace-" + ObjectId.next())
-                    .buyerType(data.getBuyerType().equals("个人") ? 0 : 1)
-                    .cid(classification.getCid())
-                    .sid(supplier.getEid())
-                    .businessTime(localTime.toString("yyyy-MM-dd HH:mm:ss")).build();
+        for (edu.hrbu.trace_backend.entity.excel.Entrance entrance : entrances) {
+            DateTime operateTime = new DateTime(DateTime.now());
+            Entrance insertEntrance = null;
+            if (entrance.getTraceCode() == null || entrance.getTraceCode().isEmpty()) {
+                insertEntrance = Entrance.builder()
+                        .bid(enterpriseMapper.selectOne(
+                                new QueryWrapper<Enterprise>()
+                                        .eq("name", entrance.getBusinessName())
+                                        .and(code -> code.eq("social_code", entrance.getBusinessCode()))).getEid()
+                        )
+                        .name(entrance.getName())
+                        .code(entrance.getCode())
+                        .num(entrance.getNum())
+                        .unit(entrance.getUnit())
+                        .batch(entrance.getBatch())
+                        .cid(classificationMapper.selectOne(
+                                new QueryWrapper<Classification>()
+                                        .eq("name", entrance.getClassName())
+                        ).getCid())
+                        .buyerType(entrance.getBuyerType().equals("个人") ? 0 : 1)
+                        .trace("Trace-" + ObjectId.next())
+                        .businessTime(operateTime.toString("yyyy-MM-dd HH:mm:ss")).build();
+            } else {
+                insertEntrance = Entrance.builder()
+                        .bid(enterpriseMapper.selectOne(
+                                new QueryWrapper<Enterprise>()
+                                        .eq("name", entrance.getBusinessName())
+                                        .and(code -> code.eq("social_code", entrance.getBusinessCode()))).getEid()
+                        )
+                        .name(entrance.getName())
+                        .code(entrance.getCode())
+                        .num(entrance.getNum())
+                        .unit(entrance.getUnit())
+                        .batch(entrance.getBatch())
+                        .cid(classificationMapper.selectOne(
+                                new QueryWrapper<Classification>()
+                                        .eq("name", entrance.getClassName())
+                        ).getCid())
+                        .buyerType(entrance.getBuyerType().equals("个人") ? 0 : 1)
+                        .trace(entrance.getTraceCode())
+                        .businessTime(operateTime.toString("yyyy-MM-dd HH:mm:ss")).build();
+            }
             entranceMapper.insert(insertEntrance);
-        });
+        }
         return Result.ok(Message.ENTRANCE_SUCCESS.getValue());
     }
 }

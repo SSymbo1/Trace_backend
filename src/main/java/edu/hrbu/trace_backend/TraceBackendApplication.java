@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Slf4j
 @MapperScan("edu.hrbu.trace_backend.mapper")
 @SpringBootApplication
-@EnableTransactionManagement
 public class TraceBackendApplication {
 
     public static void main(String[] args) {

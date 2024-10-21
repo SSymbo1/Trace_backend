@@ -48,7 +48,7 @@ public class Knife4jConfig {
                 .groupName(Knife4j.GROUP.getValue())
                 .apiInfo(apiInfo)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("edu.hrbu.trace_backend.controller"))
+                .apis(RequestHandlerSelectors.basePackage(Knife4j.PACKAGE.getValue()))
                 .paths(PathSelectors.any())
                 .build();
     }

@@ -61,7 +61,9 @@ public class SubjectServiceImpl implements SubjectService {
     public Result requestProductPaged(ProductQuery query) {
         IPage<edu.hrbu.trace_backend.entity.po.Product> page = new Page<>(query.getCurrentPage(), query.getPageSize());
         Map<String, Object> condition = getProductSearchCondition(query);
-        IPage<edu.hrbu.trace_backend.entity.po.Product> productPage = productMapper.selectProductByCondition(page, condition);
+        IPage<edu.hrbu.trace_backend.entity.po.Product> productPage = productMapper.selectProductByCondition(
+                page, condition
+        );
         productPage.getRecords().forEach(product -> product.setPhoto(photoPath + product.getPhoto()));
         return Result
                 .ok(Message.GET_PRODUCT_SUCCESS.getValue())
@@ -124,7 +126,9 @@ public class SubjectServiceImpl implements SubjectService {
     public Result requestProductRecordPaged(ProductQuery query) {
         IPage<edu.hrbu.trace_backend.entity.po.Product> page = new Page<>(query.getCurrentPage(), query.getPageSize());
         Map<String, Object> condition = getProductSearchCondition(query);
-        IPage<edu.hrbu.trace_backend.entity.po.Product> productPage = productRecordMapper.selectProductRecordProcessByCondition(page, condition);
+        IPage<edu.hrbu.trace_backend.entity.po.Product> productPage = productRecordMapper.selectProductRecordProcessByCondition(
+                page, condition
+        );
         productPage.getRecords().forEach(product -> product.setPhoto(photoPath + product.getPhoto()));
         return Result
                 .ok(Message.GET_PRODUCT_SUCCESS.getValue())

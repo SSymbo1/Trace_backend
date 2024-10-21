@@ -10,6 +10,8 @@ import lombok.ToString;
 //  异常信息枚举
 public enum Exception {
 
+    EXCEL_NO_TRACE("存在未在出场记录中进行追溯的数据:"),
+    EXCEL_TRACE_ERROR("存在非产品生产商且未填写追溯码的数据，无法导入!"),
     COMPARE_EXCEPTION("比较器异常，在比较两个Map时出现错误!"),
     EXCEL_BUYER_TYPE_ERROR("买方类型错误，应为'个人'或'组织'!"),
     EXCEL_PRODUCT_NO_PROCESS("商品未在系统中备案或未通过审批,无法导入!"),

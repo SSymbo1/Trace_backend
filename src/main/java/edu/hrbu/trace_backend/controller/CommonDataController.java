@@ -22,7 +22,6 @@ public class CommonDataController {
     @Resource
     private CommonDataService commonDataService;
 
-    // todo 首页数据统计卡片的数据接口
     @GetMapping("/statistics/card")
     @ApiOperation(
             value = "首页数据统计卡片数据接口",
@@ -33,7 +32,6 @@ public class CommonDataController {
         return commonDataService.requestHomeStatisticsCardData();
     }
 
-    // todo 首页数据统计柱状图的数据接口
     @GetMapping("/statistics/line")
     @ApiOperation(
             value = "首页数据统计柱状图数据接口",

@@ -8,12 +8,12 @@ import edu.hrbu.trace_backend.entity.enums.Exception;
 import edu.hrbu.trace_backend.entity.excel.Approach;
 import edu.hrbu.trace_backend.entity.po.Classification;
 import edu.hrbu.trace_backend.entity.po.Enterprise;
-import edu.hrbu.trace_backend.entity.po.ProductRecord;
 import edu.hrbu.trace_backend.global.exception.excel.ExcelNullException;
 import edu.hrbu.trace_backend.global.exception.excel.ExcelStructException;
 import edu.hrbu.trace_backend.global.exception.excel.ExcelTypeException;
 import edu.hrbu.trace_backend.mapper.ClassificationMapper;
 import edu.hrbu.trace_backend.mapper.EnterpriseMapper;
+import edu.hrbu.trace_backend.mapper.EntranceMapper;
 import edu.hrbu.trace_backend.mapper.ProductRecordMapper;
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,9 +27,10 @@ public class ApproachExcelChecker extends AnalysisEventListener<Approach> {
     private final ProductRecordMapper productRecordMapper = SpringUtil.getBean(ProductRecordMapper.class);
     private final ClassificationMapper classificationMapper = SpringUtil.getBean(ClassificationMapper.class);
     private final EnterpriseMapper enterpriseMapper = SpringUtil.getBean(EnterpriseMapper.class);
+    private final EntranceMapper entranceMapper = SpringUtil.getBean(EntranceMapper.class);
 
     private final List<String> TABLE_STRUCT = new ArrayList<>(Arrays.asList(
-            "编号", "经营商户代码", "经营商户名称", "产品代码", "产品名称", "批次号", "数量", "单位", "产品分类", "供应商名称"
+            "编号", "经营商户代码", "经营商户名称", "产品代码", "产品名称", "批次号", "追溯码", "数量", "单位", "产品分类"
     ));
     private int dataLine = 0;
 
@@ -40,6 +41,7 @@ public class ApproachExcelChecker extends AnalysisEventListener<Approach> {
                 approach.getBusinessCode(),
                 approach.getBusinessName(),
                 approach.getCode(),
+                approach.getTraceCode(),
                 approach.getName(),
                 approach.getBatch(),
                 approach.getNum(),
@@ -49,19 +51,18 @@ public class ApproachExcelChecker extends AnalysisEventListener<Approach> {
             log.error("第{}行数据存在空值", dataLine);
             throw new ExcelNullException(Exception.EXCEL_LINE_NULL.getValue());
         }
-        QueryWrapper<Classification> classificationQueryWrapper = new QueryWrapper<>();
-        QueryWrapper<Enterprise> enterpriseQueryWrapper = new QueryWrapper<>();
-        classificationQueryWrapper.eq("name", approach.getClassName());
-        QueryWrapper<Enterprise> supplierQueryWrapper = new QueryWrapper<>();
-        enterpriseQueryWrapper
-                .eq("name", approach.getBusinessName())
-                .and(eid -> eid.eq("social_code", approach.getBusinessCode()));
-        supplierQueryWrapper.eq("name", approach.getSupplier());
-        if (enterpriseMapper.selectList(enterpriseQueryWrapper).isEmpty()) {
+        if (enterpriseMapper.selectList(
+                new QueryWrapper<Enterprise>()
+                        .eq("name", approach.getBusinessName())
+                        .and(eid -> eid.eq("social_code", approach.getBusinessCode()))
+        ).isEmpty()) {
             log.error("企业未在系统注册，无法导入!");
             throw new ExcelTypeException(Exception.EXCEL_ENTERPRISE_REGISTERED.getValue());
         }
-        if (classificationMapper.selectList(classificationQueryWrapper).isEmpty()) {
+        if (classificationMapper.selectList(
+                new QueryWrapper<Classification>()
+                        .eq("name", approach.getClassName())
+        ).isEmpty()) {
             log.error("产品分类未在系统注册，无法导入!");
             throw new ExcelTypeException(Exception.EXCEL_CLASS.getValue());
         }
@@ -69,9 +70,12 @@ public class ApproachExcelChecker extends AnalysisEventListener<Approach> {
             log.error("商品未在系统备案，无法导入!");
             throw new ExcelTypeException(Exception.EXCEL_PRODUCT_NO_PROCESS.getValue());
         }
-        if (enterpriseMapper.selectList(supplierQueryWrapper).isEmpty()) {
-            log.error("供销商未在系统注册，无法导入!");
-            throw new ExcelTypeException(Exception.EXCEL_ENTERPRISE_REGISTERED.getValue());
+        if (entranceMapper.selectTraceDataExistByCondition(
+                approach.getName(),
+                approach.getCode(),
+                approach.getTraceCode()) == 0) {
+            log.error("存在未在出场记录中进行追溯的数据:{}，无法导入", approach.getName());
+            throw new ExcelTypeException(Exception.EXCEL_NO_TRACE.getValue() + approach.getName());
         }
         dataLine++;
     }

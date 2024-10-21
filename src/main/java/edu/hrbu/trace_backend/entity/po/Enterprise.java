@@ -25,6 +25,8 @@ public class Enterprise {
     private String address;
     private String zipCode;
     private Integer del;
+    @TableField("type")
+    private Integer ilk;
     @TableField(exist = false)
     private Integer type;
 }

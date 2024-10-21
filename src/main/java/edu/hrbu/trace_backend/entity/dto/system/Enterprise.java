@@ -15,6 +15,7 @@ public class Enterprise {
     private Integer eid;
     private String name;
     private Integer type;
+    private Integer ilk;
     private String legalPerson;
     private String tel;
     private String socialCode;

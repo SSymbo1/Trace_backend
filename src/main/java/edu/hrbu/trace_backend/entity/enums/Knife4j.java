@@ -10,6 +10,7 @@ import lombok.ToString;
 // Knife4j
 public enum Knife4j {
 
+    PACKAGE("edu.hrbu.trace_backend.controller"),
     TITLE("重要产品溯源管理系统-项目接口文档"),
     AUTHOR("SSymbol"),
     GITHUB("https://gitee.com/SS_ymbol"),

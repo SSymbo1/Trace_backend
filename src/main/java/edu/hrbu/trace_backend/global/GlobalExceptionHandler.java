@@ -46,7 +46,6 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(value = {
-            IllegalArgumentException.class,
             MalformedJwtException.class,
             io.jsonwebtoken.SignatureException.class
     })

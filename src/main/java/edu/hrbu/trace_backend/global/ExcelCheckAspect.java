@@ -1,7 +1,5 @@
 package edu.hrbu.trace_backend.global;
 
-import edu.hrbu.trace_backend.global.exception.ExcelException;
-import edu.hrbu.trace_backend.global.exception.excel.ExcelTypeException;
 import edu.hrbu.trace_backend.service.ExcelCheckService;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
@@ -10,7 +8,6 @@ import org.aspectj.lang.annotation.Before;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.io.IOException;
 
 @Slf4j
 @Aspect

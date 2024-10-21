@@ -27,7 +27,10 @@ public class ExcelCheckServiceImpl implements ExcelCheckService {
     public void requestProductExcelCheck(JoinPoint joinPoint) {
         Object[] args = joinPoint.getArgs();
         MultipartFile[] file = (MultipartFile[]) args[0];
-        if (!Objects.equals(file[0].getContentType(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")) {
+        if (!Objects.equals(
+                file[0].getContentType(),
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+        ) {
             throw new ExcelTypeException("上传的电子表格格式不正确,应为.xlsx格式");
         }
         InputStream inputStream = file[0].getInputStream();
@@ -41,7 +44,10 @@ public class ExcelCheckServiceImpl implements ExcelCheckService {
     public void requestApproachExcelCheck(JoinPoint joinPoint) {
         Object[] args = joinPoint.getArgs();
         MultipartFile[] file = (MultipartFile[]) args[0];
-        if (!Objects.equals(file[0].getContentType(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")) {
+        if (!Objects.equals(
+                file[0].getContentType(),
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+        ) {
             throw new ExcelTypeException("上传的电子表格格式不正确,应为.xlsx格式");
         }
         InputStream inputStream = file[0].getInputStream();
@@ -55,7 +61,10 @@ public class ExcelCheckServiceImpl implements ExcelCheckService {
     public void requestEntranceExcelCheck(JoinPoint joinPoint) {
         Object[] args = joinPoint.getArgs();
         MultipartFile[] file = (MultipartFile[]) args[0];
-        if (!Objects.equals(file[0].getContentType(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")) {
+        if (!Objects.equals(
+                file[0].getContentType(),
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+        ) {
             throw new ExcelTypeException("上传的电子表格格式不正确,应为.xlsx格式");
         }
         InputStream inputStream = file[0].getInputStream();

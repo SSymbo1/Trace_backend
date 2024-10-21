@@ -1,10 +1,7 @@
 package edu.hrbu.trace_backend.global;
 
 import edu.hrbu.trace_backend.entity.OnlineContext;
-import edu.hrbu.trace_backend.entity.enums.Statue;
 import edu.hrbu.trace_backend.util.JwtUtil;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.MalformedJwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;

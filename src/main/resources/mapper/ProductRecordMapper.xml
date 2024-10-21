@@ -25,24 +25,24 @@
 
     <select id="selectProductRecordProcessByCondition" resultMap="productResult">
         SELECT
-            product.pid,
-            classification.name     AS classification_name,
-            enterprise.name         AS enterprise_name,
-            product.photo,
-            product.code,
-            product.name,
-            product.unit,
-            product.is_major,
-            product_record.rid,
-            account_info.name       AS info_name,
-            product_record.num,
-            product_record.approver,
-            product_record.statue,
-            product_record.process_time,
-            product_record.insert_time,
-            product_record.import_type
+        product.pid,
+        classification.name AS classification_name,
+        enterprise.name AS enterprise_name,
+        product.photo,
+        product.code,
+        product.name,
+        product.unit,
+        product.is_major,
+        product_record.rid,
+        account_info.name AS info_name,
+        product_record.num,
+        product_record.approver,
+        product_record.statue,
+        product_record.process_time,
+        product_record.insert_time,
+        product_record.import_type
         FROM
-            product
+        product
         JOIN product_record ON product.pid = product_record.pid
         JOIN classification ON product.cid = classification.cid
         JOIN enterprise ON product.eid = enterprise.eid
@@ -50,10 +50,12 @@
         <where>
             product_record.statue = 0
             <if test="condition.name != null and condition.name != ''">
-                AND product.name LIKE CONCAT('%', #{condition.name}, '%') OR product.code LIKE CONCAT('%', #{condition.name}, '%')
+                AND product.name LIKE CONCAT('%', #{condition.name}, '%') OR product.code LIKE CONCAT('%',
+                #{condition.name}, '%')
             </if>
             <if test="condition.enterprise != null and condition.enterprise != ''">
-                AND enterprise.social_code LIKE CONCAT('%', #{condition.enterprise}, '%') OR enterprise.name LIKE CONCAT('%', #{condition.enterprise}, '%')
+                AND enterprise.social_code LIKE CONCAT('%', #{condition.enterprise}, '%') OR enterprise.name LIKE
+                CONCAT('%', #{condition.enterprise}, '%')
             </if>
             <if test="condition.classification != null and condition.classification != ''">
                 AND classification.name = #{condition.classification}
@@ -69,14 +71,49 @@
     </select>
 
     <select id="selectProductRecordByCondition" resultType="int">
+        SELECT COUNT(product.pid)
+        FROM product
+                 JOIN product_record ON product.pid = product_record.pid
+        WHERE product_record.statue = 1
+          AND product.name = #{productName}
+          AND product.code = #{productCode}
+    </select>
+
+    <select id="selectExistProductRecordByCondition" resultType="java.lang.Integer">
+        SELECT COUNT(product_record.rid)
+        FROM product_record
+                 JOIN product ON product_record.pid = product.pid
+                 JOIN enterprise ON product.eid = enterprise.eid
+        WHERE product.code = #{code}
+          AND product.name = #{name}
+          AND enterprise.social_code = #{enterprise}
+          AND product_record.statue = 1
+    </select>
+
+    <select id="selectProductRecordCount" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM product_record
+                 JOIN product ON product_record.pid = product.pid
+        WHERE product.is_major = 1
+          AND product_record.statue = 1
+    </select>
+
+    <select id="selectProcessedInfoByYearBetween" resultType="edu.hrbu.trace_backend.entity.po.ProductRecord">
         SELECT
-            COUNT(product.pid)
+            *
         FROM
-            product
-        JOIN product_record ON product.pid = product_record.pid
+            product_record
         WHERE
-            product_record.statue = 1
-            AND product.name = #{productName} AND product.code = #{productCode}
+            STR_TO_DATE(product_record.process_time, '%Y-%m-%d') BETWEEN #{start} AND #{end}
+    </select>
+
+    <select id="selectInsertInfoByYearBetween" resultType="edu.hrbu.trace_backend.entity.po.ProductRecord">
+        SELECT
+            *
+        FROM
+            product_record
+        WHERE
+            STR_TO_DATE(product_record.insert_time, '%Y-%m-%d') BETWEEN #{start} AND #{end}
     </select>
 
 </mapper>

@@ -10,6 +10,9 @@ import lombok.ToString;
 // 通讯消息枚举
 public enum Message {
 
+    GET_BATCH_ANALYSIS("获取批发分析数据成功"),
+    GET_SUPERMARKET_ANALYSIS("获取超市分析数据成功"),
+    GET_MARKET_OPERATIONS("获取市场运行分析数据成功!"),
     GET_MONITOR_SUCCESS("获取监控数据成功!"),
     GET_MONITOR_HISTOGRAM_SUCCESS("获取监控数据竖形柱状图数据成功!"),
     GET_TRACE_DATA_APPLET_SUCCESS("小程序端获取产品追溯数据成功!"),
@@ -93,6 +96,8 @@ public enum Message {
     GENERATE_QR("生成二维码"),
     WRONG_ARGUMENT("请求接口携带参数不合法!"),
     RE_PASSWORD_SUCCESS("修改密码成功!"),
+    HOME_CARD_DATA_SUCCESS("获取首页卡片数据成功!"),
+    GET_HOME_HISTOGRAM_SUCCESS("获取首页数据采集统计柱状图成功!"),
     WRONG_USERNAME_OR_PASSWORD("用户名或密码错误!"),
     ACCOUNT_DISABLE("该账号已被暂停使用，详情请联系管理员!"),
     ACCOUNT_DELETE("该账号已被删除，详情请联系管理员!"),

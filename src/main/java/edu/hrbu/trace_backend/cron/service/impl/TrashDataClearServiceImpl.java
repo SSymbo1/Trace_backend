@@ -38,7 +38,9 @@ public class TrashDataClearServiceImpl implements TrashDataClearService {
                 .stream()
                 .map(AccountInfo::getAvatar)
                 .collect(Collectors.toList());
-        File[] avatars = FileUtil.ls(edu.hrbu.trace_backend.util.FileUtil.getSystemPath() + Folder.AVATAR.getValue());
+        File[] avatars = FileUtil.ls(
+                edu.hrbu.trace_backend.util.FileUtil.getSystemPath() + Folder.AVATAR.getValue()
+        );
         for (File avatar : avatars) {
             if (!accountAvatarDataBase.contains(avatar.getName()) && !avatar.getName().equals("default.png")) {
                 FileUtil.del(avatar);
@@ -56,7 +58,9 @@ public class TrashDataClearServiceImpl implements TrashDataClearService {
                 .stream()
                 .map(Product::getPhoto)
                 .collect(Collectors.toList());
-        File[] photos = FileUtil.ls(edu.hrbu.trace_backend.util.FileUtil.getSystemPath() + Folder.GOODS.getValue());
+        File[] photos = FileUtil.ls(
+                edu.hrbu.trace_backend.util.FileUtil.getSystemPath() + Folder.GOODS.getValue()
+        );
         for (File photo : photos) {
             if (!productPhotoDataBase.contains(photo.getName()) && !photo.getName().equals("default.png")) {
                 FileUtil.del(photo);

@@ -7,10 +7,12 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface StatisticsMapper {
 
-    int selectMonitorHistogramDataByTimeBetween(@Param("condition") String time);
+    Integer selectMonitorHistogramDataByTimeBetween(@Param("condition") String time);
 
-    int selectMonitorNodeHistogramDataByTimeBetween(@Param("before") String before, @Param("now") String now, @Param("id") Integer classId);
+    Integer selectMonitorNodeHistogramDataByTimeBetween(@Param("before") String before, @Param("now") String now, @Param("id") Integer classId);
 
     Statistics selectStatisticsDataByTimeAndClassId(@Param("before") String before, @Param("now") String now, @Param("id") Integer classId);
+
+    Integer selectTraceDataCount();
 
 }

@@ -96,7 +96,10 @@ public class SystemServiceImpl implements SystemService {
                 .name(account.getName())
                 .gander(account.getGander())
                 .tel(account.getTel())
-                .avatar("".equals(account.getAvatar()) || account.getAvatar() == null ? "default.png" : account.getAvatar())
+                .avatar("".equals(account.getAvatar()) || account.getAvatar() == null ?
+                        "default.png" :
+                        account.getAvatar()
+                )
                 .email(account.getEmail())
                 .address(account.getAddress())
                 .zipCode(account.getZipCode()).build();
@@ -160,7 +163,10 @@ public class SystemServiceImpl implements SystemService {
                 .name(account.getName())
                 .gander(account.getGander())
                 .tel(account.getTel())
-                .avatar("".equals(account.getAvatar()) || account.getAvatar() == null ? "default.png" : account.getAvatar())
+                .avatar("".equals(account.getAvatar()) || account.getAvatar() == null ?
+                        "default.png" :
+                        account.getAvatar()
+                )
                 .email(account.getEmail())
                 .address(account.getAddress())
                 .zipCode(account.getZipCode()).build();
@@ -247,7 +253,9 @@ public class SystemServiceImpl implements SystemService {
 
     @Override
     public Result requestEnterpriseInfoPaged(EnterpriseQuery query) {
-        IPage<edu.hrbu.trace_backend.entity.po.Enterprise> page = new Page<>(query.getCurrentPage(), query.getPageSize());
+        IPage<edu.hrbu.trace_backend.entity.po.Enterprise> page = new Page<>(
+                query.getCurrentPage(), query.getPageSize()
+        );
         Map<String, Object> condition = getEnterpriseInfoSearchCondition(query);
         return Result
                 .ok(Message.GET_ENTERPRISE_SUCCESS.getValue())
@@ -268,6 +276,7 @@ public class SystemServiceImpl implements SystemService {
                 .name(enterprise.getName())
                 .legalPerson(enterprise.getLegalPerson())
                 .tel(enterprise.getTel())
+                .ilk(enterprise.getIlk())
                 .socialCode(enterprise.getSocialCode())
                 .address(enterprise.getAddress())
                 .zipCode(enterprise.getZipCode()).build();
@@ -296,6 +305,7 @@ public class SystemServiceImpl implements SystemService {
                 .legalPerson(enterprise.getLegalPerson())
                 .socialCode(enterprise.getSocialCode())
                 .address(enterprise.getAddress())
+                .ilk(enterprise.getIlk())
                 .zipCode(enterprise.getZipCode()).build();
         edu.hrbu.trace_backend.entity.po.Enterprise exist = enterpriseMapper.selectById(enterprise.getEid());
         QueryWrapper<Supplier> supplierQueryWrapper = new QueryWrapper<>();

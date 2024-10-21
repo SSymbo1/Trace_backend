@@ -29,7 +29,6 @@ public class Approach {
     private String unit;
     private String trace;
     private Integer cid;
-    private Integer sid;
     private String businessTime;
     @TableField(exist = false)
     private String enterpriseName;

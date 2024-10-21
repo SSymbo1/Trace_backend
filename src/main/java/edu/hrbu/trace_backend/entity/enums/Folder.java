@@ -14,5 +14,6 @@ public enum Folder {
     AVATAR("avatar"),
     GOODS("goods"),
     LOG("log");
+
     private final String value;
 }

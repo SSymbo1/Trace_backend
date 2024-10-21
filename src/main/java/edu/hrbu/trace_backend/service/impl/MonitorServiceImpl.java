@@ -83,10 +83,18 @@ public class MonitorServiceImpl implements MonitorService {
             query.setNow(currentTime.toString("yyyy-MM-dd"));
             query.setBefore(beforeTime.toString("yyyy-MM-dd"));
         }
-        int freshNode = statisticsMapper.selectMonitorNodeHistogramDataByTimeBetween(query.getBefore(), query.getNow(), 1);
-        int processNode = statisticsMapper.selectMonitorNodeHistogramDataByTimeBetween(query.getBefore(), query.getNow(), 2);
-        int drinkNode = statisticsMapper.selectMonitorNodeHistogramDataByTimeBetween(query.getBefore(), query.getNow(), 3);
-        int foodNode = statisticsMapper.selectMonitorNodeHistogramDataByTimeBetween(query.getBefore(), query.getNow(), 4);
+        int freshNode = statisticsMapper.selectMonitorNodeHistogramDataByTimeBetween(
+                query.getBefore(), query.getNow(), 1
+        );
+        int processNode = statisticsMapper.selectMonitorNodeHistogramDataByTimeBetween(
+                query.getBefore(), query.getNow(), 2
+        );
+        int drinkNode = statisticsMapper.selectMonitorNodeHistogramDataByTimeBetween(
+                query.getBefore(), query.getNow(), 3
+        );
+        int foodNode = statisticsMapper.selectMonitorNodeHistogramDataByTimeBetween(
+                query.getBefore(), query.getNow(), 4
+        );
         Map<String, Object> data = new HashMap<>();
         Map<String, Object> freshData = new HashMap<>();
         Map<String, Object> processData = new HashMap<>();
@@ -121,10 +129,18 @@ public class MonitorServiceImpl implements MonitorService {
             query.setNow(currentTime.toString("yyyy-MM-dd"));
             query.setBefore(beforeTime.toString("yyyy-MM-dd"));
         }
-        int freshNode = statisticsMapper.selectMonitorNodeHistogramDataByTimeBetween(query.getBefore(), query.getNow(), 1);
-        int processNode = statisticsMapper.selectMonitorNodeHistogramDataByTimeBetween(query.getBefore(), query.getNow(), 2);
-        int drinkNode = statisticsMapper.selectMonitorNodeHistogramDataByTimeBetween(query.getBefore(), query.getNow(), 3);
-        int foodNode = statisticsMapper.selectMonitorNodeHistogramDataByTimeBetween(query.getBefore(), query.getNow(), 4);
+        int freshNode = statisticsMapper.selectMonitorNodeHistogramDataByTimeBetween(
+                query.getBefore(), query.getNow(), 1
+        );
+        int processNode = statisticsMapper.selectMonitorNodeHistogramDataByTimeBetween(
+                query.getBefore(), query.getNow(), 2
+        );
+        int drinkNode = statisticsMapper.selectMonitorNodeHistogramDataByTimeBetween(
+                query.getBefore(), query.getNow(), 3
+        );
+        int foodNode = statisticsMapper.selectMonitorNodeHistogramDataByTimeBetween(
+                query.getBefore(), query.getNow(), 4
+        );
         Map<String, Object> data = new HashMap<>();
         data.put("class", new ArrayList<>(Arrays.asList("生鲜食品", "加工食品", "饮料与酒水", "食品杂货")));
         data.put("data", new ArrayList<>(Arrays.asList(freshNode, processNode, drinkNode, foodNode)));
@@ -146,13 +162,21 @@ public class MonitorServiceImpl implements MonitorService {
         Map<String, Object> processNode = new HashMap<>();
         Map<String, Object> drinkNode = new HashMap<>();
         Map<String, Object> foodNode = new HashMap<>();
-        freshNode.put("value", statisticsMapper.selectMonitorNodeHistogramDataByTimeBetween(query.getBefore(), query.getNow(), 1));
+        freshNode.put("value", statisticsMapper.selectMonitorNodeHistogramDataByTimeBetween(
+                query.getBefore(), query.getNow(), 1
+        ));
         freshNode.put("name", "生鲜食品");
-        processNode.put("value", statisticsMapper.selectMonitorNodeHistogramDataByTimeBetween(query.getBefore(), query.getNow(), 2));
+        processNode.put("value", statisticsMapper.selectMonitorNodeHistogramDataByTimeBetween(
+                query.getBefore(), query.getNow(), 2
+        ));
         processNode.put("name", "加工食品");
-        drinkNode.put("value", statisticsMapper.selectMonitorNodeHistogramDataByTimeBetween(query.getBefore(), query.getNow(), 3));
+        drinkNode.put("value", statisticsMapper.selectMonitorNodeHistogramDataByTimeBetween(
+                query.getBefore(), query.getNow(), 3
+        ));
         drinkNode.put("name", "饮料与酒水");
-        foodNode.put("value", statisticsMapper.selectMonitorNodeHistogramDataByTimeBetween(query.getBefore(), query.getNow(), 4));
+        foodNode.put("value", statisticsMapper.selectMonitorNodeHistogramDataByTimeBetween(
+                query.getBefore(), query.getNow(), 4
+        ));
         foodNode.put("name", "食品杂货");
         List<Map<String, Object>> pieData = new ArrayList<>();
         pieData.add(freshNode);
@@ -176,10 +200,15 @@ public class MonitorServiceImpl implements MonitorService {
         Integer classId = classificationMapper.selectOne(
                 new QueryWrapper<Classification>().eq("name", query.getClassName())
         ).getCid();
-        Statistics statistics = statisticsMapper.selectStatisticsDataByTimeAndClassId(query.getBefore(), query.getNow(), classId);
+        Statistics statistics = statisticsMapper.selectStatisticsDataByTimeAndClassId(
+                query.getBefore(), query.getNow(), classId
+        );
         List<Map<String, Object>> statisticsData = getStatisticsResultMaps(statistics);
         Map<String, Object> data = new HashMap<>();
-        data.put("total", statistics.getApproach() + statistics.getEntrance() + statistics.getProcess() + statistics.getSubmit());
+        data.put(
+                "total",
+                statistics.getApproach() + statistics.getEntrance() + statistics.getProcess() + statistics.getSubmit()
+        );
         data.put("data", statisticsData);
         return Result
                 .ok(Message.GET_MONITOR_SUCCESS.getValue())
@@ -198,7 +227,9 @@ public class MonitorServiceImpl implements MonitorService {
         Integer classId = classificationMapper.selectOne(
                 new QueryWrapper<Classification>().eq("name", query.getClassName())
         ).getCid();
-        Statistics statistics = statisticsMapper.selectStatisticsDataByTimeAndClassId(query.getBefore(), query.getNow(), classId);
+        Statistics statistics = statisticsMapper.selectStatisticsDataByTimeAndClassId(
+                query.getBefore(), query.getNow(), classId
+        );
         Map<String, Object> data = new HashMap<>();
         List<Map<String, Object>> statisticsData = getStatisticsResultMaps(statistics);
         data.put("statistics", statisticsData);

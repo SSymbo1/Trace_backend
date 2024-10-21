@@ -31,7 +31,7 @@ public class WelcomeController {
         return welcomeService.login(welcome);
     }
 
-    @PostMapping("/password")
+    @PutMapping("/password")
     @ApiOperation(
             value = "用户修改密码接口",
             notes = "用户修改密码接口，调用这个接口时将会记录日志，" +
