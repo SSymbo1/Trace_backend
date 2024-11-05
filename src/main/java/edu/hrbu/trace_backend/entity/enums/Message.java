@@ -10,6 +10,20 @@ import lombok.ToString;
 // 通讯消息枚举
 public enum Message {
 
+    DELETE_IMPORTANT_BATCH("批量删除已执行但有错误项"),
+    DELETE_IMPORTANT_FAIL("删除重点企业信息失败!"),
+    DELETE_IMPORTANT("删除重点企业信息成功!"),
+    NO_AUTH("没有足够的权限执行此操作!"),
+    ADD_IMPORTANT_FAIL("添加重点企业信息失败！"),
+    ADD_IMPORTANT_SUCCESS("添加重点企业信息成功！"),
+    ADD_IMPORTANT_ERROR("添加重点企业信息失败！已存在该重点企业信息"),
+    GET_IMPORTANT_SUCCESS("获取重点企业信息成功!"),
+    GET_STRUCT_ANALYSIS("获取行业结构分析数据成功"),
+    GET_FARM_ANALYSIS("获取农贸分析数据成功"),
+    GET_PLANT_ANALYSIS("获取种植分析数据成功"),
+    GET_BUTCH_ANALYSIS("获取屠宰分析数据成功"),
+    GET_ANIMAL_ANALYSIS("获取养殖分析数据成功"),
+    GET_PROCESS_ANALYSIS("获取加工分析数据成功"),
     GET_BATCH_ANALYSIS("获取批发分析数据成功"),
     GET_SUPERMARKET_ANALYSIS("获取超市分析数据成功"),
     GET_MARKET_OPERATIONS("获取市场运行分析数据成功!"),

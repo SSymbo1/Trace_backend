@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.hrbu.trace_backend.mapper.StructReportMapper">
+
+    <select id="selectStructReportList" resultType="edu.hrbu.trace_backend.entity.po.StructReport">
+        SELECT
+        <if test="type == 'StructDay'">
+            STR_TO_DATE(date,'%Y-%m-%d') AS date,
+            '日报告' AS `range`
+        </if>
+        <if test="type == 'StructMonth'">
+            STR_TO_DATE(date,'%Y-%m') AS date,
+            '月度报告' AS `range`
+        </if>
+        <if test="type == 'StructYear'">
+            STR_TO_DATE(date,'%Y') AS date,
+            '年度报告' AS `range`
+        </if>
+        FROM struct_report
+        WHERE
+        <if test="type == 'StructDay'">
+            STR_TO_DATE(date,'%Y-%m-%d') = STR_TO_DATE(#{date},'%Y-%m-%d') AND type = 0
+        </if>
+        <if test="type == 'StructMonth'">
+            STR_TO_DATE(date,'%Y-%m') = STR_TO_DATE(#{date},'%Y-%m') AND type = 1
+        </if>
+        <if test="type == 'StructYear'">
+            STR_TO_DATE(date,'%Y') = STR_TO_DATE(#{date},'%Y') AND type = 2
+        </if>
+    </select>
+
+</mapper>

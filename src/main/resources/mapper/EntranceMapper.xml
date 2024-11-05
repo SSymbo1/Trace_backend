@@ -226,4 +226,17 @@
         ORDER BY date
     </select>
 
+    <select id="selectEntranceSellRankByYearBetween"
+            resultType="edu.hrbu.trace_backend.entity.dto.analysis.Rank">
+        SELECT enterprise.NAME       AS name,
+               COUNT(entrance.trace) AS total
+        FROM enterprise
+                 JOIN entrance ON enterprise.eid = entrance.bid
+        WHERE enterprise.type = #{type}
+          AND STR_TO_DATE(entrance.business_time, '%Y-%m-%d') BETWEEN #{start}
+            AND #{end}
+        GROUP BY enterprise.NAME
+        ORDER BY total DESC
+    </select>
+
 </mapper>

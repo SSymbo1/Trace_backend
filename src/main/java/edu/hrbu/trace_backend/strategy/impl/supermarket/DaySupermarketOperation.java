@@ -40,7 +40,7 @@ public class DaySupermarketOperation implements SupermarketAnalysisStrategy {
                 .entranceYOY(countEntranceSupermarketYOYData(query))
                 .entranceTotalList(getEntranceSupermarketDataList(query))
                 .entranceClassList(getEntranceSupermarketClassDataList(query))
-                .entranceProvinceList(getEntranceSupermarketFromDataList(query))
+                .provinceDataList(getApproachSupermarketFromDataList(query))
                 .approachTotalList(getApproachSupermarketDataList(query))
                 .approachClassList(getApproachSupermarketClassDataList(query))
                 .approachFresh(countApproach.get("fresh"))
@@ -54,22 +54,30 @@ public class DaySupermarketOperation implements SupermarketAnalysisStrategy {
     }
 
     private List<EntranceCount> getEntranceSupermarketDataList(MarketQuery query) {
-        return entranceMapper.selectAnalysisEntranceCountByYearBetween(query.getBefore(), query.getNow(), EnterpriseType.SHOP.getValue());
+        return entranceMapper.selectAnalysisEntranceCountByYearBetween(
+                query.getBefore(), query.getNow(), EnterpriseType.SHOP.getValue()
+        );
     }
 
     private List<ApproachCount> getApproachSupermarketDataList(MarketQuery query) {
-        return approachMapper.selectAnalysisApproachCountByYearBetween(query.getBefore(), query.getNow(), EnterpriseType.SHOP.getValue());
+        return approachMapper.selectAnalysisApproachCountByYearBetween(
+                query.getBefore(), query.getNow(), EnterpriseType.SHOP.getValue()
+        );
     }
 
     private List<EntranceClassCount> getEntranceSupermarketClassDataList(MarketQuery query) {
-        return entranceMapper.selectAnalysisClassCountByYearBetween(query.getBefore(), query.getNow(), EnterpriseType.SHOP.getValue());
+        return entranceMapper.selectAnalysisClassCountByYearBetween(
+                query.getBefore(), query.getNow(), EnterpriseType.SHOP.getValue()
+        );
     }
 
     private List<ApproachClassCount> getApproachSupermarketClassDataList(MarketQuery query) {
-        return approachMapper.selectAnalysisClassCountByYearBetween(query.getBefore(), query.getNow(), EnterpriseType.SHOP.getValue());
+        return approachMapper.selectAnalysisClassCountByYearBetween(
+                query.getBefore(), query.getNow(), EnterpriseType.SHOP.getValue()
+        );
     }
 
-    private ProvinceData getEntranceSupermarketFromDataList(MarketQuery query) {
+    private ProvinceData getApproachSupermarketFromDataList(MarketQuery query) {
         Integer total = 0;
         Integer enter = 0;
         Integer outer = 0;
@@ -78,20 +86,20 @@ public class DaySupermarketOperation implements SupermarketAnalysisStrategy {
             data.put(province.getKey(), province.getValue());
         }
         List<ProvinceValue> provinceValues = new ArrayList<>();
-        List<EntranceCount> countEntrance = entranceMapper.selectAnalysisEntranceCountByYearBetween(
+        List<ApproachCount> countEntrance = approachMapper.selectAnalysisApproachCountByYearBetween(
                 query.getBefore(), query.getNow(), EnterpriseType.SHOP.getValue()
         );
-        for (EntranceCount count : countEntrance) {
+        for (ApproachCount count : countEntrance) {
             int entranceTotal = 0;
             int entranceEnter = 0;
             int entranceOuter = 0;
             total += count.getTotal();
             entranceTotal = count.getTotal();
-            List<Entrance> entrances = entranceMapper.selectAnalysisEntranceInfoByYearBetween(
+            List<Approach> entrances = approachMapper.selectAnalysisApproachInfoByYearBetween(
                     count.getDate(), count.getDate(), EnterpriseType.SHOP.getValue()
             );
-            for (Entrance entrance : entrances) {
-                Enterprise enterprise = enterpriseMapper.selectById(entrance.getBid());
+            for (Approach approach : entrances) {
+                Enterprise enterprise = enterpriseMapper.selectById(approach.getAid());
                 if (enterprise.getAddress().contains(Province.HEILONGJIANG.getKey())) {
                     entranceEnter++;
                     enter++;
@@ -126,7 +134,7 @@ public class DaySupermarketOperation implements SupermarketAnalysisStrategy {
                 .provinces(provinceList).build();
     }
 
-    public Map<String, Integer> getEntranceSupermarketData(MarketQuery query) {
+    Map<String, Integer> getEntranceSupermarketData(MarketQuery query) {
         Map<String, Integer> entrance = new HashMap<>();
         entrance.put("fresh", 0);
         entrance.put("product", 0);
@@ -150,7 +158,7 @@ public class DaySupermarketOperation implements SupermarketAnalysisStrategy {
         return entrance;
     }
 
-    public Map<String, Integer> getApproachSupermarketData(MarketQuery query) {
+    Map<String, Integer> getApproachSupermarketData(MarketQuery query) {
         Map<String, Integer> approach = new HashMap<>();
         approach.put("fresh", 0);
         approach.put("product", 0);
@@ -173,14 +181,14 @@ public class DaySupermarketOperation implements SupermarketAnalysisStrategy {
         return approach;
     }
 
-    public Integer countEntranceSupermarketData(MarketQuery query) {
-        return approachMapper.selectAnalysisApproachInfoByYearBetween(
+    Integer countEntranceSupermarketData(MarketQuery query) {
+        return entranceMapper.selectAnalysisEntranceInfoByYearBetween(
                 query.getBefore(), query.getNow(), EnterpriseType.SHOP.getValue()
         ).size();
     }
 
-    public Integer countApproachSupermarketData(MarketQuery query) {
-        return entranceMapper.selectAnalysisEntranceInfoByYearBetween(
+    Integer countApproachSupermarketData(MarketQuery query) {
+        return approachMapper.selectAnalysisApproachInfoByYearBetween(
                 query.getBefore(), query.getNow(), EnterpriseType.SHOP.getValue()
         ).size();
     }
@@ -189,7 +197,7 @@ public class DaySupermarketOperation implements SupermarketAnalysisStrategy {
         return null;
     }
 
-    public Double countEntranceSupermarketQOQData(MarketQuery query) {
+    Double countEntranceSupermarketQOQData(MarketQuery query) {
         List<Entrance> entrances = entranceMapper.selectAnalysisEntranceInfoByYearBetween(
                 query.getBefore(), query.getNow(), EnterpriseType.SHOP.getValue()
         );
@@ -209,7 +217,7 @@ public class DaySupermarketOperation implements SupermarketAnalysisStrategy {
         return null;
     }
 
-    public Double countApproachSupermarketQOQData(MarketQuery query) {
+    Double countApproachSupermarketQOQData(MarketQuery query) {
         List<Approach> approaches = approachMapper.selectAnalysisApproachInfoByYearBetween(
                 query.getBefore(), query.getNow(), EnterpriseType.SHOP.getValue()
         );

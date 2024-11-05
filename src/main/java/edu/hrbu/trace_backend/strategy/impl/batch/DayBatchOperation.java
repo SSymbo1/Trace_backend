@@ -43,8 +43,9 @@ public class DayBatchOperation implements BatchAnalysisStrategy {
                 .entranceYOY(countEntranceBatchYOYData(query))
                 .entranceTotalList(getEntranceBatchDataList(query))
                 .entranceClassList(getEntranceBatchClassDataList(query))
-                .entranceProvinceList(getEntranceBatchFromDataList(query))
+                .provinceDataList(getApproachBatchFromDataList(query))
                 .approachTotalList(getApproachBatchDataList(query))
+                .approachClassList(getApproachBatchClassDataList(query))
                 .approachFresh(countApproach.get("fresh"))
                 .approachProduct(countApproach.get("product"))
                 .approachDrink(countApproach.get("drink"))
@@ -55,7 +56,13 @@ public class DayBatchOperation implements BatchAnalysisStrategy {
                 .entranceFood(countEntrance.get("food")).build();
     }
 
-    public Map<String, Integer> getApproachBatchData(BatchQuery query) {
+    private List<ApproachClassCount> getApproachBatchClassDataList(BatchQuery query) {
+        return approachMapper.selectAnalysisClassCountByYearBetween(
+                query.getBefore(), query.getNow(), EnterpriseType.BATCH.getValue()
+        );
+    }
+
+    Map<String, Integer> getApproachBatchData(BatchQuery query) {
         Map<String, Integer> approach = new HashMap<>();
         approach.put("fresh", 0);
         approach.put("product", 0);
@@ -78,7 +85,7 @@ public class DayBatchOperation implements BatchAnalysisStrategy {
         return approach;
     }
 
-    public Map<String, Integer> getEntranceBatchData(BatchQuery query) {
+    Map<String, Integer> getEntranceBatchData(BatchQuery query) {
         Map<String, Integer> entrance = new HashMap<>();
         entrance.put("fresh", 0);
         entrance.put("product", 0);
@@ -103,10 +110,12 @@ public class DayBatchOperation implements BatchAnalysisStrategy {
     }
 
     private List<ApproachCount> getApproachBatchDataList(BatchQuery query) {
-        return approachMapper.selectAnalysisApproachCountByYearBetween(query.getBefore(), query.getNow(), EnterpriseType.BATCH.getValue());
+        return approachMapper.selectAnalysisApproachCountByYearBetween(
+                query.getBefore(), query.getNow(), EnterpriseType.BATCH.getValue()
+        );
     }
 
-    private ProvinceData getEntranceBatchFromDataList(BatchQuery query) {
+    private ProvinceData getApproachBatchFromDataList(BatchQuery query) {
         Integer total = 0;
         Integer enter = 0;
         Integer outer = 0;
@@ -115,20 +124,20 @@ public class DayBatchOperation implements BatchAnalysisStrategy {
             data.put(province.getKey(), province.getValue());
         }
         List<ProvinceValue> provinceValues = new ArrayList<>();
-        List<EntranceCount> countEntrance = entranceMapper.selectAnalysisEntranceCountByYearBetween(
+        List<ApproachCount> countEntrance = approachMapper.selectAnalysisApproachCountByYearBetween(
                 query.getBefore(), query.getNow(), EnterpriseType.BATCH.getValue()
         );
-        for (EntranceCount count : countEntrance) {
+        for (ApproachCount count : countEntrance) {
             int entranceTotal = 0;
             int entranceEnter = 0;
             int entranceOuter = 0;
             total += count.getTotal();
             entranceTotal = count.getTotal();
-            List<Entrance> entrances = entranceMapper.selectAnalysisEntranceInfoByYearBetween(
+            List<Approach> entrances = approachMapper.selectAnalysisApproachInfoByYearBetween(
                     count.getDate(), count.getDate(), EnterpriseType.BATCH.getValue()
             );
-            for (Entrance entrance : entrances) {
-                Enterprise enterprise = enterpriseMapper.selectById(entrance.getBid());
+            for (Approach approach : entrances) {
+                Enterprise enterprise = enterpriseMapper.selectById(approach.getAid());
                 if (enterprise.getAddress().contains(Province.HEILONGJIANG.getKey())) {
                     entranceEnter++;
                     enter++;
@@ -164,18 +173,22 @@ public class DayBatchOperation implements BatchAnalysisStrategy {
     }
 
     private List<EntranceClassCount> getEntranceBatchClassDataList(BatchQuery query) {
-        return entranceMapper.selectAnalysisClassCountByYearBetween(query.getBefore(), query.getNow(), EnterpriseType.BATCH.getValue());
+        return entranceMapper.selectAnalysisClassCountByYearBetween(
+                query.getBefore(), query.getNow(), EnterpriseType.BATCH.getValue()
+        );
     }
 
     private List<EntranceCount> getEntranceBatchDataList(BatchQuery query) {
-        return entranceMapper.selectAnalysisEntranceCountByYearBetween(query.getBefore(), query.getNow(), EnterpriseType.BATCH.getValue());
+        return entranceMapper.selectAnalysisEntranceCountByYearBetween(
+                query.getBefore(), query.getNow(), EnterpriseType.BATCH.getValue()
+        );
     }
 
     private Double countEntranceBatchYOYData(BatchQuery query) {
         return null;
     }
 
-    public Double countEntranceBatchQOQData(BatchQuery query) {
+    Double countEntranceBatchQOQData(BatchQuery query) {
         List<Entrance> entrances = entranceMapper.selectAnalysisEntranceInfoByYearBetween(
                 query.getBefore(), query.getNow(), EnterpriseType.BATCH.getValue()
         );
@@ -191,8 +204,8 @@ public class DayBatchOperation implements BatchAnalysisStrategy {
                 (entrances.size() - beforeEntrances.size()) / (double) beforeEntrances.size();
     }
 
-    public Integer countEntranceBatchData(BatchQuery query) {
-        return approachMapper.selectAnalysisApproachInfoByYearBetween(
+    Integer countEntranceBatchData(BatchQuery query) {
+        return entranceMapper.selectAnalysisEntranceInfoByYearBetween(
                 query.getBefore(), query.getNow(), EnterpriseType.BATCH.getValue()
         ).size();
     }
@@ -201,7 +214,7 @@ public class DayBatchOperation implements BatchAnalysisStrategy {
         return null;
     }
 
-    public Double countApproachBatchQOQData(BatchQuery query) {
+    Double countApproachBatchQOQData(BatchQuery query) {
         List<Approach> approaches = approachMapper.selectAnalysisApproachInfoByYearBetween(
                 query.getBefore(), query.getNow(), EnterpriseType.BATCH.getValue()
         );
@@ -217,8 +230,8 @@ public class DayBatchOperation implements BatchAnalysisStrategy {
                 (approaches.size() - beforeApproaches.size()) / (double) beforeApproaches.size();
     }
 
-    public Integer countApproachBatchData(BatchQuery query) {
-        return entranceMapper.selectAnalysisEntranceInfoByYearBetween(
+    Integer countApproachBatchData(BatchQuery query) {
+        return approachMapper.selectAnalysisApproachInfoByYearBetween(
                 query.getBefore(), query.getNow(), EnterpriseType.BATCH.getValue()
         ).size();
     }

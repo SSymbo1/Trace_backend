@@ -72,4 +72,9 @@
           AND eid != 1
     </select>
 
+    <select id="selectProcessEnterpriseSellRankByYearBetween"
+            resultType="edu.hrbu.trace_backend.entity.dto.analysis.Rank">
+
+    </select>
+
 </mapper>

@@ -6,6 +6,7 @@ import edu.hrbu.trace_backend.entity.dto.analysis.base.Result;
 import edu.hrbu.trace_backend.entity.enums.EnterpriseType;
 import edu.hrbu.trace_backend.entity.enums.Province;
 import edu.hrbu.trace_backend.entity.po.*;
+import edu.hrbu.trace_backend.entity.po.Enterprise;
 import edu.hrbu.trace_backend.mapper.ApproachMapper;
 import edu.hrbu.trace_backend.mapper.EnterpriseMapper;
 import edu.hrbu.trace_backend.mapper.EntranceMapper;
@@ -36,8 +37,9 @@ public class MonthBatchOperation extends DayBatchOperation {
                 .entranceYOY(countEntranceBatchYOYData(query))
                 .entranceTotalList(getEntranceBatchDataList(query))
                 .entranceClassList(getEntranceBatchClassDataList(query))
-                .entranceProvinceList(getEntranceBatchFromDataList(query))
+                .provinceDataList(getApproachBatchFromDataList(query))
                 .approachTotalList(getApproachBatchDataList(query))
+                .approachClassList(getApproachBatchClassDataList(query))
                 .approachFresh(countApproach.get("fresh"))
                 .approachProduct(countApproach.get("product"))
                 .approachDrink(countApproach.get("drink"))
@@ -66,7 +68,13 @@ public class MonthBatchOperation extends DayBatchOperation {
         );
     }
 
-    private ProvinceData getEntranceBatchFromDataList(BatchQuery query) {
+    private List<ApproachClassCount> getApproachBatchClassDataList(BatchQuery query) {
+        return approachMapper.selectAnalysisClassCountMonthByYearBetween(
+                query.getBefore(), query.getNow(), EnterpriseType.BATCH.getValue()
+        );
+    }
+
+    private ProvinceData getApproachBatchFromDataList(BatchQuery query) {
         Integer total = 0;
         Integer enter = 0;
         Integer outer = 0;
@@ -75,20 +83,20 @@ public class MonthBatchOperation extends DayBatchOperation {
             data.put(province.getKey(), province.getValue());
         }
         List<ProvinceValue> provinceValues = new ArrayList<>();
-        List<EntranceCount> countEntrance = entranceMapper.selectAnalysisEntranceMonthCountByYearBetween(
+        List<ApproachCount> countEntrance = approachMapper.selectAnalysisApproachMonthCountByYearBetween(
                 query.getBefore(), query.getNow(), EnterpriseType.BATCH.getValue()
         );
-        for (EntranceCount count : countEntrance) {
+        for (ApproachCount count : countEntrance) {
             int entranceTotal = 0;
             int entranceEnter = 0;
             int entranceOuter = 0;
             total += count.getTotal();
             entranceTotal += count.getTotal();
-            List<Entrance> entrances = entranceMapper.selectAnalysisEntranceInfoMonthByYearBetween(
+            List<Approach> entrances = approachMapper.selectAnalysisApproachInfoMonthByYearBetween(
                     count.getDate(), EnterpriseType.BATCH.getValue()
             );
-            for (Entrance entrance : entrances) {
-                Enterprise enterprise = enterpriseMapper.selectById(entrance.getBid());
+            for (Approach approach : entrances) {
+                Enterprise enterprise = enterpriseMapper.selectById(approach.getAid());
                 if (enterprise.getAddress().contains(Province.HEILONGJIANG.getKey())) {
                     entranceEnter++;
                     enter++;

@@ -54,6 +54,7 @@ src下
 - global ( 自定义框架相关 )
 - mapper ( 数据库操作接口 )
 - service ( 业务逻辑 )
+- strategy ( 统计策略 )
 - utils ( 工具类 )
 
 resources下

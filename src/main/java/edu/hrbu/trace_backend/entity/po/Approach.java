@@ -18,6 +18,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @AllArgsConstructor
 @NoArgsConstructor
+// 进场表
 public class Approach {
     @TableId(value = "aid", type = IdType.AUTO)
     private Integer aid;

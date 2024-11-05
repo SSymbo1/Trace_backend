@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Query {
-    @NotNull(message = "统计日期不能为空")
+    @NotNull(message = "统计日期类型不能为空")
     private String type;
     @NotEmpty(message = "开始日期不能为空")
     private String before;

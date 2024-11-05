@@ -28,6 +28,8 @@ public interface ApproachMapper extends BaseMapper<Approach> {
 
     List<Approach> selectAnalysisApproachInfoByYearBetween(@Param("start") String start, @Param("end") String end, @Param("type") Integer type);
 
+    List<Approach> selectAnalysisApproachInfoMonthByYearBetween(@Param("time") String time, @Param("type") Integer type);
+
 }
 
 

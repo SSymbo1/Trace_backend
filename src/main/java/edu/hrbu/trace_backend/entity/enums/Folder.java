@@ -7,6 +7,7 @@ import lombok.ToString;
 @Getter
 @ToString
 @AllArgsConstructor
+// 资源文件夹枚举
 public enum Folder {
 
     WINDOWS("D:/trace/"),

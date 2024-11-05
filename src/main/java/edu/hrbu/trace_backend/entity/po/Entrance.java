@@ -18,6 +18,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @AllArgsConstructor
 @NoArgsConstructor
+// 出场表
 public class Entrance {
     @TableId(value = "eid", type = IdType.AUTO)
     private Integer eid;

@@ -2,6 +2,7 @@ package edu.hrbu.trace_backend.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import edu.hrbu.trace_backend.entity.dto.analysis.Rank;
 import edu.hrbu.trace_backend.entity.po.Enterprise;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -19,5 +20,7 @@ public interface EnterpriseMapper extends BaseMapper<Enterprise> {
     Integer selectEnterpriseCount();
 
     Integer updateRandomEnterpriseAddress(int eid);
+
+    List<Rank> selectProcessEnterpriseSellRankByYearBetween(@Param("start") String start,@Param("end") String end);
 
 }

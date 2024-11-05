@@ -3,97 +3,110 @@
 <mapper namespace="edu.hrbu.trace_backend.mapper.StatisticsMapper">
 
     <select id="selectMonitorHistogramDataByTimeBetween" resultType="java.lang.Integer">
-        SELECT
-            (SELECT COUNT(*) FROM product_record WHERE process_time LIKE CONCAT('%',#{condition},'%')) +
-            (SELECT COUNT(*) FROM product_record pr WHERE pr.insert_time LIKE CONCAT('%',#{condition},'%')) +
-            (SELECT COUNT(*) FROM approach WHERE business_time LIKE CONCAT('%',#{condition},'%')) +
-            (SELECT COUNT(*) FROM entrance WHERE business_time LIKE CONCAT('%',#{condition},'%'))
+        SELECT (SELECT COUNT(*) FROM product_record WHERE process_time LIKE CONCAT('%', #{condition}, '%')) +
+               (SELECT COUNT(*) FROM product_record pr WHERE pr.insert_time LIKE CONCAT('%', #{condition}, '%')) +
+               (SELECT COUNT(*) FROM approach WHERE business_time LIKE CONCAT('%', #{condition}, '%')) +
+               (SELECT COUNT(*) FROM entrance WHERE business_time LIKE CONCAT('%', #{condition}, '%'))
     </select>
 
-    <select id="selectMonitorNodeHistogramDataByTimeBetween" resultType="java.lang.Integer">
-        WITH classification_query AS (
-            SELECT cid
-            FROM classification
-            WHERE cid = #{id} OR parent = #{id}
+    <select id="selectStructTotalStatisticsData" resultType="edu.hrbu.trace_backend.entity.dto.analysis.StructData">
+        SELECT(
+        (
+            SELECT COUNT(product_record.rid) FROM product_record JOIN product ON product.pid = product_record.pid JOIN
+            enterprise ON enterprise.eid = product.eid
+            <where>
+                <if test="type == 'StructDay'">STR_TO_DATE(process_time, '%Y-%m-%d') = #{date} AND enterprise.eid = #{eid}</if>
+                <if test="type == 'StructMonth'">DATE_FORMAT(process_time,'%Y-%m') = #{date} AND enterprise.eid = #{eid}</if>
+                <if test="type == 'StructYear'">DATE_FORMAT(process_time,'%Y') = #{date} AND enterprise.eid = #{eid}</if>
+            </where>
         )
-        SELECT
-            (
-                SELECT
-                    COUNT(*)
-                FROM product_record
-                JOIN product ON product_record.pid = product.pid
-                JOIN classification_query ON product.cid = classification_query.cid
-                WHERE STR_TO_DATE(product_record.insert_time,'%Y-%m-%d') BETWEEN #{before} AND #{now}
+        +
+        (
+            SELECT COUNT(pr.rid) FROM product_record pr JOIN product ON product.pid = pr.pid JOIN enterprise ON
+            enterprise.eid = product.eid
+            <where>
+                <if test="type == 'StructDay'">STR_TO_DATE(pr.insert_time,'%Y-%m-%d') = #{date} AND enterprise.eid = #{eid}
+                </if>
+                <if test="type == 'StructMonth'">DATE_FORMAT(pr.insert_time,'%Y-%m') = #{date} AND enterprise.eid = #{eid}</if>
+                <if test="type == 'StructYear'">DATE_FORMAT(pr.insert_time,'%Y') = #{date} AND enterprise.eid = #{eid}</if>
+            </where>
+        )
+        +
+        (
+            SELECT COUNT(*) FROM approach
+            <where>
+                <if test="type == 'StructDay'">STR_TO_DATE(business_time,'%Y-%m-%d') = #{date} AND approach.eid = #{eid}</if>
+                <if test="type == 'StructMonth'">DATE_FORMAT(business_time,'%Y-%m') = #{date} AND approach.eid = #{eid}</if>
+                <if test="type == 'StructYear'">DATE_FORMAT(business_time,'%Y') = #{date} AND approach.eid = #{eid}</if>
+            </where>
+        )
+        +
+        (
+            SELECT COUNT(*) FROM entrance
+            <where>
+                <if test="type == 'StructDay'">STR_TO_DATE(business_time,'%Y-%m-%d') = #{date} AND entrance.bid = #{eid}</if>
+                <if test="type == 'StructMonth'">DATE_FORMAT(business_time,'%Y-%m') = #{date} AND entrance.bid = #{eid}</if>
+                <if test="type == 'StructYear'">DATE_FORMAT(business_time,'%Y') = #{date} AND entrance.bid = #{eid}</if>
+            </where>
+        )) AS total,`name`,type FROM enterprise WHERE eid = #{eid}
+    </select>
 
-            )+
-            (
-                SELECT
-                    COUNT(*)
+
+    <select id="selectMonitorNodeHistogramDataByTimeBetween" resultType="java.lang.Integer">
+        WITH classification_query AS (SELECT cid
+                                      FROM classification
+                                      WHERE cid = #{id}
+                                         OR parent = #{id})
+        SELECT (SELECT COUNT(*)
                 FROM product_record
-                JOIN product ON product_record.pid = product.pid
-                JOIN classification_query ON product.cid = classification_query.cid
-                WHERE STR_TO_DATE(product_record.process_time,'%Y-%m-%d') BETWEEN #{before} AND #{now}
-            )+
-            (
-                SELECT
-                    COUNT(*)
+                         JOIN product ON product_record.pid = product.pid
+                         JOIN classification_query ON product.cid = classification_query.cid
+                WHERE STR_TO_DATE(product_record.insert_time, '%Y-%m-%d') BETWEEN #{before} AND #{now}) +
+               (SELECT COUNT(*)
+                FROM product_record
+                         JOIN product ON product_record.pid = product.pid
+                         JOIN classification_query ON product.cid = classification_query.cid
+                WHERE STR_TO_DATE(product_record.process_time, '%Y-%m-%d') BETWEEN #{before} AND #{now}) +
+               (SELECT COUNT(*)
                 FROM approach
-                JOIN classification_query ON approach.cid = classification_query.cid
-                WHERE STR_TO_DATE(business_time,'%Y-%m-%d') BETWEEN #{before} AND #{now}
-            )+
-            (
-                SELECT
-                    COUNT(*)
+                         JOIN classification_query ON approach.cid = classification_query.cid
+                WHERE STR_TO_DATE(business_time, '%Y-%m-%d') BETWEEN #{before} AND #{now}) +
+               (SELECT COUNT(*)
                 FROM entrance
-                JOIN classification_query ON entrance.cid = classification_query.cid
-                WHERE STR_TO_DATE(business_time,'%Y-%m-%d') BETWEEN #{before} AND #{now}
-            )
+                         JOIN classification_query ON entrance.cid = classification_query.cid
+                WHERE STR_TO_DATE(business_time, '%Y-%m-%d') BETWEEN #{before} AND #{now})
     </select>
 
     <select id="selectStatisticsDataByTimeAndClassId" resultType="edu.hrbu.trace_backend.entity.po.Statistics">
-        WITH classification_query AS (
-            SELECT cid
-            FROM classification
-            WHERE cid = #{id} OR parent = #{id}
-        )
-        SELECT
-            (
-                SELECt COUNT(*)
+        WITH classification_query AS (SELECT cid
+                                      FROM classification
+                                      WHERE cid = #{id}
+                                         OR parent = #{id})
+        SELECT (SELECt COUNT(*)
                 FROM product_record
-                JOIN product ON product_record.pid = product.pid
-                JOIN classification_query ON product.cid = classification_query.cid
-                WHERE STR_TO_DATE(product_record.insert_time,'%Y-%m-%d') BETWEEN #{before} AND #{now}
-            ) AS submit,
-            (
-                SELECT
-                    COUNT(*)
+                         JOIN product ON product_record.pid = product.pid
+                         JOIN classification_query ON product.cid = classification_query.cid
+                WHERE STR_TO_DATE(product_record.insert_time, '%Y-%m-%d') BETWEEN #{before} AND #{now})  AS submit,
+               (SELECT COUNT(*)
                 FROM product_record
-                JOIN product ON product_record.pid = product.pid
-                JOIN classification_query ON product.cid = classification_query.cid
-                WHERE STR_TO_DATE(product_record.process_time,'%Y-%m-%d') BETWEEN #{before} AND #{now}
-            ) AS process,
-            (
-                SELECT
-                    COUNT(*)
+                         JOIN product ON product_record.pid = product.pid
+                         JOIN classification_query ON product.cid = classification_query.cid
+                WHERE STR_TO_DATE(product_record.process_time, '%Y-%m-%d') BETWEEN #{before} AND #{now}) AS process,
+               (SELECT COUNT(*)
                 FROM approach
-                JOIN classification_query ON approach.cid = classification_query.cid
-                WHERE STR_TO_DATE(business_time,'%Y-%m-%d') BETWEEN #{before} AND #{now}
-            ) AS approach,
-            (
-                SELECT
-                    COUNT(*)
+                         JOIN classification_query ON approach.cid = classification_query.cid
+                WHERE STR_TO_DATE(business_time, '%Y-%m-%d') BETWEEN #{before} AND #{now})               AS approach,
+               (SELECT COUNT(*)
                 FROM entrance
-                JOIN classification_query ON entrance.cid = classification_query.cid
-                WHERE STR_TO_DATE(business_time,'%Y-%m-%d') BETWEEN #{before} AND #{now}
-            ) AS entrance
+                         JOIN classification_query ON entrance.cid = classification_query.cid
+                WHERE STR_TO_DATE(business_time, '%Y-%m-%d') BETWEEN #{before} AND #{now})               AS entrance
     </select>
 
     <select id="selectTraceDataCount" resultType="java.lang.Integer">
-        SELECT
-            (SELECT COUNT(*) FROM product_record) +
-            (SELECT COUNT(*) FROM product) +
-            (SELECT COUNT(*) FROM approach) +
-            (SELECT COUNT(*) FROM entrance)
+        SELECT (SELECT COUNT(*) FROM product_record) +
+               (SELECT COUNT(*) FROM product) +
+               (SELECT COUNT(*) FROM approach) +
+               (SELECT COUNT(*) FROM entrance)
     </select>
 
 </mapper>

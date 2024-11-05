@@ -39,7 +39,7 @@ public class MonthSupermarketOperation extends DaySupermarketOperation {
                 .entranceYOY(countEntranceSupermarketYOYData(query))
                 .entranceTotalList(getEntranceSupermarketDataList(query))
                 .entranceClassList(getEntranceSupermarketClassDataList(query))
-                .entranceProvinceList(getEntranceSupermarketFromDataList(query))
+                .provinceDataList(getApproachSupermarketFromDataList(query))
                 .approachTotalList(getApproachSupermarketDataList(query))
                 .approachClassList(getApproachSupermarketClassDataList(query))
                 .approachFresh(countApproach.get("fresh"))
@@ -76,7 +76,7 @@ public class MonthSupermarketOperation extends DaySupermarketOperation {
         );
     }
 
-    private ProvinceData getEntranceSupermarketFromDataList(MarketQuery query) {
+    private ProvinceData getApproachSupermarketFromDataList(MarketQuery query) {
         Integer total = 0;
         Integer enter = 0;
         Integer outer = 0;
@@ -85,20 +85,20 @@ public class MonthSupermarketOperation extends DaySupermarketOperation {
             data.put(province.getKey(), province.getValue());
         }
         List<ProvinceValue> provinceValues = new ArrayList<>();
-        List<EntranceCount> countEntrance = entranceMapper.selectAnalysisEntranceMonthCountByYearBetween(
+        List<ApproachCount> countEntrance = approachMapper.selectAnalysisApproachMonthCountByYearBetween(
                 query.getBefore(), query.getNow(), EnterpriseType.SHOP.getValue()
         );
-        for (EntranceCount count : countEntrance) {
+        for (ApproachCount count : countEntrance) {
             int entranceTotal = 0;
             int entranceEnter = 0;
             int entranceOuter = 0;
             total += count.getTotal();
             entranceTotal += count.getTotal();
-            List<Entrance> entrances = entranceMapper.selectAnalysisEntranceInfoMonthByYearBetween(
+            List<Approach> entrances = approachMapper.selectAnalysisApproachInfoMonthByYearBetween(
                     count.getDate(), EnterpriseType.SHOP.getValue()
             );
-            for (Entrance entrance : entrances) {
-                Enterprise enterprise = enterpriseMapper.selectById(entrance.getBid());
+            for (Approach approach : entrances) {
+                Enterprise enterprise = enterpriseMapper.selectById(approach.getAid());
                 if (enterprise.getAddress().contains(Province.HEILONGJIANG.getKey())) {
                     entranceEnter++;
                     enter++;

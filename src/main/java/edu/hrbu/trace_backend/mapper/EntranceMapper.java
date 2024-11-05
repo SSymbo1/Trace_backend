@@ -1,6 +1,7 @@
 package edu.hrbu.trace_backend.mapper;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import edu.hrbu.trace_backend.entity.dto.analysis.Rank;
 import edu.hrbu.trace_backend.entity.po.Entrance;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import edu.hrbu.trace_backend.entity.po.EntranceClassCount;
@@ -31,6 +32,8 @@ public interface EntranceMapper extends BaseMapper<Entrance> {
     List<EntranceCount> selectAnalysisEntranceMonthCountByYearBetween(@Param("start") String start, @Param("end") String end, @Param("type") Integer type);
 
     List<EntranceClassCount> selectAnalysisClassCountMonthByYearBetween(@Param("start") String start, @Param("end") String end, @Param("type") Integer type);
+
+    List<Rank> selectEntranceSellRankByYearBetween(@Param("start") String start, @Param("end") String end, @Param("type") Integer type);
 
 }
 
