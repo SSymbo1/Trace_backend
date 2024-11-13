@@ -3,6 +3,7 @@ package edu.hrbu.trace_backend.service.impl;
 import cn.hutool.core.date.DateTime;
 import edu.hrbu.trace_backend.entity.OnlineContext;
 import edu.hrbu.trace_backend.entity.Result;
+import edu.hrbu.trace_backend.entity.enums.Format;
 import edu.hrbu.trace_backend.entity.enums.Operate;
 import edu.hrbu.trace_backend.entity.po.EnterpriseOperate;
 import edu.hrbu.trace_backend.service.EnterpriseOperateService;
@@ -30,7 +31,7 @@ public class EnterpriseOperateServiceImpl implements EnterpriseOperateService {
         EnterpriseOperate record = null;
         record = EnterpriseOperate.builder()
                 .oid(currentAccountId)
-                .operateTime(operateTime.toString("yyyy-MM-dd HH:mm:ss")).build();
+                .operateTime(operateTime.toString(Format.FULL_TIME_FORMAT.getValue())).build();
         if (Objects.equals(returnResult.getData().get("createAid"), currentAccountId)) {
             record.setEid(1);
             record.setOperate(Operate.ENTERPRISE_ADD_FAIL.getValue());
@@ -52,7 +53,7 @@ public class EnterpriseOperateServiceImpl implements EnterpriseOperateService {
                 .oid(currentAccountId)
                 .operate(Operate.ENTERPRISE_EDIT.getValue())
                 .eid((Integer) returnResult.getData().get("createAid"))
-                .operateTime(operateTime.toString("yyyy-MM-dd HH:mm:ss")).build();
+                .operateTime(operateTime.toString(Format.FULL_TIME_FORMAT.getValue())).build();
         enterpriseOperateMapper.insert(record);
         log.info("已记录敏感操作:修改企业信息");
     }

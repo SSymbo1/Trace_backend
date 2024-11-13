@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import edu.hrbu.trace_backend.entity.OnlineContext;
 import edu.hrbu.trace_backend.entity.Result;
 import edu.hrbu.trace_backend.entity.dto.Decode;
+import edu.hrbu.trace_backend.entity.enums.Format;
 import edu.hrbu.trace_backend.entity.enums.Message;
 import edu.hrbu.trace_backend.entity.po.*;
 import edu.hrbu.trace_backend.mapper.*;
@@ -75,7 +76,7 @@ public class CommonDataServiceImpl implements CommonDataService {
                 DateField.DAY_OF_YEAR
         );
         List<String> timeRange = new ArrayList<>();
-        range.forEach(time -> timeRange.add(time.toString("yyyy-MM-dd")));
+        range.forEach(time -> timeRange.add(time.toString(Format.FULL_DATE_FORMAT.getValue())));
         Map<String, Object> data = new HashMap<>();
         List<String> timeData = new ArrayList<>();
         List<Integer> histogramData = new ArrayList<>();

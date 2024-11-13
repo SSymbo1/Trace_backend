@@ -10,6 +10,10 @@ import lombok.ToString;
 // 通讯消息枚举
 public enum Message {
 
+    GET_STRUCT_REPORT_SUCCESS("获取行业结构分析报告成功!"),
+    STRUCT_REPORT_SUCCESS("行业结构分析报告生成成功!"),
+    STRUCT_REPORT_FAIL("行业结构分析报告生成失败!"),
+    ALREADY_HAVE_REPORT("该时间段存在生成的报告!"),
     DELETE_IMPORTANT_BATCH("批量删除已执行但有错误项"),
     DELETE_IMPORTANT_FAIL("删除重点企业信息失败!"),
     DELETE_IMPORTANT("删除重点企业信息成功!"),
@@ -98,7 +102,7 @@ public enum Message {
     GET_SEGMENT_MENUE_SUCCESS("获取追溯环节管理菜单成功!"),
     GET_ANALYSIS_MENUE_SUCCESS("获取追溯数据分析菜单成功!"),
     GET_SUBJECT_MENUE_SUCCESS("获取追溯主体管理菜单成功!"),
-    SERVER_ERROR("出现未知错误!"),
+    SERVER_ERROR("出现未知错误,请联系系统管理人员或服务提供商！"),
     SERVER_IO_ERROR("服务器读写操作错误!"),
     LOGIN_ERROR("登录失效，请重新登录!"),
     EXPIRE_TOKEN("token已过期!"),

@@ -4,8 +4,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import edu.hrbu.trace_backend.entity.dto.analysis.Rank;
 import edu.hrbu.trace_backend.entity.po.Entrance;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import edu.hrbu.trace_backend.entity.po.EntranceClassCount;
-import edu.hrbu.trace_backend.entity.po.EntranceCount;
+import edu.hrbu.trace_backend.entity.dto.analysis.EntranceClassCount;
+import edu.hrbu.trace_backend.entity.dto.analysis.EntranceCount;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

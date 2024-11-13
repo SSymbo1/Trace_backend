@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import edu.hrbu.trace_backend.entity.Result;
 import edu.hrbu.trace_backend.entity.dto.applet.TraceProduct;
 import edu.hrbu.trace_backend.entity.enums.Exception;
+import edu.hrbu.trace_backend.entity.enums.Format;
 import edu.hrbu.trace_backend.entity.enums.Message;
 import edu.hrbu.trace_backend.entity.po.*;
 import edu.hrbu.trace_backend.global.exception.CompareException;
@@ -74,7 +75,7 @@ public class AppletServiceImpl implements AppletService {
             ).getName());
             traceData.add(data);
         });
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat(Format.FULL_TIME_FORMAT.getValue());
         traceData.sort((o1, o2) -> {
             Date oneData = null;
             Date anotherData = null;

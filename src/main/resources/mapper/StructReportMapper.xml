@@ -7,28 +7,44 @@
     <select id="selectStructReportList" resultType="edu.hrbu.trace_backend.entity.po.StructReport">
         SELECT
         <if test="type == 'StructDay'">
-            STR_TO_DATE(date,'%Y-%m-%d') AS date,
+            date ,
             '日报告' AS `range`
         </if>
         <if test="type == 'StructMonth'">
-            STR_TO_DATE(date,'%Y-%m') AS date,
+            date,
             '月度报告' AS `range`
         </if>
         <if test="type == 'StructYear'">
-            STR_TO_DATE(date,'%Y') AS date,
+            date,
             '年度报告' AS `range`
         </if>
         FROM struct_report
         WHERE
         <if test="type == 'StructDay'">
-            STR_TO_DATE(date,'%Y-%m-%d') = STR_TO_DATE(#{date},'%Y-%m-%d') AND type = 0
+            `date` = #{date} AND type = 0
         </if>
         <if test="type == 'StructMonth'">
-            STR_TO_DATE(date,'%Y-%m') = STR_TO_DATE(#{date},'%Y-%m') AND type = 1
+            `date` = #{date} AND type = 1
         </if>
         <if test="type == 'StructYear'">
-            STR_TO_DATE(date,'%Y') = STR_TO_DATE(#{date},'%Y') AND type = 2
+            `date` = #{date} AND type = 2
         </if>
+    </select>
+
+    <select id="selectStructReportCount" resultType="java.lang.Integer">
+        SELECT COUNT(sid)
+        FROM struct_report
+        <where>
+            <if test="type == 'DayStruct'">
+                DATE_FORMAT(`date`, '%Y-%m-%d') = #{date} AND `type` = 0
+            </if>
+            <if test="type == 'MonthStruct'">
+                DATE_FORMAT(`date`, '%Y-%m-%d') = #{date} AND `type` = 1
+            </if>
+            <if test="type == 'YearStruct'">
+                DATE_FORMAT(`date`, '%Y-%m-%d') = #{date} AND `type` = 2
+            </if>
+        </where>
     </select>
 
 </mapper>

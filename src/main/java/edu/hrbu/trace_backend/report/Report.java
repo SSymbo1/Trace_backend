@@ -7,6 +7,6 @@ public interface Report {
 
     Result generateReport(ReportQuery query);
 
-    void reviewReport(ReportQuery query);
+    Result reviewReport(ReportQuery query);
 
 }

@@ -1,14 +1,13 @@
 package edu.hrbu.trace_backend.strategy.impl.supermarket;
 
 import cn.hutool.core.date.DateUtil;
-import edu.hrbu.trace_backend.entity.dto.analysis.MarketQuery;
-import edu.hrbu.trace_backend.entity.dto.analysis.ProvinceData;
-import edu.hrbu.trace_backend.entity.dto.analysis.ProvinceValue;
-import edu.hrbu.trace_backend.entity.dto.analysis.Supermarket;
+import edu.hrbu.trace_backend.entity.dto.analysis.*;
 import edu.hrbu.trace_backend.entity.dto.analysis.base.Result;
 import edu.hrbu.trace_backend.entity.enums.EnterpriseType;
+import edu.hrbu.trace_backend.entity.enums.Format;
 import edu.hrbu.trace_backend.entity.enums.Province;
 import edu.hrbu.trace_backend.entity.po.*;
+import edu.hrbu.trace_backend.entity.po.Enterprise;
 import edu.hrbu.trace_backend.mapper.*;
 import edu.hrbu.trace_backend.strategy.SupermarketAnalysisStrategy;
 import org.springframework.stereotype.Component;
@@ -201,8 +200,8 @@ public class DaySupermarketOperation implements SupermarketAnalysisStrategy {
         List<Entrance> entrances = entranceMapper.selectAnalysisEntranceInfoByYearBetween(
                 query.getBefore(), query.getNow(), EnterpriseType.SHOP.getValue()
         );
-        Date oneMonthBefore = DateUtil.parse(query.getBefore(), "yyyy-MM-dd");
-        Date oneMonthNow = DateUtil.parse(query.getNow(), "yyyy-MM-dd");
+        Date oneMonthBefore = DateUtil.parse(query.getBefore(), Format.FULL_DATE_FORMAT.getValue());
+        Date oneMonthNow = DateUtil.parse(query.getNow(), Format.FULL_DATE_FORMAT.getValue());
         List<Entrance> beforeEntrances = entranceMapper.selectAnalysisEntranceInfoByYearBetween(
                 DateUtil.offsetMonth(oneMonthBefore, -1).toString(),
                 DateUtil.offsetMonth(oneMonthNow, -1).toString(),
@@ -221,8 +220,8 @@ public class DaySupermarketOperation implements SupermarketAnalysisStrategy {
         List<Approach> approaches = approachMapper.selectAnalysisApproachInfoByYearBetween(
                 query.getBefore(), query.getNow(), EnterpriseType.SHOP.getValue()
         );
-        Date oneMonthBefore = DateUtil.parse(query.getBefore(), "yyyy-MM-dd");
-        Date oneMonthNow = DateUtil.parse(query.getNow(), "yyyy-MM-dd");
+        Date oneMonthBefore = DateUtil.parse(query.getBefore(), Format.FULL_DATE_FORMAT.getValue());
+        Date oneMonthNow = DateUtil.parse(query.getNow(), Format.FULL_DATE_FORMAT.getValue());
         List<Approach> beforeApproaches = approachMapper.selectAnalysisApproachInfoByYearBetween(
                 DateUtil.offsetMonth(oneMonthBefore, -1).toString(),
                 DateUtil.offsetMonth(oneMonthNow, -1).toString(),

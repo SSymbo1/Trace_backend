@@ -1,4 +1,4 @@
-package edu.hrbu.trace_backend.entity.po;
+package edu.hrbu.trace_backend.entity.dto.analysis;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,10 +11,9 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class EntranceClassCount {
+public class ApproachCount {
     private String date;
-    private Integer fresh;
-    private Integer product;
-    private Integer drink;
-    private Integer food;
+    private Integer total;
+    private Double yoy;
+    private Double qoq;
 }

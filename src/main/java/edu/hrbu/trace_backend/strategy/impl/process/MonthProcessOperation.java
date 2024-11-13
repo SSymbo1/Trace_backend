@@ -2,12 +2,10 @@ package edu.hrbu.trace_backend.strategy.impl.process;
 
 import edu.hrbu.trace_backend.entity.dto.analysis.Process;
 import edu.hrbu.trace_backend.entity.dto.analysis.ProcessQuery;
-import edu.hrbu.trace_backend.entity.dto.analysis.Rank;
 import edu.hrbu.trace_backend.entity.dto.analysis.base.Result;
 import edu.hrbu.trace_backend.entity.enums.EnterpriseType;
-import edu.hrbu.trace_backend.entity.po.EntranceClassCount;
+import edu.hrbu.trace_backend.entity.dto.analysis.EntranceClassCount;
 import edu.hrbu.trace_backend.mapper.EntranceMapper;
-import edu.hrbu.trace_backend.strategy.ProcessAnalysisStrategy;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;

@@ -4,6 +4,7 @@ import cn.hutool.core.date.DateUtil;
 import edu.hrbu.trace_backend.entity.dto.analysis.*;
 import edu.hrbu.trace_backend.entity.dto.analysis.base.Result;
 import edu.hrbu.trace_backend.entity.enums.EnterpriseType;
+import edu.hrbu.trace_backend.entity.enums.Format;
 import edu.hrbu.trace_backend.entity.enums.Province;
 import edu.hrbu.trace_backend.entity.po.*;
 import edu.hrbu.trace_backend.entity.po.Enterprise;
@@ -135,8 +136,8 @@ public class MonthBatchOperation extends DayBatchOperation {
         List<Entrance> entrances = entranceMapper.selectAnalysisEntranceInfoByYearBetween(
                 query.getBefore(), query.getNow(), EnterpriseType.BATCH.getValue()
         );
-        Date oneMonthBefore = DateUtil.parse(query.getBefore(), "yyyy-MM-dd");
-        Date oneMonthNow = DateUtil.parse(query.getNow(), "yyyy-MM-dd");
+        Date oneMonthBefore = DateUtil.parse(query.getBefore(), Format.FULL_DATE_FORMAT.getValue());
+        Date oneMonthNow = DateUtil.parse(query.getNow(), Format.FULL_DATE_FORMAT.getValue());
         List<Entrance> beforeEntrances = entranceMapper.selectAnalysisEntranceInfoByYearBetween(
                 DateUtil.offsetMonth(oneMonthBefore, -12).toString(),
                 DateUtil.offsetMonth(oneMonthNow, -12).toString(),
@@ -151,8 +152,8 @@ public class MonthBatchOperation extends DayBatchOperation {
         List<Approach> approaches = approachMapper.selectAnalysisApproachInfoByYearBetween(
                 query.getBefore(), query.getNow(),
                 EnterpriseType.BATCH.getValue());
-        Date oneMonthBefore = DateUtil.parse(query.getBefore(), "yyyy-MM-dd");
-        Date oneMonthNow = DateUtil.parse(query.getNow(), "yyyy-MM-dd");
+        Date oneMonthBefore = DateUtil.parse(query.getBefore(), Format.FULL_DATE_FORMAT.getValue());
+        Date oneMonthNow = DateUtil.parse(query.getNow(), Format.FULL_DATE_FORMAT.getValue());
         List<Approach> beforeApproaches = approachMapper.selectAnalysisApproachInfoByYearBetween(
                 DateUtil.offsetMonth(oneMonthBefore, -12).toString(),
                 DateUtil.offsetMonth(oneMonthNow, -12).toString(),

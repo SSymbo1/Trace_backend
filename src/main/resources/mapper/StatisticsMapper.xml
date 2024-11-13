@@ -109,4 +109,273 @@
                (SELECT COUNT(*) FROM entrance)
     </select>
 
+    <select id="selectReportStatisticsCountByCondition" resultType="java.lang.Integer">
+        SELECT (
+        ( SELECT COUNT(approach.aid)
+        FROM approach
+        JOIN enterprise ON enterprise.eid = approach.eid
+        <where>
+            <if test="condition == 'DayStruct' or condition == 'DayTrace'">
+                DATE_FORMAT(approach.business_time,'%Y-%m-%d') = #{date} AND enterprise.type = #{type}
+                <if test="eid != null">AND enterprise.eid=#{eid}</if>
+            </if>
+            <if test="condition == 'MonthStruct' or condition == 'MonthTrace'">
+                DATE_FORMAT(approach.business_time,'%Y-%m') = #{date} AND enterprise.type = #{type}
+                <if test="eid != null">AND enterprise.eid=#{eid}</if>
+            </if>
+            <if test="condition == 'YearStruct' or condition == 'YearTrace'">
+                DATE_FORMAT(approach.business_time,'%Y') = #{date} AND enterprise.type = #{type}
+                <if test="eid != null">AND enterprise.eid=#{eid}</if>
+            </if>
+        </where>
+        )+
+        (SELECT COUNT(entrance.eid)
+        FROM entrance
+        JOIN enterprise ON enterprise.eid = entrance.bid
+        <where>
+            <if test="condition == 'DayStruct' or condition == 'DayTrace'">
+                DATE_FORMAT(entrance.business_time,'%Y-%m-%d') = #{date} AND enterprise.type = #{type}
+                <if test="eid != null">AND enterprise.eid=#{eid}</if>
+            </if>
+            <if test="condition == 'MonthStruct' or condition == 'MonthTrace'">
+                DATE_FORMAT(entrance.business_time,'%Y-%m') = #{date} AND enterprise.type = #{type}
+                <if test="eid != null">AND enterprise.eid=#{eid}</if>
+            </if>
+            <if test="condition == 'YearStruct' or condition == 'YearTrace'">
+                DATE_FORMAT(entrance.business_time,'%Y') = #{date} AND enterprise.type = #{type}
+                <if test="eid != null">AND enterprise.eid=#{eid}</if>
+            </if>
+        </where>
+        )+
+        (SELECT COUNT(product_record.rid)
+        FROM product_record
+        JOIN product ON product.pid = product_record.pid
+        JOIN enterprise ON enterprise.eid = product.eid
+        <where>
+            <if test="condition == 'DayStruct' or condition == 'DayTrace'">
+                DATE_FORMAT(product_record.process_time,'%Y-%m-%d') = #{date} AND enterprise.type = #{type}
+                <if test="eid != null">AND enterprise.eid=#{eid}</if>
+            </if>
+            <if test="condition == 'MonthStruct' or condition == 'MonthTrace'">
+                DATE_FORMAT(product_record.process_time,'%Y-%m') = #{date} AND enterprise.type = #{type}
+                <if test="eid != null">AND enterprise.eid=#{eid}</if>
+            </if>
+            <if test="condition == 'YearStruct' or condition == 'YearTrace'">
+                DATE_FORMAT(product_record.process_time,'%Y') = #{date} AND enterprise.type = #{type}
+                <if test="eid != null">AND enterprise.eid=#{eid}</if>
+            </if>
+        </where>
+        )+
+        (SELECT COUNT(pr.rid)
+        FROM product_record pr
+        JOIN product ON product.pid = pr.pid
+        JOIN enterprise ON enterprise.eid = product.eid
+        <where>
+            <if test="condition == 'DayStruct' or condition == 'DayTrace'">
+                DATE_FORMAT(pr.insert_time,'%Y-%m-%d') = #{date} AND enterprise.type = #{type}
+                <if test="eid != null">AND enterprise.eid=#{eid}</if>
+            </if>
+            <if test="condition == 'MonthStruct' or condition == 'MonthTrace'">
+                DATE_FORMAT(pr.insert_time,'%Y-%m') = #{date} AND enterprise.type = #{type}
+                <if test="eid != null">AND enterprise.eid=#{eid}</if>
+            </if>
+            <if test="condition == 'YearStruct' or condition == 'YearTrace'">
+                DATE_FORMAT(pr.insert_time,'%Y') = #{date} AND enterprise.type = #{type}
+                <if test="eid != null">AND enterprise.eid=#{eid}</if>
+            </if>
+        </where>
+        )
+        )
+    </select>
+
+    <select id="selectEnterpriseTypeCount" resultType="java.lang.Integer">
+        SELECT COUNT(eid)
+        FROM enterprise
+        WHERE type = #{type}
+    </select>
+
+    <select id="selectReportStatisticsYOYByCondition" resultType="java.lang.Integer">
+        SELECT (
+        ( SELECT COUNT(approach.aid)
+        FROM approach
+        JOIN enterprise ON enterprise.eid = approach.eid
+        <where>
+            <if test="condition == 'DayStruct' or condition == 'DayTrace'">
+                DATE_FORMAT(approach.business_time, '%Y-%m-%d') = DATE_FORMAT(#{date} - INTERVAL 1 YEAR, '%Y-%m-%d')
+                AND enterprise.type = #{type}
+                <if test="eid != null">AND enterprise.eid=#{eid}</if>
+            </if>
+            <if test="condition == 'MonthStruct' or condition == 'MonthTrace'">
+                DATE_FORMAT(approach.business_time, '%Y-%m') = DATE_FORMAT(#{date} - INTERVAL 1 YEAR, '%Y-%m')
+                AND enterprise.type = #{type}
+                <if test="eid != null">AND enterprise.eid=#{eid}</if>
+            </if>
+            <if test="condition == 'YearStruct' or condition == 'YearTrace'">
+                DATE_FORMAT(approach.business_time, '%Y') = DATE_FORMAT(#{date} - INTERVAL 1 YEAR, '%Y')
+                AND enterprise.type = #{type}
+                <if test="eid != null">AND enterprise.eid=#{eid}</if>
+            </if>
+        </where>
+        )+
+        (SELECT COUNT(entrance.eid)
+        FROM entrance
+        JOIN enterprise ON enterprise.eid = entrance.bid
+        <where>
+            <if test="condition == 'DayStruct' or condition == 'DayTrace'">
+                DATE_FORMAT(entrance.business_time, '%Y-%m-%d') = DATE_FORMAT(#{date} - INTERVAL 1 YEAR, '%Y-%m-%d')
+                AND enterprise.type = #{type}
+                <if test="eid != null">AND enterprise.eid=#{eid}</if>
+            </if>
+            <if test="condition == 'MonthStruct' or condition == 'MonthTrace'">
+                DATE_FORMAT(entrance.business_time, '%Y-%m') = DATE_FORMAT(#{date} - INTERVAL 1 YEAR, '%Y-%m')
+                AND enterprise.type = #{type}
+                <if test="eid != null">AND enterprise.eid=#{eid}</if>
+            </if>
+            <if test="condition == 'YearStruct' or condition == 'YearTrace'">
+                DATE_FORMAT(entrance.business_time, '%Y') = DATE_FORMAT(#{date} - INTERVAL 1 YEAR, '%Y')
+                AND enterprise.type = #{type}
+                <if test="eid != null">AND enterprise.eid=#{eid}</if>
+            </if>
+        </where>
+        )+
+        (SELECT COUNT(product_record.rid)
+        FROM product_record
+        JOIN product ON product.pid = product_record.pid
+        JOIN enterprise ON enterprise.eid = product.eid
+        <where>
+            <if test="condition == 'DayStruct' or condition == 'DayTrace'">
+                DATE_FORMAT(product_record.process_time, '%Y-%m-%d') = DATE_FORMAT(#{date} - INTERVAL 1 YEAR,
+                '%Y-%m-%d')
+                AND enterprise.type = #{type}
+                <if test="eid != null">AND enterprise.eid=#{eid}</if>
+            </if>
+            <if test="condition == 'MonthStruct' or condition == 'MonthTrace'">
+                DATE_FORMAT(product_record.process_time, '%Y-%m') = DATE_FORMAT(#{date} - INTERVAL 1 YEAR, '%Y-%m')
+                AND enterprise.type = #{type}
+                <if test="eid != null">AND enterprise.eid=#{eid}</if>
+            </if>
+            <if test="condition == 'YearStruct' or condition == 'YearTrace'">
+                DATE_FORMAT(product_record.process_time, '%Y') = DATE_FORMAT(#{date} - INTERVAL 1 YEAR, '%Y')
+                AND enterprise.type = #{type}
+                <if test="eid != null">AND enterprise.eid=#{eid}</if>
+            </if>
+        </where>
+        )+
+        (SELECT COUNT(pr.rid)
+        FROM product_record pr
+        JOIN product ON product.pid = pr.pid
+        JOIN enterprise ON enterprise.eid = product.eid
+        <where>
+            <if test="condition == 'DayStruct' or condition == 'DayTrace'">
+                DATE_FORMAT(pr.insert_time, '%Y-%m-%d') = DATE_FORMAT(#{date} - INTERVAL 1 YEAR, '%Y-%m-%d')
+                AND enterprise.type = #{type}
+                <if test="eid != null">AND enterprise.eid=#{eid}</if>
+            </if>
+            <if test="condition == 'MonthStruct' or condition == 'MonthTrace'">
+                DATE_FORMAT(pr.insert_time, '%Y-%m') = DATE_FORMAT(#{date} - INTERVAL 1 YEAR, '%Y-%m')
+                AND enterprise.type = #{type}
+                <if test="eid != null">AND enterprise.eid=#{eid}</if>
+            </if>
+            <if test="condition == 'YearStruct' or condition == 'YearTrace'">
+                DATE_FORMAT(pr.insert_time, '%Y') = DATE_FORMAT(#{date} - INTERVAL 1 YEAR, '%Y')
+                AND enterprise.type = #{type}
+                <if test="eid != null">AND enterprise.eid=#{eid}</if>
+            </if>
+        </where>
+        )
+        )
+    </select>
+
+    <select id="selectReportStatisticsQOQByCondition" resultType="java.lang.Integer">
+        SELECT (
+        ( SELECT COUNT(approach.aid)
+        FROM approach
+        JOIN enterprise ON enterprise.eid = approach.eid
+        <where>
+            <if test="condition == 'DayStruct' or condition == 'DayTrace'">
+                DATE_FORMAT(approach.business_time, '%Y-%m-%d') = DATE_FORMAT(#{date} - INTERVAL 1 MONTH, '%Y-%m-%d')
+                AND enterprise.type = #{type}
+                <if test="eid != null">AND enterprise.eid=#{eid}</if>
+            </if>
+            <if test="condition == 'MonthStruct' or condition == 'MonthTrace'">
+                DATE_FORMAT(approach.business_time, '%Y-%m') = DATE_FORMAT(#{date} - INTERVAL 1 MONTH, '%Y-%m')
+                AND enterprise.type = #{type}
+                <if test="eid != null">AND enterprise.eid=#{eid}</if>
+            </if>
+            <if test="condition == 'YearStruct' or condition == 'YearTrace'">
+                DATE_FORMAT(approach.business_time, '%Y') = DATE_FORMAT(#{date} - INTERVAL 1 YEAR, '%Y')
+                AND enterprise.type = #{type}
+                <if test="eid != null">AND enterprise.eid=#{eid}</if>
+            </if>
+        </where>
+        )+
+        (SELECT COUNT(entrance.eid)
+        FROM entrance
+        JOIN enterprise ON enterprise.eid = entrance.bid
+        <where>
+            <if test="condition == 'DayStruct' or condition == 'DayTrace'">
+                DATE_FORMAT(entrance.business_time, '%Y-%m-%d') = DATE_FORMAT(#{date} - INTERVAL 1 MONTH, '%Y-%m-%d')
+                AND enterprise.type = #{type}
+                <if test="eid != null">AND enterprise.eid=#{eid}</if>
+            </if>
+            <if test="condition == 'MonthStruct' or condition == 'MonthTrace'">
+                DATE_FORMAT(entrance.business_time, '%Y-%m') = DATE_FORMAT(#{date} - INTERVAL 1 MONTH, '%Y-%m')
+                AND enterprise.type = #{type}
+                <if test="eid != null">AND enterprise.eid=#{eid}</if>
+            </if>
+            <if test="condition == 'YearStruct' or condition == 'YearTrace'">
+                DATE_FORMAT(entrance.business_time, '%Y') = DATE_FORMAT(#{date} - INTERVAL 1 YEAR, '%Y')
+                AND enterprise.type = #{type}
+                <if test="eid != null">AND enterprise.eid=#{eid}</if>
+            </if>
+        </where>
+        )+
+        (SELECT COUNT(product_record.rid)
+        FROM product_record
+        JOIN product ON product.pid = product_record.pid
+        JOIN enterprise ON enterprise.eid = product.eid
+        <where>
+            <if test="condition == 'DayStruct' or condition == 'DayTrace'">
+                DATE_FORMAT(product_record.process_time, '%Y-%m-%d') = DATE_FORMAT(#{date} - INTERVAL 1 MONTH,
+                '%Y-%m-%d')
+                AND enterprise.type = #{type}
+                <if test="eid != null">AND enterprise.eid=#{eid}</if>
+            </if>
+            <if test="condition == 'MonthStruct' or condition == 'MonthTrace'">
+                DATE_FORMAT(product_record.process_time, '%Y-%m') = DATE_FORMAT(#{date} - INTERVAL 1 MONTH, '%Y-%m')
+                AND enterprise.type = #{type}
+                <if test="eid != null">AND enterprise.eid=#{eid}</if>
+            </if>
+            <if test="condition == 'YearStruct' or condition == 'YearTrace'">
+                DATE_FORMAT(product_record.process_time, '%Y') = DATE_FORMAT(#{date} - INTERVAL 1 YEAR, '%Y')
+                AND enterprise.type = #{type}
+                <if test="eid != null">AND enterprise.eid=#{eid}</if>
+            </if>
+        </where>
+        )+
+        (SELECT COUNT(pr.rid)
+        FROM product_record pr
+        JOIN product ON product.pid = pr.pid
+        JOIN enterprise ON enterprise.eid = product.eid
+        <where>
+            <if test="condition == 'DayStruct' or condition == 'DayTrace'">
+                DATE_FORMAT(pr.insert_time, '%Y-%m-%d') = DATE_FORMAT(#{date} - INTERVAL 1 MONTH, '%Y-%m-%d')
+                AND enterprise.type = #{type}
+                <if test="eid != null">AND enterprise.eid=#{eid}</if>
+            </if>
+            <if test="condition == 'MonthStruct' or condition == 'MonthTrace'">
+                DATE_FORMAT(pr.insert_time, '%Y-%m') = DATE_FORMAT(#{date} - INTERVAL 1 MONTH, '%Y-%m')
+                AND enterprise.type = #{type}
+                <if test="eid != null">AND enterprise.eid=#{eid}</if>
+            </if>
+            <if test="condition == 'YearStruct' or condition == 'YearTrace'">
+                DATE_FORMAT(pr.insert_time, '%Y') = DATE_FORMAT(#{date} - INTERVAL 1 YEAR, '%Y')
+                AND enterprise.type = #{type}
+                <if test="eid != null">AND enterprise.eid=#{eid}</if>
+            </if>
+        </where>
+        )
+        )
+    </select>
+
 </mapper>

@@ -10,6 +10,7 @@ import edu.hrbu.trace_backend.entity.dto.subject.Product;
 import edu.hrbu.trace_backend.entity.dto.subject.ProductQuery;
 import edu.hrbu.trace_backend.entity.dto.subject.SupplierQuery;
 import edu.hrbu.trace_backend.entity.dto.subject.VendorsQuery;
+import edu.hrbu.trace_backend.entity.enums.Format;
 import edu.hrbu.trace_backend.entity.enums.Message;
 import edu.hrbu.trace_backend.entity.po.ProductRecord;
 import edu.hrbu.trace_backend.entity.po.Supplier;
@@ -88,7 +89,7 @@ public class SubjectServiceImpl implements SubjectService {
                 .aid(currentAccountId)
                 .num(product.getNum())
                 .processTime("")
-                .insertTime(localTime.toString("yyyy-MM-dd HH:mm:ss"))
+                .insertTime(localTime.toString(Format.FULL_TIME_FORMAT.getValue()))
                 .importType(1).build();
         int insertRecordStatue = productRecordMapper.insert(insertProductRecord);
         return insertRecordStatue > 0 && insertProductStatue > 0 ?
@@ -112,7 +113,7 @@ public class SubjectServiceImpl implements SubjectService {
         ProductRecord updateProductRecord = ProductRecord.builder()
                 .aid(currentAccountId)
                 .num(product.getNum())
-                .insertTime(localTime.toString("yyyy-MM-dd HH:mm:ss"))
+                .insertTime(localTime.toString(Format.FULL_TIME_FORMAT.getValue()))
                 .build();
         int updateProductStatue = productMapper.updateById(updateProduct);
         int updateStatue = productRecordMapper
@@ -143,7 +144,7 @@ public class SubjectServiceImpl implements SubjectService {
             ProductRecord updateProductRecord = ProductRecord.builder()
                     .approver(currentAccountId)
                     .statue(product.getStatue())
-                    .processTime(localTime.toString("yyyy-MM-dd HH:mm:ss")).build();
+                    .processTime(localTime.toString(Format.FULL_TIME_FORMAT.getValue())).build();
             productRecordMapper.update(
                     updateProductRecord,
                     new QueryWrapper<ProductRecord>().eq("pid", product.getPid())
@@ -159,7 +160,7 @@ public class SubjectServiceImpl implements SubjectService {
         ProductRecord updateProductRecord = ProductRecord.builder()
                 .approver(currentAccountId)
                 .statue(1)
-                .processTime(localTime.toString("yyyy-MM-dd HH:mm:ss")).build();
+                .processTime(localTime.toString(Format.FULL_TIME_FORMAT.getValue())).build();
         int updateStatue = productRecordMapper.update(
                 updateProductRecord,
                 new QueryWrapper<ProductRecord>().eq("pid", product.getPid())
@@ -176,7 +177,7 @@ public class SubjectServiceImpl implements SubjectService {
         ProductRecord updateProductRecord = ProductRecord.builder()
                 .approver(currentAccountId)
                 .statue(2)
-                .processTime(localTime.toString("yyyy-MM-dd HH:mm:ss")).build();
+                .processTime(localTime.toString(Format.FULL_TIME_FORMAT.getValue())).build();
         int updateStatue = productRecordMapper.update(
                 updateProductRecord,
                 new QueryWrapper<ProductRecord>().eq("pid", product.getPid())

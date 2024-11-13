@@ -11,8 +11,8 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class ReportQuery {
-    private String date;
-    private String type;
-    private String report;
+public class EnterpriseTypeCount {
+    private String name;
+    private Integer normal;
+    private Integer focus;
 }

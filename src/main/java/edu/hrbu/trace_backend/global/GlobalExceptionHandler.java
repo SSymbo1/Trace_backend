@@ -143,12 +143,14 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = IORuntimeException.class)
     public Result IOException(Exception exception) {
         log.error("服务器读写操作错误：{}", exception.getMessage());
+        log.error(exception.getMessage(), exception);
         return Result.fail(Message.SERVER_IO_ERROR.getValue()).data("code", Statue.FAIL.getValue());
     }
 
     @ExceptionHandler(value = Exception.class)
     public Result unknownException(Exception exception) {
         log.error("服务器出现错误：{}", exception.getMessage());
+        log.error(exception.getMessage(), exception);
         return Result.fail(Message.SERVER_ERROR.getValue()).data("code", Statue.FAIL.getValue());
     }
 }

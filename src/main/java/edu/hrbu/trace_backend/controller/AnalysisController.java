@@ -156,5 +156,23 @@ public class AnalysisController {
         return analysisService.requestGenerateStructReport(query);
     }
 
+    @GetMapping("/struct/report")
+    @ApiOperation(
+            value = "获取行业结构分析报告数据接口",
+            notes = "调用此接口后，根据提供得查询参数返回指定日期构建行业结构分析报告所需的数据"
+    )
+    Result getStructAnalysisReportData(ReportQuery query) {
+        return analysisService.requestGetStructReport(query);
+    }
+
+    @GetMapping("/trace")
+    @ApiOperation(
+            value = "获取追溯报告列表接口",
+            notes = "调用此接口后，根据提供的查询参数返回指定时间段的追溯报告列表"
+    )
+    Result getTraceDataList(ReportQuery query) {
+        return analysisService.requestGetTraceReportList(query);
+    }
+
 
 }

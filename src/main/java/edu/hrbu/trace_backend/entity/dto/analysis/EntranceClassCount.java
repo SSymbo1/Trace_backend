@@ -11,8 +11,10 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class ReportQuery {
+public class EntranceClassCount {
     private String date;
-    private String type;
-    private String report;
+    private Integer fresh;
+    private Integer product;
+    private Integer drink;
+    private Integer food;
 }

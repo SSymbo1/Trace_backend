@@ -1,4 +1,4 @@
-package edu.hrbu.trace_backend.entity.dto.analysis;
+package edu.hrbu.trace_backend.entity.po.json;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,8 +11,9 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class ReportQuery {
-    private String date;
+public class ReportEntrance {
+    private String name;
+    private String code;
     private String type;
-    private String report;
+    private String total;
 }

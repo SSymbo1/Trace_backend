@@ -16,6 +16,14 @@ public interface StatisticsMapper {
 
     Statistics selectStatisticsDataByTimeAndClassId(@Param("before") String before, @Param("now") String now, @Param("id") Integer classId);
 
+    Integer selectReportStatisticsCountByCondition(@Param("date") String date, @Param("condition") String condition, @Param("type") Integer type, @Param("eid") Integer eid);
+
+    Integer selectReportStatisticsYOYByCondition(@Param("date") String date, @Param("condition") String condition, @Param("type") Integer type, @Param("eid") Integer eid);
+
+    Integer selectReportStatisticsQOQByCondition(@Param("date") String date, @Param("condition") String condition, @Param("type") Integer type, @Param("eid") Integer eid);
+
     Integer selectTraceDataCount();
+
+    Integer selectEnterpriseTypeCount(@Param("type") Integer type);
 
 }

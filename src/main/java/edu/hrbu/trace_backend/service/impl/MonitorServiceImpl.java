@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import edu.hrbu.trace_backend.entity.Result;
 import edu.hrbu.trace_backend.entity.dto.monitor.InfoQuery;
 import edu.hrbu.trace_backend.entity.dto.monitor.SummaryQuery;
+import edu.hrbu.trace_backend.entity.enums.Format;
 import edu.hrbu.trace_backend.entity.enums.Message;
 import edu.hrbu.trace_backend.entity.po.Classification;
 import edu.hrbu.trace_backend.entity.po.MonitorData;
@@ -80,8 +81,8 @@ public class MonitorServiceImpl implements MonitorService {
             DateTime currentTime = new DateTime(DateTime.now());
             DateTime beforeTime = currentTime.offset(DateField.DAY_OF_MONTH, -15);
             currentTime = new DateTime(DateTime.now());
-            query.setNow(currentTime.toString("yyyy-MM-dd"));
-            query.setBefore(beforeTime.toString("yyyy-MM-dd"));
+            query.setNow(currentTime.toString(Format.FULL_DATE_FORMAT.getValue()));
+            query.setBefore(beforeTime.toString(Format.FULL_DATE_FORMAT.getValue()));
         }
         int freshNode = statisticsMapper.selectMonitorNodeHistogramDataByTimeBetween(
                 query.getBefore(), query.getNow(), 1
@@ -126,8 +127,8 @@ public class MonitorServiceImpl implements MonitorService {
             DateTime currentTime = new DateTime(DateTime.now());
             DateTime beforeTime = currentTime.offset(DateField.DAY_OF_MONTH, -15);
             currentTime = new DateTime(DateTime.now());
-            query.setNow(currentTime.toString("yyyy-MM-dd"));
-            query.setBefore(beforeTime.toString("yyyy-MM-dd"));
+            query.setNow(currentTime.toString(Format.FULL_DATE_FORMAT.getValue()));
+            query.setBefore(beforeTime.toString(Format.FULL_DATE_FORMAT.getValue()));
         }
         int freshNode = statisticsMapper.selectMonitorNodeHistogramDataByTimeBetween(
                 query.getBefore(), query.getNow(), 1
@@ -155,8 +156,8 @@ public class MonitorServiceImpl implements MonitorService {
             DateTime currentTime = new DateTime(DateTime.now());
             DateTime beforeTime = currentTime.offset(DateField.DAY_OF_MONTH, -15);
             currentTime = new DateTime(DateTime.now());
-            query.setNow(currentTime.toString("yyyy-MM-dd"));
-            query.setBefore(beforeTime.toString("yyyy-MM-dd"));
+            query.setNow(currentTime.toString(Format.FULL_DATE_FORMAT.getValue()));
+            query.setBefore(beforeTime.toString(Format.FULL_DATE_FORMAT.getValue()));
         }
         Map<String, Object> freshNode = new HashMap<>();
         Map<String, Object> processNode = new HashMap<>();
@@ -194,8 +195,8 @@ public class MonitorServiceImpl implements MonitorService {
             DateTime currentTime = new DateTime(DateTime.now());
             DateTime beforeTime = currentTime.offset(DateField.DAY_OF_MONTH, -15);
             currentTime = new DateTime(DateTime.now());
-            query.setNow(currentTime.toString("yyyy-MM-dd"));
-            query.setBefore(beforeTime.toString("yyyy-MM-dd"));
+            query.setNow(currentTime.toString(Format.FULL_DATE_FORMAT.getValue()));
+            query.setBefore(beforeTime.toString(Format.FULL_DATE_FORMAT.getValue()));
         }
         Integer classId = classificationMapper.selectOne(
                 new QueryWrapper<Classification>().eq("name", query.getClassName())
@@ -221,8 +222,8 @@ public class MonitorServiceImpl implements MonitorService {
             DateTime currentTime = new DateTime(DateTime.now());
             DateTime beforeTime = currentTime.offset(DateField.DAY_OF_MONTH, -15);
             currentTime = new DateTime(DateTime.now());
-            query.setNow(currentTime.toString("yyyy-MM-dd"));
-            query.setBefore(beforeTime.toString("yyyy-MM-dd"));
+            query.setNow(currentTime.toString(Format.FULL_DATE_FORMAT.getValue()));
+            query.setBefore(beforeTime.toString(Format.FULL_DATE_FORMAT.getValue()));
         }
         Integer classId = classificationMapper.selectOne(
                 new QueryWrapper<Classification>().eq("name", query.getClassName())
@@ -270,7 +271,7 @@ public class MonitorServiceImpl implements MonitorService {
                     DateField.DAY_OF_YEAR
             );
             List<String> timeRange = new ArrayList<>();
-            range.forEach(time -> timeRange.add(time.toString("yyyy-MM-dd")));
+            range.forEach(time -> timeRange.add(time.toString(Format.FULL_DATE_FORMAT.getValue())));
             return timeRange;
         }
         List<DateTime> range = DateUtil.rangeToList(
@@ -279,7 +280,7 @@ public class MonitorServiceImpl implements MonitorService {
                 DateField.DAY_OF_YEAR
         );
         List<String> timeRange = new ArrayList<>();
-        range.forEach(time -> timeRange.add(time.toString("yyyy-MM-dd")));
+        range.forEach(time -> timeRange.add(time.toString(Format.FULL_DATE_FORMAT.getValue())));
         return timeRange;
     }
 

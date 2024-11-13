@@ -5,6 +5,7 @@ import edu.hrbu.trace_backend.entity.OnlineContext;
 import edu.hrbu.trace_backend.entity.Result;
 import edu.hrbu.trace_backend.entity.dto.system.Role;
 import edu.hrbu.trace_backend.entity.dto.system.RoleStatue;
+import edu.hrbu.trace_backend.entity.enums.Format;
 import edu.hrbu.trace_backend.entity.enums.Operate;
 import edu.hrbu.trace_backend.entity.po.RoleOperate;
 import edu.hrbu.trace_backend.service.RoleOperateService;
@@ -32,7 +33,7 @@ public class RoleOperateServiceImpl implements RoleOperateService {
         RoleOperate record = null;
         record = RoleOperate.builder()
                 .oid(currentAccountId)
-                .operateTime(operateTime.toString("yyyy-MM-dd HH:mm:ss")).build();
+                .operateTime(operateTime.toString(Format.FULL_TIME_FORMAT.getValue())).build();
         if (Objects.equals(returnResult.getData().get("createAid"), currentAccountId)) {
             record.setRid(1);
             record.setOperate(Operate.ROLE_ADD_FAIL.getValue());
@@ -54,7 +55,7 @@ public class RoleOperateServiceImpl implements RoleOperateService {
                 .oid(currentAccountId)
                 .rid(1)
                 .operate(Operate.DISABLE_ALL_ROLE.getValue())
-                .operateTime(operateTime.toString("yyyy-MM-dd HH:mm:ss")).build();
+                .operateTime(operateTime.toString(Format.FULL_TIME_FORMAT.getValue())).build();
         roleOperateMapper.insert(record);
         log.info("已记录敏感操作:禁用所有角色");
     }
@@ -70,7 +71,7 @@ public class RoleOperateServiceImpl implements RoleOperateService {
                 .oid(currentAccountId)
                 .rid(role.getRid())
                 .operate(Operate.ROLE_EDIT.getValue())
-                .operateTime(operateTime.toString("yyyy-MM-dd HH:mm:ss")).build();
+                .operateTime(operateTime.toString(Format.FULL_TIME_FORMAT.getValue())).build();
         roleOperateMapper.insert(record);
         log.info("已记录敏感操作:修改角色信息");
     }
@@ -85,7 +86,7 @@ public class RoleOperateServiceImpl implements RoleOperateService {
                 .oid(currentAccountId)
                 .rid(1)
                 .operate(Operate.ENABLE_ALL_ROLE.getValue())
-                .operateTime(operateTime.toString("yyyy-MM-dd HH:mm:ss")).build();
+                .operateTime(operateTime.toString(Format.FULL_TIME_FORMAT.getValue())).build();
         roleOperateMapper.insert(record);
         log.info("已记录敏感操作:启用所有角色");
     }
@@ -101,7 +102,7 @@ public class RoleOperateServiceImpl implements RoleOperateService {
                 .oid(currentAccountId)
                 .rid(roleStatue.getRid())
                 .operate(Operate.ROLE_STATUE_SET.getValue())
-                .operateTime(operateTime.toString("yyyy-MM-dd HH:mm:ss")).build();
+                .operateTime(operateTime.toString(Format.FULL_TIME_FORMAT.getValue())).build();
         roleOperateMapper.insert(record);
         log.info("已记录敏感操作:修改角色状态");
     }

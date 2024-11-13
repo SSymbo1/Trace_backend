@@ -11,7 +11,7 @@
  Target Server Version : 80032
  File Encoding         : 65001
 
- Date: 05/11/2024 09:17:00
+ Date: 13/11/2024 16:54:16
 */
 
 SET NAMES utf8mb4;
@@ -723,6 +723,37 @@ INSERT INTO `menue` VALUES (43, '农贸数据分析', '/analysis/industry/farm',
 INSERT INTO `menue` VALUES (44, '养殖数据分析', '/analysis/industry/animal', 'PieChart', 'none', 19, NULL, 0);
 
 -- ----------------------------
+-- Table structure for month_trace_report
+-- ----------------------------
+DROP TABLE IF EXISTS `month_trace_report`;
+CREATE TABLE `month_trace_report`  (
+  `rid` int(0) NOT NULL AUTO_INCREMENT,
+  `operate_date` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `date` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `market_approach` json NOT NULL,
+  `market_entrance` json NOT NULL,
+  `batch_approach` json NOT NULL,
+  `batch_entrance` json NOT NULL,
+  `butch_approach` json NOT NULL,
+  `butch_entrance` json NOT NULL,
+  `process_approach` json NOT NULL,
+  `process_entrance` json NOT NULL,
+  `plant_approach` json NOT NULL,
+  `plant_entrance` json NOT NULL,
+  `farm_approach` json NOT NULL,
+  `farm_entrance` json NOT NULL,
+  `animal_approach` json NOT NULL,
+  `animal_entrance` json NOT NULL,
+  `enterprise_data` json NOT NULL,
+  `focus_enterprise_data` json NOT NULL,
+  PRIMARY KEY (`rid`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of month_trace_report
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for product
 -- ----------------------------
 DROP TABLE IF EXISTS `product`;
@@ -876,6 +907,37 @@ INSERT INTO `product_record` VALUES (80, 81, 1, 50, 1, '2024-10-23 16:53:05', '2
 INSERT INTO `product_record` VALUES (81, 82, 1, 50, 1, '2024-10-23 16:53:05', '2024-10-23 16:52:53', 0, 1);
 INSERT INTO `product_record` VALUES (82, 83, 1, 50, 1, '2024-10-23 16:53:05', '2024-10-23 16:52:53', 0, 1);
 INSERT INTO `product_record` VALUES (83, 84, 1, 50, 1, '2024-10-23 16:53:05', '2024-10-23 16:52:53', 0, 1);
+
+-- ----------------------------
+-- Table structure for quarter_trace_report
+-- ----------------------------
+DROP TABLE IF EXISTS `quarter_trace_report`;
+CREATE TABLE `quarter_trace_report`  (
+  `rid` int(0) NOT NULL AUTO_INCREMENT,
+  `operate_date` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `date` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `market_approach` json NOT NULL,
+  `market_entrance` json NOT NULL,
+  `batch_approach` json NOT NULL,
+  `batch_entrance` json NOT NULL,
+  `butch_approach` json NOT NULL,
+  `butch_entrance` json NOT NULL,
+  `process_approach` json NOT NULL,
+  `process_entrance` json NOT NULL,
+  `plant_approach` json NOT NULL,
+  `plant_entrance` json NOT NULL,
+  `farm_approach` json NOT NULL,
+  `farm_entrance` json NOT NULL,
+  `animal_approach` json NOT NULL,
+  `animal_entrance` json NOT NULL,
+  `enterprise_data` json NOT NULL,
+  `focus_enterprise_data` json NOT NULL,
+  PRIMARY KEY (`rid`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of quarter_trace_report
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for role
@@ -1067,12 +1129,12 @@ CREATE TABLE `struct_report`  (
   `point_rate` json NULL,
   `type` int(0) NOT NULL DEFAULT 0,
   PRIMARY KEY (`sid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 18 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of struct_report
 -- ----------------------------
-INSERT INTO `struct_report` VALUES (1, '2024-10-24 10:41:25', '2024-10-24 10:41:25', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '[{\"qoq\": \"0.1\", \"yoy\": \"1.1\", \"name\": \"test\", \"type\": \"1\", \"total\": \"200\"}]', '[{\"name\": \"test\", \"type\": \"1\", \"total\": \"200\"}]', '[{\"name\": \"test\", \"type\": \"1\", \"total\": \"200\"}]', 0);
+INSERT INTO `struct_report` VALUES (18, '2024-11-11 08:51:44', '2024-10', 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, '[{\"qoq\": \"0\", \"yoy\": \"0\", \"name\": \"Sem Egestas Blandit LLC\", \"type\": \"7\", \"total\": \"18\"}]', '[{\"name\": \"Sem Egestas Blandit LLC\", \"type\": \"7\", \"total\": \"11.39%\"}]', '[{\"name\": \"Sem Egestas Blandit LLC\", \"type\": \"7\", \"total\": \"100%\"}]', 1);
 
 -- ----------------------------
 -- Table structure for supplier
@@ -1394,5 +1456,36 @@ INSERT INTO `supplier` VALUES (619, 349, '66b1b4cb37265bde76e248ee', 2, 0, 0, 0)
 INSERT INTO `supplier` VALUES (620, 350, '66b1b4cb37265bde76e248ef', 0, 0, 0, 0);
 INSERT INTO `supplier` VALUES (621, 351, '66b1b4cb37265bde76e248f0', 0, 0, 0, 0);
 INSERT INTO `supplier` VALUES (622, 352, '66b1b4cb37265bde76e248f1', 2, 0, 0, 0);
+
+-- ----------------------------
+-- Table structure for year_trace_report
+-- ----------------------------
+DROP TABLE IF EXISTS `year_trace_report`;
+CREATE TABLE `year_trace_report`  (
+  `rid` int(0) NOT NULL AUTO_INCREMENT,
+  `operate_date` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `date` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `market_approach` json NOT NULL,
+  `market_entrance` json NOT NULL,
+  `batch_approach` json NOT NULL,
+  `batch_entrance` json NOT NULL,
+  `butch_approach` json NOT NULL,
+  `butch_entrance` json NOT NULL,
+  `process_approach` json NOT NULL,
+  `process_entrance` json NOT NULL,
+  `plant_approach` json NOT NULL,
+  `plant_entrance` json NOT NULL,
+  `farm_approach` json NOT NULL,
+  `farm_entrance` json NOT NULL,
+  `animal_approach` json NOT NULL,
+  `animal_entrance` json NOT NULL,
+  `enterprise_data` json NOT NULL,
+  `focus_enterprise_data` json NOT NULL,
+  PRIMARY KEY (`rid`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of year_trace_report
+-- ----------------------------
 
 SET FOREIGN_KEY_CHECKS = 1;

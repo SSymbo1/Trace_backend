@@ -5,6 +5,7 @@ import cn.hutool.core.lang.ObjectId;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import edu.hrbu.trace_backend.entity.Result;
 import edu.hrbu.trace_backend.entity.enums.Folder;
+import edu.hrbu.trace_backend.entity.enums.Format;
 import edu.hrbu.trace_backend.entity.enums.Message;
 import edu.hrbu.trace_backend.entity.enums.Statue;
 import edu.hrbu.trace_backend.entity.excel.ProductRecord;
@@ -95,7 +96,7 @@ public class FileServiceImpl implements FileService {
                     .aid(accountInfoMapper.selectOne(accountNameWrapper).getAid())
                     .num(data.getNum())
                     .processTime("")
-                    .insertTime(localTime.toString("yyyy-MM-dd HH:mm:ss"))
+                    .insertTime(localTime.toString(Format.FULL_TIME_FORMAT.getValue()))
                     .importType(0).build();
             productRecordMapper.insert(insertProductRecord);
         });
@@ -127,7 +128,7 @@ public class FileServiceImpl implements FileService {
                             new QueryWrapper<Classification>()
                                     .eq("name", approach.getClassName())
                     ).getCid())
-                    .businessTime(operateTime.toString("yyyy-MM-dd HH:mm:ss")).build();
+                    .businessTime(operateTime.toString(Format.FULL_TIME_FORMAT.getValue())).build();
             approachMapper.insert(insertApproach);
         }
         return Result.ok(Message.APPROACH_SUCCESS.getValue());
@@ -161,7 +162,7 @@ public class FileServiceImpl implements FileService {
                         ).getCid())
                         .buyerType(entrance.getBuyerType().equals("个人") ? 0 : 1)
                         .trace("Trace-" + ObjectId.next())
-                        .businessTime(operateTime.toString("yyyy-MM-dd HH:mm:ss")).build();
+                        .businessTime(operateTime.toString(Format.FULL_TIME_FORMAT.getValue())).build();
             } else {
                 insertEntrance = Entrance.builder()
                         .bid(enterpriseMapper.selectOne(
@@ -180,7 +181,7 @@ public class FileServiceImpl implements FileService {
                         ).getCid())
                         .buyerType(entrance.getBuyerType().equals("个人") ? 0 : 1)
                         .trace(entrance.getTraceCode())
-                        .businessTime(operateTime.toString("yyyy-MM-dd HH:mm:ss")).build();
+                        .businessTime(operateTime.toString(Format.FULL_TIME_FORMAT.getValue())).build();
             }
             entranceMapper.insert(insertEntrance);
         }

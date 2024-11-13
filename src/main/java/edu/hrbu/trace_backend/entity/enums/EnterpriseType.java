@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.util.Optional;
+import java.util.stream.Stream;
+
 @Getter
 @ToString
 @AllArgsConstructor
@@ -18,6 +21,12 @@ public enum EnterpriseType {
     BATCH("批发市场", 5),
     FARM("农贸市场", 6),
     SHOP("连锁超市", 7);
+
+    public static Optional<EnterpriseType> getEnterpriseTypeByValue(Integer value) {
+        return Stream.of(EnterpriseType.values())
+                .filter(et -> et.getValue().equals(value))
+                .findFirst();
+    }
 
     private final String key;
     private final Integer value;

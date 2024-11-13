@@ -6,7 +6,7 @@ import javax.annotation.Resource;
 import java.util.Map;
 
 @Component
-public class CommonFactory {
+public class CommonReportFactory {
 
     @Resource
     private Map<String, ReportFactory> reportFactoryMap;

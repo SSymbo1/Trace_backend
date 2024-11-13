@@ -1,10 +1,10 @@
 package edu.hrbu.trace_backend;
 
-import edu.hrbu.trace_backend.entity.po.StructReport;
-import edu.hrbu.trace_backend.mapper.StructReportMapper;
+import edu.hrbu.trace_backend.strategy.impl.struct.DayStructOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.ApplicationContext;
 
 import javax.annotation.Resource;
 
@@ -14,12 +14,12 @@ import javax.annotation.Resource;
 class TraceBackendApplicationTests {
 
     @Resource
-    StructReportMapper structReportMapper;
+    private ApplicationContext applicationContext;
+
 
     @Test
     public void test() {
-        StructReport structReport = structReportMapper.selectById(1);
-        log.info(structReport.toString());
+        log.info(applicationContext.getBeanNamesForType(DayStructOperation.class)[0]);
     }
 
 }

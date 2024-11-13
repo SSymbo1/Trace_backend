@@ -3,8 +3,8 @@ package edu.hrbu.trace_backend.mapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import edu.hrbu.trace_backend.entity.po.Approach;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import edu.hrbu.trace_backend.entity.po.ApproachClassCount;
-import edu.hrbu.trace_backend.entity.po.ApproachCount;
+import edu.hrbu.trace_backend.entity.dto.analysis.ApproachClassCount;
+import edu.hrbu.trace_backend.entity.dto.analysis.ApproachCount;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

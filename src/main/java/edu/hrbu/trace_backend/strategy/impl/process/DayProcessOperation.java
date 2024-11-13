@@ -7,7 +7,7 @@ import edu.hrbu.trace_backend.entity.dto.analysis.base.Result;
 import edu.hrbu.trace_backend.entity.enums.EnterpriseType;
 import edu.hrbu.trace_backend.entity.po.Classification;
 import edu.hrbu.trace_backend.entity.po.Entrance;
-import edu.hrbu.trace_backend.entity.po.EntranceClassCount;
+import edu.hrbu.trace_backend.entity.dto.analysis.EntranceClassCount;
 import edu.hrbu.trace_backend.mapper.ClassificationMapper;
 import edu.hrbu.trace_backend.mapper.EntranceMapper;
 import edu.hrbu.trace_backend.strategy.ProcessAnalysisStrategy;

@@ -5,13 +5,14 @@ import edu.hrbu.trace_backend.entity.OnlineContext;
 import edu.hrbu.trace_backend.entity.Result;
 import edu.hrbu.trace_backend.entity.dto.analysis.*;
 import edu.hrbu.trace_backend.entity.enums.EnterpriseType;
+import edu.hrbu.trace_backend.entity.enums.Format;
 import edu.hrbu.trace_backend.entity.enums.Message;
 import edu.hrbu.trace_backend.entity.po.Account;
 import edu.hrbu.trace_backend.entity.po.ImportantEnterprise;
 import edu.hrbu.trace_backend.mapper.AccountMapper;
 import edu.hrbu.trace_backend.mapper.EnterpriseMapper;
 import edu.hrbu.trace_backend.mapper.ImportantEnterpriseMapper;
-import edu.hrbu.trace_backend.report.CommonFactory;
+import edu.hrbu.trace_backend.report.CommonReportFactory;
 import edu.hrbu.trace_backend.service.AnalysisService;
 import edu.hrbu.trace_backend.strategy.*;
 import edu.hrbu.trace_backend.strategy.context.*;
@@ -53,8 +54,7 @@ public class AnalysisServiceImpl implements AnalysisService {
     @Resource
     private StructAnalysisContext structAnalysisContext;
     @Resource
-    private CommonFactory commonFactory;
-
+    private CommonReportFactory commonReportFactory;
 
     @Override
     public Result requestOperationsInfo(OperationsQuery query) {
@@ -138,10 +138,18 @@ public class AnalysisServiceImpl implements AnalysisService {
 
     @Override
     public Result requestGenerateStructReport(ReportQuery query) {
-        return commonFactory
-                .getReportFactory(query.getType())
+        return commonReportFactory
+                .getReportFactory(query.getReport())
                 .createReportSession(query)
                 .generateReport(query);
+    }
+
+    @Override
+    public Result requestGetStructReport(ReportQuery query) {
+        return commonReportFactory
+                .getReportFactory(query.getReport())
+                .createReportSession(query)
+                .reviewReport(query);
     }
 
     @Override
@@ -177,7 +185,7 @@ public class AnalysisServiceImpl implements AnalysisService {
                 ImportantEnterprise.builder()
                         .eid(enterprise.getEid())
                         .oid(Integer.valueOf(JwtUtil.parseJWT(OnlineContext.getCurrent()).getSubject()))
-                        .date(operateTime.toString("yyyy-MM-dd HH:mm:ss")).build()
+                        .date(operateTime.toString(Format.FULL_TIME_FORMAT.getValue())).build()
         );
         return insert != 0 ?
                 Result.ok(Message.ADD_IMPORTANT_SUCCESS.getValue()) :
@@ -213,6 +221,11 @@ public class AnalysisServiceImpl implements AnalysisService {
         return delete == range.length ?
                 Result.ok(Message.DELETE_IMPORTANT.getValue()) :
                 Result.ok(Message.DELETE_IMPORTANT_BATCH.getValue());
+    }
+
+    @Override
+    public Result requestGetTraceReportList(ReportQuery query) {
+        return null;
     }
 
     private List<Map<String, Integer>> getOperationsOriginData(OperationsQuery query) {

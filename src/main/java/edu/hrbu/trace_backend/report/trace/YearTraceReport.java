@@ -14,7 +14,7 @@ public class YearTraceReport implements Report {
     }
 
     @Override
-    public void reviewReport(ReportQuery query) {
-
+    public Result reviewReport(ReportQuery query) {
+        return null;
     }
 }

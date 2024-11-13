@@ -1,5 +1,6 @@
 package edu.hrbu.trace_backend;
 
+import de.codecentric.boot.admin.server.config.EnableAdminServer;
 import edu.hrbu.trace_backend.entity.enums.Folder;
 import edu.hrbu.trace_backend.util.FileUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +11,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Slf4j
 @MapperScan("edu.hrbu.trace_backend.mapper")
+@EnableAdminServer
 @SpringBootApplication
 @EnableTransactionManagement
 public class TraceBackendApplication {

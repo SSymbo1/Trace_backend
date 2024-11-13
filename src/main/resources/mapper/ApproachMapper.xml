@@ -55,7 +55,7 @@
         WHERE STR_TO_DATE(approach.business_time, '%Y-%m-%d') BETWEEN #{start} AND #{end}
     </select>
 
-    <select id="selectAnalysisClassCountByYearBetween" resultType="edu.hrbu.trace_backend.entity.po.ApproachClassCount">
+    <select id="selectAnalysisClassCountByYearBetween" resultType="edu.hrbu.trace_backend.entity.dto.analysis.ApproachClassCount">
         SELECT STR_TO_DATE(approach.business_time, '%Y-%m-%d') AS date,
                SUM(IF(classification.parent = 1, 1, 0))        AS fresh,
                SUM(IF(classification.parent = 2, 1, 0))        AS product,
@@ -71,7 +71,7 @@
         ORDER BY date
     </select>
 
-    <select id="selectAnalysisApproachCountByYearBetween" resultType="edu.hrbu.trace_backend.entity.po.ApproachCount">
+    <select id="selectAnalysisApproachCountByYearBetween" resultType="edu.hrbu.trace_backend.entity.dto.analysis.ApproachCount">
         WITH daily_counts AS (SELECT STR_TO_DATE(approach.business_time, '%Y-%m-%d') AS date,
                                      COUNT(trace)                                    AS total
                               FROM approach
@@ -91,7 +91,7 @@
     </select>
 
     <select id="selectAnalysisApproachMonthCountByYearBetween"
-            resultType="edu.hrbu.trace_backend.entity.po.ApproachCount">
+            resultType="edu.hrbu.trace_backend.entity.dto.analysis.ApproachCount">
         WITH monthly_data AS (SELECT DATE_FORMAT(approach.business_time, '%Y-%m') AS MONTH,
                                      COUNT(*)                                     AS count
                               FROM approach
@@ -131,7 +131,7 @@
     </select>
 
     <select id="selectAnalysisClassCountMonthByYearBetween"
-            resultType="edu.hrbu.trace_backend.entity.po.ApproachClassCount">
+            resultType="edu.hrbu.trace_backend.entity.dto.analysis.ApproachClassCount">
         SELECT DATE_FORMAT(STR_TO_DATE(approach.business_time, '%Y-%m-%d'), '%Y-%m') AS date,
                SUM(
                        IF
@@ -174,7 +174,7 @@
     </select>
 
     <select id="selectBatchApproachCountByYearBetween"
-            resultType="edu.hrbu.trace_backend.entity.po.ApproachCount">
+            resultType="edu.hrbu.trace_backend.entity.dto.analysis.ApproachCount">
         WITH daily_counts AS (SELECT STR_TO_DATE(approach.business_time, '%Y-%m-%d') AS date,
                                      COUNT(trace)                                    AS total
                               FROM approach

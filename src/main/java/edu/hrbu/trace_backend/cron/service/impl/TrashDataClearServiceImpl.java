@@ -5,6 +5,7 @@ import cn.hutool.core.io.FileUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import edu.hrbu.trace_backend.cron.service.TrashDataClearService;
 import edu.hrbu.trace_backend.entity.enums.Folder;
+import edu.hrbu.trace_backend.entity.enums.Format;
 import edu.hrbu.trace_backend.entity.po.*;
 import edu.hrbu.trace_backend.mapper.*;
 import lombok.extern.slf4j.Slf4j;
@@ -75,7 +76,7 @@ public class TrashDataClearServiceImpl implements TrashDataClearService {
         log.info("执行定时清理账户操作记录任务");
         DateTime operateTime = new DateTime(DateTime.now());
         QueryWrapper<AccountOperate> deleteQueryWrapper = new QueryWrapper<>();
-        deleteQueryWrapper.like("operate_time", operateTime.toString("yyyy"));
+        deleteQueryWrapper.like("operate_time", operateTime.toString(Format.ONLY_YEAR_FORMAT.getValue()));
         accountOperateMapper.delete(deleteQueryWrapper);
         log.info("定时清理账户操作记录任务已完成");
     }
@@ -85,7 +86,7 @@ public class TrashDataClearServiceImpl implements TrashDataClearService {
         log.info("执行定时清理企业操作记录任务");
         DateTime operateTime = new DateTime(DateTime.now());
         QueryWrapper<EnterpriseOperate> deleteQueryWrapper = new QueryWrapper<>();
-        deleteQueryWrapper.like("operate_time", operateTime.toString("yyyy"));
+        deleteQueryWrapper.like("operate_time", operateTime.toString(Format.ONLY_YEAR_FORMAT.getValue()));
         enterpriseOperateMapper.delete(deleteQueryWrapper);
         log.info("定时清理企业操作记录任务已完成");
     }
@@ -95,7 +96,7 @@ public class TrashDataClearServiceImpl implements TrashDataClearService {
         log.info("执行定时清理角色操作记录任务");
         DateTime operateTime = new DateTime(DateTime.now());
         QueryWrapper<RoleOperate> deleteQueryWrapper = new QueryWrapper<>();
-        deleteQueryWrapper.like("operate_time", operateTime.toString("yyyy"));
+        deleteQueryWrapper.like("operate_time", operateTime.toString(Format.ONLY_YEAR_FORMAT.getValue()));
         roleOperateMapper.delete(deleteQueryWrapper);
         log.info("定时清理角色操作记录任务已完成");
     }

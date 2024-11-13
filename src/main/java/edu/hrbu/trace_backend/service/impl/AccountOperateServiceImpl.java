@@ -5,6 +5,7 @@ import edu.hrbu.trace_backend.entity.OnlineContext;
 import edu.hrbu.trace_backend.entity.Result;
 import edu.hrbu.trace_backend.entity.dto.system.AccountStatue;
 import edu.hrbu.trace_backend.entity.dto.Decode;
+import edu.hrbu.trace_backend.entity.enums.Format;
 import edu.hrbu.trace_backend.entity.enums.Operate;
 import edu.hrbu.trace_backend.entity.po.AccountOperate;
 import edu.hrbu.trace_backend.mapper.AccountOperateMapper;
@@ -33,7 +34,7 @@ public class AccountOperateServiceImpl implements AccountOperateService {
         record = AccountOperate.builder()
                 .oid(currentAccountId)
                 .aid((Integer) returnResult.getData().get("createAid"))
-                .operateTime(operateTime.toString("yyyy-MM-dd HH:mm:ss")).build();
+                .operateTime(operateTime.toString(Format.FULL_TIME_FORMAT.getValue())).build();
         if (Objects.equals(returnResult.getData().get("createAid"), currentAccountId)) {
             record.setOperate(Operate.ACCOUNT_ADD_FAIL.getValue());
         } else {
@@ -52,7 +53,7 @@ public class AccountOperateServiceImpl implements AccountOperateService {
                 .oid(currentAccountId)
                 .aid((Integer) returnResult.getData().get("createAid"))
                 .operate(Operate.ACCOUNT_EDIT.getValue())
-                .operateTime(operateTime.toString("yyyy-MM-dd HH:mm:ss")).build();
+                .operateTime(operateTime.toString(Format.FULL_TIME_FORMAT.getValue())).build();
         accountOperateMapper.insert(record);
         log.info("已记录敏感操作:修改账号信息");
     }
@@ -67,7 +68,7 @@ public class AccountOperateServiceImpl implements AccountOperateService {
                 .oid(currentAccountId)
                 .aid(accountStatue.getAid())
                 .operate(Operate.ACCOUNT_STATUE_SET.getValue())
-                .operateTime(operateTime.toString("yyyy-MM-dd HH:mm:ss")).build();
+                .operateTime(operateTime.toString(Format.FULL_TIME_FORMAT.getValue())).build();
         accountOperateMapper.insert(record);
         log.info("已记录敏感操作:修改账号状态");
     }
@@ -82,7 +83,7 @@ public class AccountOperateServiceImpl implements AccountOperateService {
                 .oid(currentAccountId)
                 .aid(decode.getAid())
                 .operate(Operate.DECODE.getValue())
-                .operateTime(operateTime.toString("yyyy-MM-dd HH:mm:ss")).build();
+                .operateTime(operateTime.toString(Format.FULL_TIME_FORMAT.getValue())).build();
         accountOperateMapper.insert(record);
         log.info("已记录敏感操作:解码密码");
     }
@@ -96,7 +97,7 @@ public class AccountOperateServiceImpl implements AccountOperateService {
                 .oid(currentAccountId)
                 .aid(currentAccountId)
                 .operate(Operate.DISABLE_ALL_ACCOUNT.getValue())
-                .operateTime(operateTime.toString("yyyy-MM-dd HH:mm:ss")).build();
+                .operateTime(operateTime.toString(Format.FULL_TIME_FORMAT.getValue())).build();
         accountOperateMapper.insert(record);
         log.info("已记录敏感操作:禁用所有账户");
     }
@@ -110,7 +111,7 @@ public class AccountOperateServiceImpl implements AccountOperateService {
                 .oid(currentAccountId)
                 .aid(currentAccountId)
                 .operate(Operate.ENABLE_ALL_ACCOUNT.getValue())
-                .operateTime(operateTime.toString("yyyy-MM-dd HH:mm:ss")).build();
+                .operateTime(operateTime.toString(Format.FULL_TIME_FORMAT.getValue())).build();
         accountOperateMapper.insert(record);
         log.info("已记录敏感操作:启用所有账户");
     }

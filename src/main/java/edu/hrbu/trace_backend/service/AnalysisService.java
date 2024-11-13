@@ -35,4 +35,8 @@ public interface AnalysisService {
 
     Result requestGenerateStructReport(ReportQuery query);
 
+    Result requestGetStructReport(ReportQuery query);
+
+    Result requestGetTraceReportList(ReportQuery query);
+
 }

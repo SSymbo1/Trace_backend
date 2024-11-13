@@ -2,10 +2,10 @@ package edu.hrbu.trace_backend.entity.dto.analysis.base;
 
 import edu.hrbu.trace_backend.entity.dto.analysis.ProvinceData;
 import edu.hrbu.trace_backend.entity.dto.analysis.Rank;
-import edu.hrbu.trace_backend.entity.po.ApproachClassCount;
-import edu.hrbu.trace_backend.entity.po.ApproachCount;
-import edu.hrbu.trace_backend.entity.po.EntranceClassCount;
-import edu.hrbu.trace_backend.entity.po.EntranceCount;
+import edu.hrbu.trace_backend.entity.dto.analysis.ApproachClassCount;
+import edu.hrbu.trace_backend.entity.dto.analysis.ApproachCount;
+import edu.hrbu.trace_backend.entity.dto.analysis.EntranceClassCount;
+import edu.hrbu.trace_backend.entity.dto.analysis.EntranceCount;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
