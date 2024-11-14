@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="edu.hrbu.trace_backend_job.mapper.MenueMapper">
+
+    <select id="selectMenueIdReverseBySon" resultType="edu.hrbu.trace_backend_job.entity.po.MenueReverse">
+        SELECT
+            menue.mid AS son,
+            parent_menue.mid AS parent,
+            father_menue.mid AS father
+        FROM
+            menue
+        JOIN menue AS parent_menue ON menue.parent = parent_menue.mid
+        JOIN menue AS father_menue ON parent_menue.parent = father_menue.mid
+        WHERE
+            menue.mid IN
+        <foreach collection="condition" open="(" separator="," close=")" item="mid" index="index">
+            #{mid}
+        </foreach>
+    </select>
+
+    <select id="selectChildMenueIdByRoleId" resultType="java.lang.Integer">
+        SELECT
+            menue.mid
+        FROM
+            menue
+        JOIN role_menue_contrast ON menue.mid = role_menue_contrast.mid
+        JOIN role ON role_menue_contrast.rid = role.rid
+        WHERE
+            role.rid = #{condition}
+            AND menue.parent NOT IN (0, 1, 4, 7, 8, 10)
+    </select>
+
+    <select id="selectChildMenueByFatherId" resultType="edu.hrbu.trace_backend_job.entity.po.Menue">
+        SELECT
+            menue.mid,
+            menue.name,
+            menue.path,
+            menue.icon,
+            menue.parent,
+            menue.memo,
+            menue.del
+        FROM menue
+        JOIN role_menue_contrast ON menue.mid = role_menue_contrast.mid
+        JOIN role ON role_menue_contrast.rid = role.rid
+        JOIN account ON account.rid = role.rid
+        WHERE
+            account.aid = #{current} AND menue.parent = #{condition} AND menue.del = 0
+    </select>
+
+</mapper>

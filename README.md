@@ -44,15 +44,23 @@ mysql -u 你的数据库用户名 -p 你的数据库密码 < ./recover/database/
 ### 接口文档
 本项目使用 Knife4j 自动生成接口文档，当启动项目时，控制台将显示接口文档地址
 
+### 服务监控
+
+本项目使用 SpringBootAdmin 监控服务，当启动项目时，控制台将显示 SpringBootAdmin 的地址
+
 ### 项目结构
 
+#### trace_backend_job为溯源业务模块
+
 src下
+
 - config ( 配置类 )
 - controller ( 控制器 )
 - cron ( 定时任务 )
 - entity ( 实体类 )
 - global ( 自定义框架相关 )
 - mapper ( 数据库操作接口 )
+- report ( 报表业务相关 )
 - service ( 业务逻辑 )
 - strategy ( 统计策略 )
 - utils ( 工具类 )
@@ -64,3 +72,17 @@ resources下
 - application-prod.yml ( 生产环境配置文件 )
 - banner.txt ( 项目启动时控制台打印的图标 )
 - logback-spring.xml ( logback日志配置文件 )
+
+#### trace_backend_monitor为溯源服务监控模块
+
+src下
+
+- global ( 自定义框架相关 )
+
+resources下
+
+- application.yml ( 配置文件 )
+- application-dev.yml ( 开发环境配置文件 )
+- application-prod.yml ( 生产环境配置文件 )
+- logback-spring.xml ( logback日志配置文件 )
+

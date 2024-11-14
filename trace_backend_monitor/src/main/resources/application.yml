@@ -1,0 +1,18 @@
+server:
+  port: 41919
+
+spring:
+  thymeleaf:
+    check-template-location: false
+  profiles:
+    active:
+      - dev
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+  application:
+    name: trace-monitor
+
+logging:
+  config: classpath:logback-spring.xml

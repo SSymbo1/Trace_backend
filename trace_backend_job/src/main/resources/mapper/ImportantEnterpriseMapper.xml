@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.hrbu.trace_backend_job.mapper.ImportantEnterpriseMapper">
+
+    <select id="selectImportantList" resultType="edu.hrbu.trace_backend_job.entity.po.ImportantEnterprise">
+        SELECT important_enterprise.eid,
+               oid,
+               date
+        FROM important_enterprise
+                 JOIN enterprise ON important_enterprise.eid = enterprise.eid
+                 JOIN account ON important_enterprise.oid = account.aid
+        WHERE enterprise.type = #{type}
+    </select>
+
+</mapper>

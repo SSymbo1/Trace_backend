@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="edu.hrbu.trace_backend_job.mapper.EnterpriseMapper">
+
+    <update id="updateRandomEnterpriseAddress">
+        UPDATE enterprise e1
+            JOIN (SELECT e2.eid, e2.address
+                  FROM enterprise e2
+                  WHERE e2.eid BETWEEN 52 AND 76
+                  ORDER BY RAND()
+                  LIMIT 1) AS random_address
+            ON e1.eid >= #{eid}
+        SET e1.address = random_address.address;
+    </update>
+
+    <select id="selectEnterpriseByConditionForMenue" resultType="edu.hrbu.trace_backend_job.entity.po.Enterprise">
+        SELECT
+        eid,
+        name
+        FROM
+        enterprise
+        <where>
+            del = 0
+            <if test="keyword != null and keyword != ''">
+                AND `name` LIKE CONCAT('%',#{keyword},'%') OR social_code LIKE CONCAT('%',#{keyword},'%')
+            </if>
+        </where>
+    </select>
+
+    <select id="selectEnterpriseByCondition" resultType="edu.hrbu.trace_backend_job.entity.po.Enterprise">
+        SELECT
+        eid,
+        name,
+        legal_person,
+        tel,
+        social_code,
+        address,
+        zip_code,
+        del
+        FROM
+        enterprise
+        <where>
+            eid != 1
+            <if test="condition.name != null and condition.name != ''">
+                AND name LIKE CONCAT('%',#{condition.name},'%')
+            </if>
+            <if test="condition.legalPerson != null and condition.legalPerson != ''">
+                AND legal_person LIKE CONCAT('%',#{condition.legalPerson},'%')
+            </if>
+            <if test="condition.tel != null and condition.tel != ''">
+                AND tel LIKE CONCAT('%',#{condition.tel},'%')
+            </if>
+            <if test="condition.socialCode != null and condition.socialCode != ''">
+                AND social_code LIKE CONCAT('%',#{condition.socialCode},'%')
+            </if>
+            <if test="condition.address != null and condition.address != ''">
+                AND address LIKE CONCAT('%',#{condition.address},'%')
+            </if>
+            <if test="condition.zipCode != null and condition.zipCode != ''">
+                AND zip_code LIKE CONCAT('%',#{condition.zipCode},'%')
+            </if>
+            <if test="condition.del != null and condition.del != ''">
+                AND del = #{condition.del}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectEnterpriseCount" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM enterprise
+        WHERE del = 0
+          AND eid != 1
+    </select>
+
+    <select id="selectProcessEnterpriseSellRankByYearBetween"
+            resultType="edu.hrbu.trace_backend_job.entity.dto.analysis.Rank">
+
+    </select>
+
+</mapper>

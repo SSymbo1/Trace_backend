@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.hrbu.trace_backend_job.mapper.ApproachMapper">
+
+    <resultMap id="approachResult" type="edu.hrbu.trace_backend_job.entity.po.Approach">
+        <id column="aid" property="aid"/>
+        <result column="enterprise_code" property="enterpriseCode"/>
+        <result column="enterprise_name" property="enterpriseName"/>
+        <result column="business_time" property="businessTime"/>
+        <result column="name" property="name"/>
+        <result column="code" property="code"/>
+        <result column="batch" property="batch"/>
+        <result column="num" property="num"/>
+        <result column="unit" property="unit"/>
+        <result column="trace" property="trace"/>
+        <result column="class_name" property="className"/>
+    </resultMap>
+
+    <select id="selectApproachInfoByCondition" resultMap="approachResult">
+        SELECT
+        approach.aid,
+        enterprise.social_code AS enterprise_code,
+        enterprise.name AS enterprise_name,
+        approach.business_time,
+        classification.name AS class_name,
+        approach.code,
+        approach.batch,
+        approach.num,
+        approach.unit,
+        approach.name,
+        approach.trace
+        FROM approach
+        JOIN classification On classification.cid = approach.cid
+        JOIN enterprise ON enterprise.eid = approach.eid
+        <where>
+            1 = 1
+            <if test="condition.name != null and condition.name != ''">
+                AND approach.name LIKE CONCAT('%',#{condition.name},'%') OR approach.code LIKE
+                CONCAT('%',#{condition.name},'%')
+            </if>
+            <if test="condition.batch != null and condition.batch != ''">
+                AND approach.batch LIKE CONCAT('%',#{condition.batch},'%')
+            </if>
+            <if test="condition.trace != null and condition.trace != ''">
+                AND approach.trace LIKE CONCAT('%',#{condition.trace},'%')
+            </if>
+        </where>
+    </select>
+
+    <select id="selectApproachInfoByYearBetween" resultType="edu.hrbu.trace_backend_job.entity.po.Approach">
+        SELECT *
+        FROM approach
+        WHERE STR_TO_DATE(approach.business_time, '%Y-%m-%d') BETWEEN #{start} AND #{end}
+    </select>
+
+    <select id="selectAnalysisClassCountByYearBetween" resultType="edu.hrbu.trace_backend_job.entity.dto.analysis.ApproachClassCount">
+        SELECT STR_TO_DATE(approach.business_time, '%Y-%m-%d') AS date,
+               SUM(IF(classification.parent = 1, 1, 0))        AS fresh,
+               SUM(IF(classification.parent = 2, 1, 0))        AS product,
+               SUM(IF(classification.parent = 3, 1, 0))        AS drink,
+               SUM(IF(classification.parent = 4, 1, 0))        AS food
+        FROM approach
+                 JOIN classification ON approach.cid = classification.cid
+                 JOIN enterprise ON approach.eid = enterprise.eid
+        WHERE STR_TO_DATE(approach.business_time, '%Y-%m-%d') BETWEEN #{start}
+            AND #{end}
+          AND enterprise.type = #{type}
+        GROUP BY date
+        ORDER BY date
+    </select>
+
+    <select id="selectAnalysisApproachCountByYearBetween" resultType="edu.hrbu.trace_backend_job.entity.dto.analysis.ApproachCount">
+        WITH daily_counts AS (SELECT STR_TO_DATE(approach.business_time, '%Y-%m-%d') AS date,
+                                     COUNT(trace)                                    AS total
+                              FROM approach
+                                       JOIN enterprise ON approach.eid = enterprise.eid
+                              WHERE STR_TO_DATE(approach.business_time, '%Y-%m-%d') BETWEEN #{start} AND #{end}
+                                AND enterprise.type = #{type}
+                              GROUP BY date),
+             daily_with_lag AS (SELECT date,
+                                       total,
+                                       LAG(total) OVER (ORDER BY date) AS previous_day_count
+                                FROM daily_counts)
+        SELECT date,
+               total,
+               IF(previous_day_count IS NULL, total, (total - previous_day_count) / previous_day_count * 100) AS qoq
+        FROM daily_with_lag
+        ORDER BY date
+    </select>
+
+    <select id="selectAnalysisApproachMonthCountByYearBetween"
+            resultType="edu.hrbu.trace_backend_job.entity.dto.analysis.ApproachCount">
+        WITH monthly_data AS (SELECT DATE_FORMAT(approach.business_time, '%Y-%m') AS MONTH,
+                                     COUNT(*)                                     AS count
+                              FROM approach
+                                       JOIN enterprise ON approach.eid = enterprise.eid
+                              WHERE approach.business_time >= #{start}
+                                AND approach.business_time
+                                  &lt;
+                                    #{end}
+                                AND enterprise.type = #{type}
+                              GROUP BY MONTH),
+             last_year_data AS (SELECT DATE_FORMAT(approach.business_time, '%Y-%m') AS MONTH,
+                                       COUNT(*)                                     AS count
+                                FROM approach
+                                         JOIN enterprise ON approach.eid = enterprise.eid
+                                WHERE approach.business_time >= DATE_SUB(#{start}, INTERVAL 1 YEAR)
+                                  AND approach.business_time &lt; DATE_SUB(#{end}, INTERVAL 1 YEAR)
+                                  AND enterprise.type = #{type}
+                                GROUP BY MONTH),
+             last_month_data AS (SELECT DATE_FORMAT(approach.business_time, '%Y-%m') AS MONTH,
+                                        COUNT(*)                                     AS count
+                                 FROM approach
+                                          JOIN enterprise ON approach.eid = enterprise.eid
+                                 WHERE approach.business_time >= DATE_SUB(#{start}, INTERVAL 1 MONTH)
+                                   AND approach.business_time &lt; DATE_SUB(#{end}, INTERVAL 1 MONTH)
+                                   AND enterprise.type = #{type}
+                                 GROUP BY MONTH)
+        SELECT md.MONTH                                                           AS date,
+               md.count                                                           AS total,
+               IF(COALESCE(ly.count, 0) = 0, md.count, (md.count / ly.count) - 1) AS yoy,
+               IF(COALESCE(lm.count, 0) = 0, md.count, (md.count / lm.count) - 1) AS qoq
+        FROM monthly_data md
+                 LEFT JOIN last_year_data ly ON ly.MONTH = DATE_FORMAT(DATE_SUB(md.MONTH, INTERVAL 1 YEAR), '%Y-%m')
+                 LEFT JOIN last_month_data lm ON lm.MONTH = DATE_FORMAT(DATE_SUB(md.MONTH, INTERVAL 1 MONTH), '%Y-%m')
+        WHERE md.MONTH BETWEEN DATE_FORMAT(#{start}, '%Y-%m')
+                  AND DATE_FORMAT(#{end}, '%Y-%m')
+        ORDER BY md.MONTH
+    </select>
+
+    <select id="selectAnalysisClassCountMonthByYearBetween"
+            resultType="edu.hrbu.trace_backend_job.entity.dto.analysis.ApproachClassCount">
+        SELECT DATE_FORMAT(STR_TO_DATE(approach.business_time, '%Y-%m-%d'), '%Y-%m') AS date,
+               SUM(
+                       IF
+                       (classification.parent = 1, 1, 0))                            AS fresh,
+               SUM(
+                       IF
+                       (classification.parent = 2, 1, 0))                            AS product,
+               SUM(
+                       IF
+                       (classification.parent = 3, 1, 0))                            AS drink,
+               SUM(
+                       IF
+                       (classification.parent = 4, 1, 0))                            AS food
+        FROM approach
+                 JOIN classification ON approach.cid = classification.cid
+                 JOIN enterprise ON approach.eid = enterprise.eid
+        WHERE STR_TO_DATE(approach.business_time, '%Y-%m-%d') BETWEEN #{start}
+            AND #{end}
+          AND enterprise.type = #{type}
+        GROUP BY date
+        ORDER BY date
+    </select>
+
+    <select id="selectAnalysisApproachInfoByYearBetween"
+            resultType="edu.hrbu.trace_backend_job.entity.po.Approach">
+        SELECT aid,
+               approach.eid,
+               approach.name,
+               code,
+               batch,
+               num,
+               unit,
+               trace,
+               cid,
+               business_time
+        FROM approach
+                 JOIN enterprise ON approach.eid = enterprise.eid
+        WHERE STR_TO_DATE(approach.business_time, '%Y-%m-%d') BETWEEN #{start} AND #{end}
+          AND enterprise.type = #{type}
+    </select>
+
+    <select id="selectBatchApproachCountByYearBetween"
+            resultType="edu.hrbu.trace_backend_job.entity.dto.analysis.ApproachCount">
+        WITH daily_counts AS (SELECT STR_TO_DATE(approach.business_time, '%Y-%m-%d') AS date,
+                                     COUNT(trace)                                    AS total
+                              FROM approach
+                                       JOIN enterprise ON approach.eid = enterprise.eid
+                              WHERE STR_TO_DATE(approach.business_time, '%Y-%m-%d') BETWEEN #{start} AND #{end}
+                                AND enterprise.type = 5
+                              GROUP BY date),
+             daily_with_lag AS (SELECT date,
+                                       total,
+                                       LAG(total) OVER (ORDER BY date) AS previous_day_count
+                                FROM daily_counts)
+        SELECT date,
+               total,
+               IF(previous_day_count IS NULL, total, (total - previous_day_count) / previous_day_count * 100) AS qoq
+        FROM daily_with_lag
+        ORDER BY date
+    </select>
+
+    <select id="selectAnalysisApproachInfoMonthByYearBetween"
+            resultType="edu.hrbu.trace_backend_job.entity.po.Approach">
+        SELECT aid,
+               approach.eid,
+               approach.name,
+               code,
+               batch,
+               num,
+               unit,
+               trace,
+               cid,
+               business_time
+        FROM approach
+                 JOIN enterprise ON approach.eid = enterprise.eid
+        WHERE approach.business_time LIKE CONCAT(#{time}, '%')
+          AND enterprise.type = #{type}
+    </select>
+</mapper>
