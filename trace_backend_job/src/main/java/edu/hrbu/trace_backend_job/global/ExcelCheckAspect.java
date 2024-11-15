@@ -1,6 +1,6 @@
 package edu.hrbu.trace_backend_job.global;
 
-import edu.hrbu.trace_backend_job.service.ExcelCheckService;
+import edu.hrbu.trace_backend_business.service.ExcelCheckService;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;

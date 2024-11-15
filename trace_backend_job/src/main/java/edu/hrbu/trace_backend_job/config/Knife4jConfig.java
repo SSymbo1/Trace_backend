@@ -1,6 +1,6 @@
 package edu.hrbu.trace_backend_job.config;
 
-import edu.hrbu.trace_backend_job.entity.enums.Knife4j;
+import edu.hrbu.trace_backend_business.entity.enums.Knife4j;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.CorsEndpointProperties;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;

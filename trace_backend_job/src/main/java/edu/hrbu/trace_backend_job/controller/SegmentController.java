@@ -1,9 +1,9 @@
 package edu.hrbu.trace_backend_job.controller;
 
-import edu.hrbu.trace_backend_job.entity.Result;
-import edu.hrbu.trace_backend_job.entity.dto.segment.ApproachQuery;
-import edu.hrbu.trace_backend_job.entity.dto.segment.EntranceQuery;
-import edu.hrbu.trace_backend_job.service.SegmentService;
+import edu.hrbu.trace_backend_business.entity.Result;
+import edu.hrbu.trace_backend_business.entity.dto.segment.ApproachQuery;
+import edu.hrbu.trace_backend_business.entity.dto.segment.EntranceQuery;
+import edu.hrbu.trace_backend_business.service.SegmentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;

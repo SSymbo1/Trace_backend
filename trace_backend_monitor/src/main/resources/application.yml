@@ -1,5 +1,5 @@
 server:
-  port: 41919
+  port: 810
 
 spring:
   thymeleaf:

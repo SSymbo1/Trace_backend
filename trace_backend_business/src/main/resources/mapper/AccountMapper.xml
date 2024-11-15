@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.hrbu.trace_backend_business.mapper.AccountMapper">
+
+    <select id="selectAccountCount" resultType="java.lang.Integer">
+        SELECT
+            COUNT(*)
+        FROM
+            account
+        WHERE
+            rid != 1
+            AND del = 0
+            AND ban = 0
+    </select>
+
+</mapper>

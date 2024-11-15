@@ -1,8 +1,8 @@
 package edu.hrbu.trace_backend_job.controller;
 
-import edu.hrbu.trace_backend_job.entity.Result;
-import edu.hrbu.trace_backend_job.entity.dto.system.*;
-import edu.hrbu.trace_backend_job.service.SystemService;
+import edu.hrbu.trace_backend_business.entity.Result;
+import edu.hrbu.trace_backend_business.entity.dto.system.*;
+import edu.hrbu.trace_backend_business.service.SystemService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;

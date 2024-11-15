@@ -1,6 +1,6 @@
 package edu.hrbu.trace_backend_job.config;
 
-import edu.hrbu.trace_backend_job.util.FileUtil;
+import edu.hrbu.trace_backend_business.util.FileUtil;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;

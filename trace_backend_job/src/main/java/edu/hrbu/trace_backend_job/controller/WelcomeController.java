@@ -1,9 +1,9 @@
 package edu.hrbu.trace_backend_job.controller;
 
-import edu.hrbu.trace_backend_job.entity.Result;
-import edu.hrbu.trace_backend_job.entity.dto.RePassword;
-import edu.hrbu.trace_backend_job.entity.dto.Welcome;
-import edu.hrbu.trace_backend_job.service.WelcomeService;
+import edu.hrbu.trace_backend_business.entity.Result;
+import edu.hrbu.trace_backend_business.entity.dto.RePassword;
+import edu.hrbu.trace_backend_business.entity.dto.Welcome;
+import edu.hrbu.trace_backend_business.service.WelcomeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -37,7 +37,7 @@ public class WelcomeController {
             notes = "用户修改密码接口，调用这个接口时将会记录日志，" +
                     "需要提供修改后的密码"
     )
-    public Result rePassword(@RequestBody RePassword rePassword){
+    public Result rePassword(@RequestBody RePassword rePassword) {
         return welcomeService.rePassword(rePassword);
     }
 

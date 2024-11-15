@@ -1,7 +1,7 @@
 package edu.hrbu.trace_backend_job.global;
 
-import edu.hrbu.trace_backend_job.entity.OnlineContext;
-import edu.hrbu.trace_backend_job.util.JwtUtil;
+import edu.hrbu.trace_backend_business.entity.OnlineContext;
+import edu.hrbu.trace_backend_business.util.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="edu.hrbu.trace_backend_business.mapper.AccountInfoMapper">
+
+    <resultMap id="accountInfoResult" type="edu.hrbu.trace_backend_business.entity.po.AccountInfo">
+        <id property="aid" column="aid"/>
+        <result property="name" column="name"/>
+        <result property="gander" column="gander"/>
+        <result property="tel" column="tel"/>
+        <result property="avatar" column="avatar"/>
+        <result property="email" column="email"/>
+        <result property="address" column="address"/>
+        <result property="zipCode" column="zip_code"/>
+        <association property="enterprise" javaType="edu.hrbu.trace_backend_business.entity.po.Enterprise">
+            <id property="eid" column="eid"/>
+            <result property="name" column="enterprise_name"/>
+            <result property="legalPerson" column="legal_person"/>
+            <result property="tel" column="enterprise_tel"/>
+            <result property="socialCode" column="social_code"/>
+            <result property="address" column="enterprise_address"/>
+            <result property="zipCode" column="enterprise_zipCode"/>
+        </association>
+        <association property="role" javaType="edu.hrbu.trace_backend_business.entity.po.Role">
+            <id property="rid" column="rid"/>
+            <result property="name" column="role_name"/>
+            <result property="memo" column="memo"/>
+            <result property="del" column="del"/>
+            <result property="ban" column="ban"/>
+        </association>
+        <association property="account" javaType="edu.hrbu.trace_backend_business.entity.po.Account">
+            <id property="aid" column="account_aid"/>
+            <result property="username" column="username"/>
+            <result property="password" column="password"/>
+            <result property="del" column="account_del"/>
+            <result property="ban" column="ban"/>
+            <result property="memo" column="memo"/>
+        </association>
+    </resultMap>
+
+    <select id="selectAccountInfoByCondition" resultMap="accountInfoResult">
+        SELECT
+            account_info.aid,
+            account_info.name,
+            account_info.gander,
+            account_info.tel,
+            account_info.avatar,
+            account_info.email,
+            account_info.address,
+            account_info.zip_code,
+            enterprise.eid,
+            enterprise.name             AS enterprise_name,
+            enterprise.legal_person,
+            enterprise.tel              AS enterprise_tel,
+            enterprise.social_code,
+            enterprise.address          AS enterprise_address,
+            enterprise.zip_code         AS enterprise_zipCode,
+            role.rid,
+            role.name                   AS role_name,
+            role.memo,
+            role.del,
+            account.aid                 AS account_aid,
+            account.username,
+            account.password,
+            account.ban,
+            account.del                 AS account_del,
+            account.memo
+        FROM
+            account_info
+        JOIN account ON account.aid = account_info.aid
+        JOIN enterprise on enterprise.eid = account_info.eid
+        JOIN role ON role.rid = account_info.rid
+        <where>
+            <if test="condition.name!=null and condition.name!=''">
+                AND account_info.name LIKE CONCAT('%',#{condition.name},'%') OR account.username LIKE CONCAT('%',#{condition.name},'%')
+            </if>
+            <if test="condition.gander!=null and condition.gander!=''">
+                AND account_info.gander = #{condition.gander}
+            </if>
+            <if test="condition.tel!=null and condition.tel!=''">
+                AND account_info.tel like CONCAT('%',#{condition.tel},'%')
+            </if>
+            <if test="condition.role!=null and condition.role!=''">
+                AND account_info.rid = #{condition.role}
+            </if>
+            <if test="condition.email!=null and condition.email!=''">
+                AND account_info.email like CONCAT('%',#{condition.email},'%')
+            </if>
+            <if test="condition.address!=null and condition.address!=''">
+                AND account_info.address like CONCAT('%',#{condition.address},'%') OR enterprise.address like
+                CONCAT('%',#{condition.address},'%')
+            </if>
+            <if test="condition.zipCode!=null and condition.zipCode!=''">
+                AND account_info.zip_code like CONCAT('%',#{condition.zipCode},'%') OR enterprise.zip_code
+                like CONCAT('%',#{condition.zipCode},'%')
+            </if>
+            <if test="condition.del!=null and condition.del!=''">
+                AND account.del = #{condition.del}
+            </if>
+            <if test="condition.ban!=null and condition.ban!=''">
+                AND account.ban = #{condition.ban}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectAccountInfoByAccountId" resultMap="accountInfoResult">
+        SELECT
+            account_info.aid,
+            account_info.name,
+            account_info.gander,
+            account_info.tel,
+            account_info.avatar,
+            account_info.email,
+            account_info.address,
+            account_info.zip_code,
+            enterprise.eid,
+            enterprise.name         AS enterprise_name,
+            enterprise.legal_person,
+            enterprise.tel          AS enterprise_tel,
+            enterprise.social_code,
+            enterprise.address      AS enterprise_address,
+            enterprise.zip_code     AS enterprise_zipCode,
+            role.rid,
+            role.name               AS role_name,
+            role.memo,
+            role.del,
+            account.aid             AS account_aid,
+            account.username,
+            account.password,
+            account.ban,
+            account.del             AS account_del,
+            account.memo
+        FROM
+            account_info
+        JOIN account ON account.aid = account_info.aid
+        JOIN enterprise on enterprise.eid = account_info.eid
+        JOIN role ON role.rid = account_info.rid
+        WHERE account_info.aid = #{accountId}
+    </select>
+
+</mapper>

@@ -1,11 +1,11 @@
 package edu.hrbu.trace_backend_job.controller;
 
-import edu.hrbu.trace_backend_job.entity.Result;
-import edu.hrbu.trace_backend_job.entity.dto.subject.Product;
-import edu.hrbu.trace_backend_job.entity.dto.subject.ProductQuery;
-import edu.hrbu.trace_backend_job.entity.dto.subject.SupplierQuery;
-import edu.hrbu.trace_backend_job.entity.dto.subject.VendorsQuery;
-import edu.hrbu.trace_backend_job.service.SubjectService;
+import edu.hrbu.trace_backend_business.entity.Result;
+import edu.hrbu.trace_backend_business.entity.dto.subject.Product;
+import edu.hrbu.trace_backend_business.entity.dto.subject.ProductQuery;
+import edu.hrbu.trace_backend_business.entity.dto.subject.SupplierQuery;
+import edu.hrbu.trace_backend_business.entity.dto.subject.VendorsQuery;
+import edu.hrbu.trace_backend_business.service.SubjectService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;

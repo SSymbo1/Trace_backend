@@ -44,6 +44,8 @@
     <modules>
         <module>trace_backend_job</module>
         <module>trace_backend_monitor</module>
+        <module>trace_backend_business</module>
+        <module>trace_backend_schedule</module>
     </modules>
 
     <dependencyManagement>
