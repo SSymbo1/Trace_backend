@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.hrbu.trace_backend_business.mapper.SupplierMapper">
+
+    <resultMap id="supplierResult" type="edu.hrbu.trace_backend_business.entity.po.Supplier">
+        <id column="sid" property="sid"/>
+        <result column="eid" property="eid"/>
+        <result column="code" property="code"/>
+        <result column="type" property="type"/>
+        <result column="generate" property="generate"/>
+        <result column="is_trace" property="isTrace"/>
+        <result column="del" property="del"/>
+        <association property="enterprise" javaType="edu.hrbu.trace_backend_business.entity.po.Enterprise">
+            <result column="name" property="name"/>
+            <result column="legal_person" property="legalPerson"/>
+            <result column="tel" property="tel"/>
+        </association>
+    </resultMap>
+
+    <select id="selectSupplierByCondition" resultMap="supplierResult">
+        SELECT
+            supplier.sid,
+            supplier.eid,
+            supplier.code,
+            supplier.type,
+            supplier.generate,
+            supplier.is_trace,
+            supplier.del,
+            enterprise.name,
+            enterprise.legal_person,
+            enterprise.tel
+        FROM
+           supplier
+        JOIN enterprise ON supplier.eid = enterprise.eid
+        <where>
+            supplier.type = 1
+            <if test="condition.name != '' and condition.name != null">
+                AND enterprise.name LIKE CONCAT('%',#{condition.name},'%')
+            </if>
+            <if test="condition.code != '' and condition.code != null">
+                AND supplier.code LIKE CONCAT('%',#{condition.code},'%')
+            </if>
+            <if test="condition.generate != '' and condition.generate != null">
+                AND supplier.generate = #{condition.generate}
+            </if>
+            <if test="condition.is_trace != '' and condition.is_trace != null">
+                AND supplier.is_trace = #{condition.is_trace}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectVendorsByCondition" resultMap="supplierResult">
+        SELECT
+            supplier.sid,
+            supplier.eid,
+            supplier.code,
+            supplier.type,
+            supplier.generate,
+            supplier.is_trace,
+            supplier.del,
+            enterprise.name,
+            enterprise.legal_person,
+            enterprise.tel
+        FROM
+            supplier
+        JOIN enterprise ON supplier.eid = enterprise.eid
+        <where>
+            supplier.type = 2
+            <if test="condition.name != '' and condition.name != null">
+                AND enterprise.name LIKE CONCAT('%',#{condition.name},'%')
+            </if>
+            <if test="condition.code != '' and condition.code != null">
+                AND supplier.code LIKE CONCAT('%',#{condition.code},'%')
+            </if>
+            <if test="condition.generate != '' and condition.generate != null">
+                AND supplier.generate = #{condition.generate}
+            </if>
+            <if test="condition.is_trace != '' and condition.is_trace != null">
+                AND supplier.is_trace = #{condition.is_trace}
+            </if>
+        </where>
+    </select>
+</mapper>
