@@ -3,14 +3,12 @@ package edu.hrbu.trace_backend_business.util;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
-import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-@Slf4j
 public class ExcelUtil {
 
     public static void exportExcel(File file, Class<?> clazz, List<?> data) {

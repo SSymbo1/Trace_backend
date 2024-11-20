@@ -11,7 +11,7 @@
  Target Server Version : 80032
  File Encoding         : 65001
 
- Date: 13/11/2024 16:54:16
+ Date: 20/11/2024 13:59:32
 */
 
 SET NAMES utf8mb4;
@@ -32,7 +32,7 @@ CREATE TABLE `account`  (
   PRIMARY KEY (`aid`) USING BTREE,
   INDEX `rid`(`rid`) USING BTREE,
   CONSTRAINT `account_ibfk_1` FOREIGN KEY (`rid`) REFERENCES `role` (`rid`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of account
@@ -88,7 +88,7 @@ CREATE TABLE `account_operate`  (
   INDEX `aid`(`aid`) USING BTREE,
   CONSTRAINT `account_operate_ibfk_1` FOREIGN KEY (`oid`) REFERENCES `account` (`aid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `account_operate_ibfk_2` FOREIGN KEY (`aid`) REFERENCES `account` (`aid`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 61 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 62 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of account_operate
@@ -173,7 +173,7 @@ CREATE TABLE `approach`  (
   INDEX `cid`(`cid`) USING BTREE,
   CONSTRAINT `approach_ibfk_1` FOREIGN KEY (`eid`) REFERENCES `enterprise` (`eid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `approach_ibfk_2` FOREIGN KEY (`cid`) REFERENCES `classification` (`cid`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of approach
@@ -235,7 +235,7 @@ CREATE TABLE `enterprise`  (
   `del` int(0) NOT NULL DEFAULT 0,
   `type` int(0) NOT NULL,
   PRIMARY KEY (`eid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 352 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 353 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of enterprise
@@ -590,7 +590,7 @@ CREATE TABLE `entrance`  (
   INDEX `bid`(`bid`) USING BTREE,
   CONSTRAINT `entrance_ibfk_1` FOREIGN KEY (`cid`) REFERENCES `classification` (`cid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `entrance_ibfk_3` FOREIGN KEY (`bid`) REFERENCES `enterprise` (`eid`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 54 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 55 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of entrance
@@ -677,7 +677,7 @@ CREATE TABLE `menue`  (
   `memo` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL,
   `del` smallint(0) NOT NULL DEFAULT 0,
   PRIMARY KEY (`mid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 44 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 45 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of menue
@@ -744,14 +744,15 @@ CREATE TABLE `month_trace_report`  (
   `farm_entrance` json NOT NULL,
   `animal_approach` json NOT NULL,
   `animal_entrance` json NOT NULL,
-  `enterprise_data` json NOT NULL,
   `focus_enterprise_data` json NOT NULL,
+  `area_data` json NOT NULL,
   PRIMARY KEY (`rid`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of month_trace_report
 -- ----------------------------
+INSERT INTO `month_trace_report` VALUES (1, '2024-11-18 17:14:38', '2024-11', '{\"qoq\": \"0\", \"yoy\": \"0\", \"name\": \"连锁超市\", \"total\": \"0\", \"popular\": null}', '{\"qoq\": \"0\", \"yoy\": \"0\", \"name\": \"连锁超市\", \"total\": \"0\", \"popular\": null}', '{\"qoq\": \"0\", \"yoy\": \"0\", \"name\": \"批发市场\", \"total\": \"0\", \"popular\": null}', '{\"qoq\": \"0\", \"yoy\": \"0\", \"name\": \"批发市场\", \"total\": \"0\", \"popular\": null}', '{\"qoq\": \"0\", \"yoy\": \"0\", \"name\": \"屠宰企业\", \"total\": \"0\", \"popular\": null}', '{\"qoq\": \"0\", \"yoy\": \"0\", \"name\": \"屠宰企业\", \"total\": \"0\", \"popular\": null}', '{\"qoq\": \"0\", \"yoy\": \"0\", \"name\": \"生产加工\", \"total\": \"0\", \"popular\": null}', '{\"qoq\": \"0\", \"yoy\": \"0\", \"name\": \"生产加工\", \"total\": \"0\", \"popular\": null}', '{\"qoq\": \"0\", \"yoy\": \"0\", \"name\": \"种植企业\", \"total\": \"0\", \"popular\": null}', '{\"qoq\": \"0\", \"yoy\": \"0\", \"name\": \"种植企业\", \"total\": \"0\", \"popular\": null}', '{\"qoq\": \"0\", \"yoy\": \"0\", \"name\": \"农贸市场\", \"total\": \"0\", \"popular\": null}', '{\"qoq\": \"0\", \"yoy\": \"0\", \"name\": \"农贸市场\", \"total\": \"0\", \"popular\": null}', '{\"qoq\": \"0\", \"yoy\": \"0\", \"name\": \"养殖企业\", \"total\": \"0\", \"popular\": null}', '{\"qoq\": \"0\", \"yoy\": \"0\", \"name\": \"养殖企业\", \"total\": \"0\", \"popular\": null}', '[{\"qoq\": \"0\", \"yoy\": \"0\", \"name\": \"Sem Egestas Blandit LLC\", \"type\": \"7\", \"total\": \"0\"}]', '[{\"name\": \"福建省\", \"total\": 0}, {\"name\": \"西藏自治区\", \"total\": 0}, {\"name\": \"贵州省\", \"total\": 0}, {\"name\": \"上海市\", \"total\": 0}, {\"name\": \"湖北省\", \"total\": 0}, {\"name\": \"湖南省\", \"total\": 0}, {\"name\": \"广东省\", \"total\": 0}, {\"name\": \"澳门特别行政区\", \"total\": 0}, {\"name\": \"香港特别行政区\", \"total\": 0}, {\"name\": \"安徽省\", \"total\": 0}, {\"name\": \"四川省\", \"total\": 0}, {\"name\": \"新疆维吾尔自治区\", \"total\": 0}, {\"name\": \"江苏省\", \"total\": 0}, {\"name\": \"吉林省\", \"total\": 0}, {\"name\": \"宁夏回族自治区\", \"total\": 0}, {\"name\": \"河北省\", \"total\": 0}, {\"name\": \"河南省\", \"total\": 0}, {\"name\": \"广西壮族自治区\", \"total\": 0}, {\"name\": \"海南省\", \"total\": 0}, {\"name\": \"江西省\", \"total\": 0}, {\"name\": \"重庆市\", \"total\": 0}, {\"name\": \"云南省\", \"total\": 0}, {\"name\": \"北京市\", \"total\": 0}, {\"name\": \"甘肃省\", \"total\": 0}, {\"name\": \"山东省\", \"total\": 0}, {\"name\": \"陕西省\", \"total\": 0}, {\"name\": \"浙江省\", \"total\": 0}, {\"name\": \"内蒙古自治区\", \"total\": 0}, {\"name\": \"青海省\", \"total\": 0}, {\"name\": \"天津市\", \"total\": 0}, {\"name\": \"辽宁省\", \"total\": 0}, {\"name\": \"台湾省\", \"total\": 0}, {\"name\": \"黑龙江省\", \"total\": 0}, {\"name\": \"山西省\", \"total\": 0}]');
 
 -- ----------------------------
 -- Table structure for product
@@ -771,7 +772,7 @@ CREATE TABLE `product`  (
   INDEX `cid`(`cid`) USING BTREE,
   CONSTRAINT `product_ibfk_1` FOREIGN KEY (`eid`) REFERENCES `enterprise` (`eid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `product_ibfk_2` FOREIGN KEY (`cid`) REFERENCES `classification` (`cid`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 84 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 85 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of product
@@ -850,7 +851,7 @@ CREATE TABLE `product_record`  (
   CONSTRAINT `product_record_ibfk_1` FOREIGN KEY (`aid`) REFERENCES `account` (`aid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `product_record_ibfk_2` FOREIGN KEY (`approver`) REFERENCES `account` (`aid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `product_record_ibfk_3` FOREIGN KEY (`pid`) REFERENCES `product` (`pid`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 83 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 84 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of product_record
@@ -930,14 +931,15 @@ CREATE TABLE `quarter_trace_report`  (
   `farm_entrance` json NOT NULL,
   `animal_approach` json NOT NULL,
   `animal_entrance` json NOT NULL,
-  `enterprise_data` json NOT NULL,
   `focus_enterprise_data` json NOT NULL,
+  `area_data` json NOT NULL,
   PRIMARY KEY (`rid`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of quarter_trace_report
 -- ----------------------------
+INSERT INTO `quarter_trace_report` VALUES (1, '2024-11-19 17:03:01', '2024-11', '{\"qoq\": \"0\", \"yoy\": \"0\", \"name\": \"连锁超市\", \"total\": \"0\", \"popular\": null}', '{\"qoq\": \"0\", \"yoy\": \"0\", \"name\": \"连锁超市\", \"total\": \"6\", \"popular\": \"Sem Egestas Blandit LLC\"}', '{\"qoq\": \"0\", \"yoy\": \"0\", \"name\": \"批发市场\", \"total\": \"0\", \"popular\": null}', '{\"qoq\": \"0\", \"yoy\": \"0\", \"name\": \"批发市场\", \"total\": \"6\", \"popular\": \"Mauris Sapien Consulting\"}', '{\"qoq\": \"0\", \"yoy\": \"0\", \"name\": \"屠宰企业\", \"total\": \"0\", \"popular\": null}', '{\"qoq\": \"0\", \"yoy\": \"0\", \"name\": \"屠宰企业\", \"total\": \"6\", \"popular\": \"Donec Nibh LLC\"}', '{\"qoq\": \"0\", \"yoy\": \"0\", \"name\": \"生产加工\", \"total\": \"0\", \"popular\": null}', '{\"qoq\": \"0\", \"yoy\": \"0\", \"name\": \"生产加工\", \"total\": \"6\", \"popular\": \"Blandit Nam Associates\"}', '{\"qoq\": \"0\", \"yoy\": \"0\", \"name\": \"种植企业\", \"total\": \"0\", \"popular\": null}', '{\"qoq\": \"0\", \"yoy\": \"0\", \"name\": \"种植企业\", \"total\": \"6\", \"popular\": \"Neque Pellentesque Foundation\"}', '{\"qoq\": \"0\", \"yoy\": \"0\", \"name\": \"农贸市场\", \"total\": \"0\", \"popular\": null}', '{\"qoq\": \"0\", \"yoy\": \"0\", \"name\": \"农贸市场\", \"total\": \"6\", \"popular\": \"Auctor Non LLC\"}', '{\"qoq\": \"0\", \"yoy\": \"0\", \"name\": \"养殖企业\", \"total\": \"0\", \"popular\": null}', '{\"qoq\": \"0\", \"yoy\": \"0\", \"name\": \"养殖企业\", \"total\": \"6\", \"popular\": \"Penatibus Et Inc.\"}', '[{\"qoq\": \"0\", \"yoy\": \"0\", \"name\": \"Sem Egestas Blandit LLC\", \"type\": \"7\", \"total\": \"18\"}]', '[{\"name\": \"福建省\", \"total\": 6}, {\"name\": \"西藏自治区\", \"total\": 0}, {\"name\": \"贵州省\", \"total\": 6}, {\"name\": \"上海市\", \"total\": 0}, {\"name\": \"湖北省\", \"total\": 0}, {\"name\": \"湖南省\", \"total\": 0}, {\"name\": \"广东省\", \"total\": 6}, {\"name\": \"澳门特别行政区\", \"total\": 0}, {\"name\": \"香港特别行政区\", \"total\": 0}, {\"name\": \"安徽省\", \"total\": 6}, {\"name\": \"四川省\", \"total\": 0}, {\"name\": \"新疆维吾尔自治区\", \"total\": 0}, {\"name\": \"江苏省\", \"total\": 0}, {\"name\": \"吉林省\", \"total\": 0}, {\"name\": \"宁夏回族自治区\", \"total\": 0}, {\"name\": \"河北省\", \"total\": 0}, {\"name\": \"河南省\", \"total\": 0}, {\"name\": \"广西壮族自治区\", \"total\": 0}, {\"name\": \"海南省\", \"total\": 6}, {\"name\": \"江西省\", \"total\": 0}, {\"name\": \"重庆市\", \"total\": 0}, {\"name\": \"云南省\", \"total\": 0}, {\"name\": \"北京市\", \"total\": 6}, {\"name\": \"甘肃省\", \"total\": 6}, {\"name\": \"山东省\", \"total\": 0}, {\"name\": \"陕西省\", \"total\": 0}, {\"name\": \"浙江省\", \"total\": 0}, {\"name\": \"内蒙古自治区\", \"total\": 0}, {\"name\": \"青海省\", \"total\": 0}, {\"name\": \"天津市\", \"total\": 0}, {\"name\": \"辽宁省\", \"total\": 0}, {\"name\": \"台湾省\", \"total\": 0}, {\"name\": \"黑龙江省\", \"total\": 0}, {\"name\": \"山西省\", \"total\": 0}]');
 
 -- ----------------------------
 -- Table structure for role
@@ -950,7 +952,7 @@ CREATE TABLE `role`  (
   `del` smallint(0) NULL DEFAULT 0,
   `ban` smallint(0) NULL DEFAULT 0,
   PRIMARY KEY (`rid`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of role
@@ -1479,13 +1481,14 @@ CREATE TABLE `year_trace_report`  (
   `farm_entrance` json NOT NULL,
   `animal_approach` json NOT NULL,
   `animal_entrance` json NOT NULL,
-  `enterprise_data` json NOT NULL,
   `focus_enterprise_data` json NOT NULL,
+  `area_data` json NOT NULL,
   PRIMARY KEY (`rid`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of year_trace_report
 -- ----------------------------
+INSERT INTO `year_trace_report` VALUES (4, '2024-11-18 14:56:50', '2024', '{\"qoq\": \"0\", \"yoy\": \"0\", \"name\": \"连锁超市\", \"total\": \"1\", \"popular\": \"Sem Egestas Blandit LLC\"}', '{\"qoq\": \"0\", \"yoy\": \"0\", \"name\": \"连锁超市\", \"total\": \"6\", \"popular\": \"Sem Egestas Blandit LLC\"}', '{\"qoq\": \"0\", \"yoy\": \"0\", \"name\": \"批发市场\", \"total\": \"1\", \"popular\": \"Mauris Sapien Consulting\"}', '{\"qoq\": \"0\", \"yoy\": \"0\", \"name\": \"批发市场\", \"total\": \"6\", \"popular\": \"Mauris Sapien Consulting\"}', '{\"qoq\": \"0\", \"yoy\": \"0\", \"name\": \"屠宰企业\", \"total\": \"1\", \"popular\": \"Donec Nibh LLC\"}', '{\"qoq\": \"0\", \"yoy\": \"0\", \"name\": \"屠宰企业\", \"total\": \"6\", \"popular\": \"Donec Nibh LLC\"}', '{\"qoq\": \"0\", \"yoy\": \"0\", \"name\": \"生产加工\", \"total\": \"1\", \"popular\": \"Blandit Nam Associates\"}', '{\"qoq\": \"0\", \"yoy\": \"0\", \"name\": \"生产加工\", \"total\": \"6\", \"popular\": \"Blandit Nam Associates\"}', '{\"qoq\": \"0\", \"yoy\": \"0\", \"name\": \"种植企业\", \"total\": \"1\", \"popular\": \"Neque Pellentesque Foundation\"}', '{\"qoq\": \"0\", \"yoy\": \"0\", \"name\": \"种植企业\", \"total\": \"6\", \"popular\": \"Neque Pellentesque Foundation\"}', '{\"qoq\": \"0\", \"yoy\": \"0\", \"name\": \"农贸市场\", \"total\": \"0\", \"popular\": \"Auctor Non LLC\"}', '{\"qoq\": \"0\", \"yoy\": \"0\", \"name\": \"农贸市场\", \"total\": \"6\", \"popular\": null}', '{\"qoq\": \"0\", \"yoy\": \"0\", \"name\": \"养殖企业\", \"total\": \"1\", \"popular\": \"Penatibus Et Inc.\"}', '{\"qoq\": \"0\", \"yoy\": \"0\", \"name\": \"养殖企业\", \"total\": \"6\", \"popular\": \"Penatibus Et Inc.\"}', '[{\"qoq\": \"0\", \"yoy\": \"0\", \"name\": \"Sem Egestas Blandit LLC\", \"type\": \"7\", \"total\": \"19\"}]', '[{\"name\": \"福建省\", \"total\": 7}, {\"name\": \"西藏自治区\", \"total\": 0}, {\"name\": \"贵州省\", \"total\": 13}, {\"name\": \"上海市\", \"total\": 0}, {\"name\": \"湖北省\", \"total\": 0}, {\"name\": \"湖南省\", \"total\": 0}, {\"name\": \"广东省\", \"total\": 7}, {\"name\": \"澳门特别行政区\", \"total\": 0}, {\"name\": \"香港特别行政区\", \"total\": 0}, {\"name\": \"安徽省\", \"total\": 7}, {\"name\": \"四川省\", \"total\": 0}, {\"name\": \"新疆维吾尔自治区\", \"total\": 0}, {\"name\": \"江苏省\", \"total\": 0}, {\"name\": \"吉林省\", \"total\": 0}, {\"name\": \"宁夏回族自治区\", \"total\": 0}, {\"name\": \"河北省\", \"total\": 0}, {\"name\": \"河南省\", \"total\": 0}, {\"name\": \"广西壮族自治区\", \"total\": 0}, {\"name\": \"海南省\", \"total\": 6}, {\"name\": \"江西省\", \"total\": 0}, {\"name\": \"重庆市\", \"total\": 0}, {\"name\": \"云南省\", \"total\": 0}, {\"name\": \"北京市\", \"total\": 7}, {\"name\": \"甘肃省\", \"total\": 7}, {\"name\": \"山东省\", \"total\": 0}, {\"name\": \"陕西省\", \"total\": 0}, {\"name\": \"浙江省\", \"total\": 0}, {\"name\": \"内蒙古自治区\", \"total\": 0}, {\"name\": \"青海省\", \"total\": 0}, {\"name\": \"天津市\", \"total\": 0}, {\"name\": \"辽宁省\", \"total\": 0}, {\"name\": \"台湾省\", \"total\": 0}, {\"name\": \"黑龙江省\", \"total\": 0}, {\"name\": \"山西省\", \"total\": 0}]');
 
 SET FOREIGN_KEY_CHECKS = 1;

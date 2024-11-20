@@ -19,6 +19,7 @@ import java.util.*;
 
 @Component("AnimalMonth")
 public class MonthAnimalOperation extends DayAnimalOperation {
+
     @Resource
     private ApproachMapper approachMapper;
     @Resource
@@ -153,5 +154,4 @@ public class MonthAnimalOperation extends DayAnimalOperation {
                 approaches.size() :
                 (approaches.size() - beforeApproaches.size()) / (double) beforeApproaches.size();
     }
-
 }

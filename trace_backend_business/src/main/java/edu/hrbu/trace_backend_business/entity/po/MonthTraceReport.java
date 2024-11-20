@@ -3,10 +3,11 @@ package edu.hrbu.trace_backend_business.entity.po;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
-import edu.hrbu.trace_backend_business.entity.po.json.ReportApproach;
-import edu.hrbu.trace_backend_business.entity.po.json.ReportEnterprise;
-import edu.hrbu.trace_backend_business.entity.po.json.ReportEntrance;
+import edu.hrbu.trace_backend_business.entity.po.json.AreaData;
+import edu.hrbu.trace_backend_business.entity.po.json.PointStruct;
+import edu.hrbu.trace_backend_business.entity.po.json.TraceDataCollect;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,43 +22,42 @@ import java.util.List;
 @Accessors(chain = true)
 @AllArgsConstructor
 @NoArgsConstructor
+@TableName(value = "month_trace_report", autoResultMap = true)
 public class MonthTraceReport {
-
     @TableId(type = IdType.AUTO)
     private Integer rid;
     private String operateDate;
     private String date;
     @TableField(typeHandler = JacksonTypeHandler.class)
-    private List<ReportApproach> marketApproach;
+    private TraceDataCollect marketApproach;
     @TableField(typeHandler = JacksonTypeHandler.class)
-    private List<ReportEntrance> marketEntrance;
+    private TraceDataCollect marketEntrance;
     @TableField(typeHandler = JacksonTypeHandler.class)
-    private List<ReportApproach> batchApproach;
+    private TraceDataCollect batchApproach;
     @TableField(typeHandler = JacksonTypeHandler.class)
-    private List<ReportEntrance> batchEntrance;
+    private TraceDataCollect batchEntrance;
     @TableField(typeHandler = JacksonTypeHandler.class)
-    private List<ReportApproach> butchApproach;
+    private TraceDataCollect butchApproach;
     @TableField(typeHandler = JacksonTypeHandler.class)
-    private List<ReportEntrance> butchEntrance;
+    private TraceDataCollect butchEntrance;
     @TableField(typeHandler = JacksonTypeHandler.class)
-    private List<ReportApproach> processApproach;
+    private TraceDataCollect processApproach;
     @TableField(typeHandler = JacksonTypeHandler.class)
-    private List<ReportEntrance> processEntrance;
+    private TraceDataCollect processEntrance;
     @TableField(typeHandler = JacksonTypeHandler.class)
-    private List<ReportApproach> plantApproach;
+    private TraceDataCollect plantApproach;
     @TableField(typeHandler = JacksonTypeHandler.class)
-    private List<ReportEntrance> plantEntrance;
+    private TraceDataCollect plantEntrance;
     @TableField(typeHandler = JacksonTypeHandler.class)
-    private List<ReportApproach> farmApproach;
+    private TraceDataCollect farmApproach;
     @TableField(typeHandler = JacksonTypeHandler.class)
-    private List<ReportEntrance> farmEntrance;
+    private TraceDataCollect farmEntrance;
     @TableField(typeHandler = JacksonTypeHandler.class)
-    private List<ReportApproach> animalApproach;
+    private TraceDataCollect animalApproach;
     @TableField(typeHandler = JacksonTypeHandler.class)
-    private List<ReportEntrance> animalEntrance;
+    private TraceDataCollect animalEntrance;
     @TableField(typeHandler = JacksonTypeHandler.class)
-    private List<ReportEnterprise> enterpriseData;
+    private List<PointStruct> focusEnterpriseData;
     @TableField(typeHandler = JacksonTypeHandler.class)
-    private List<ReportEnterprise> focusEnterpriseData;
-
+    private List<AreaData> areaData;
 }

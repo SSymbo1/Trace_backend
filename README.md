@@ -50,13 +50,41 @@ mysql -u 你的数据库用户名 -p 你的数据库密码 < ./recover/database/
 
 ### 项目结构
 
-#### trace_backend_job为溯源业务模块
+#### 1.trace_backend_job为溯源服务控制器模块
+
 
 src下
 
 - config ( 配置类 )
 - controller ( 控制器 )
-- cron ( 定时任务 )
+- global ( 自定义框架相关 )
+
+resources下
+
+- application.yml ( 配置文件 )
+- application-dev.yml ( 开发环境配置文件 )
+- application-prod.yml ( 生产环境配置文件 )
+- banner.txt ( 项目启动时控制台打印的图标 )
+- logback-spring.xml ( logback日志配置文件 )
+
+#### 2.trace_backend_monitor为溯源服务监控模块
+
+src下
+
+- global ( 自定义框架相关 )
+
+resources下
+
+- application.yml ( 配置文件 )
+- application-dev.yml ( 开发环境配置文件 )
+- application-prod.yml ( 生产环境配置文件 )
+- banner.txt ( 项目启动时控制台打印的图标 )
+- logback-spring.xml ( logback日志配置文件 )
+
+#### 3.trace_backend_business为溯源业务模块
+
+src下
+
 - entity ( 实体类 )
 - global ( 自定义框架相关 )
 - mapper ( 数据库操作接口 )
@@ -67,22 +95,22 @@ src下
 
 resources下
 
-- application.yml ( 配置文件 )
-- application-dev.yml ( 开发环境配置文件 )
-- application-prod.yml ( 生产环境配置文件 )
-- banner.txt ( 项目启动时控制台打印的图标 )
-- logback-spring.xml ( logback日志配置文件 )
+- img ( 静态资源 )
+- mapper ( mybatis-plus xml文件 )
 
-#### trace_backend_monitor为溯源服务监控模块
+#### 4.trace_backend_business为溯源服务定时任务模块
 
 src下
 
+- cron ( 定时任务 )
 - global ( 自定义框架相关 )
+- service ( 业务逻辑 )
 
 resources下
 
 - application.yml ( 配置文件 )
 - application-dev.yml ( 开发环境配置文件 )
 - application-prod.yml ( 生产环境配置文件 )
+- banner.txt ( 项目启动时控制台打印的图标 )
 - logback-spring.xml ( logback日志配置文件 )
 

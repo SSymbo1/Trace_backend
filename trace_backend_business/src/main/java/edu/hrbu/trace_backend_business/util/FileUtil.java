@@ -4,7 +4,6 @@ import edu.hrbu.trace_backend_business.entity.Result;
 import edu.hrbu.trace_backend_business.entity.enums.Folder;
 import edu.hrbu.trace_backend_business.entity.enums.Message;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -14,7 +13,6 @@ import java.nio.file.Paths;
 import java.util.UUID;
 
 @Slf4j
-@Component
 public class FileUtil {
 
     public static String getSystemPath() {

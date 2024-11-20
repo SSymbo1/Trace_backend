@@ -10,6 +10,10 @@ import lombok.ToString;
 // 通讯消息枚举
 public enum Message {
 
+    GET_TRACE_YEAR_REPORT("获取年度追溯报告数据成功"),
+    GET_TRACE_MONTH_REPORT("获取月度追溯报告数据成功"),
+    GET_TRACE_QUARTER_REPORT("获取季度追溯报告数据成功"),
+    GET_TRACE_LIST_SUCCESS("获取溯源报告列表成功!"),
     GET_STRUCT_REPORT_SUCCESS("获取行业结构分析报告成功!"),
     STRUCT_REPORT_SUCCESS("行业结构分析报告生成成功!"),
     STRUCT_REPORT_FAIL("行业结构分析报告生成失败!"),

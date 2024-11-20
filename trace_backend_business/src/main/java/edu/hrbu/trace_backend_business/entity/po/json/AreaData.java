@@ -11,9 +11,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class ReportEnterprise {
+public class AreaData {
     private String name;
-    private String total;
-    private String yoy;
-    private String qoq;
+    private Integer total;
 }

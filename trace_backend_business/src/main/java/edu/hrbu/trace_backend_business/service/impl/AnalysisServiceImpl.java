@@ -54,6 +54,8 @@ public class AnalysisServiceImpl implements AnalysisService {
     @Resource
     private StructAnalysisContext structAnalysisContext;
     @Resource
+    private TraceReportListContext traceReportListContext;
+    @Resource
     private CommonReportFactory commonReportFactory;
 
     @Override
@@ -224,8 +226,21 @@ public class AnalysisServiceImpl implements AnalysisService {
     }
 
     @Override
-    public Result requestGetTraceReportList(ReportQuery query) {
-        return null;
+    public Result requestGetTraceReportList(TraceQuery query) {
+        Map<String, Object> traceReportList = traceReportListContext
+                .getTraceReportListStrategy(query.getType())
+                .getTraceReportList(query);
+        return Result
+                .ok(Message.GET_STRUCT_REPORT_SUCCESS.getValue())
+                .data("trace", traceReportList);
+    }
+
+    @Override
+    public Result requestGetTraceReport(ReportQuery query) {
+        return commonReportFactory
+                .getReportFactory(query.getReport())
+                .createReportSession(query)
+                .reviewReport(query);
     }
 
     private List<Map<String, Integer>> getOperationsOriginData(OperationsQuery query) {

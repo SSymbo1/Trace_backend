@@ -21,6 +21,7 @@ import java.util.*;
 
 @Component("AnimalDay")
 public class DayAnimalOperation implements AnimalAnalysisStrategy {
+
     @Resource
     private ApproachMapper approachMapper;
     @Resource
@@ -207,6 +208,4 @@ public class DayAnimalOperation implements AnimalAnalysisStrategy {
         }
         return entrance;
     }
-
-
 }

@@ -92,7 +92,7 @@
                 FROM product_record
                          JOIN product ON product_record.pid = product.pid
                          JOIN classification_query ON product.cid = classification_query.cid
-                WHERE STR_TO_DATE(product_record.insert_time, '%Y-%m-%d') BETWEEN #{before} AND #{now}) AS  submit,
+                WHERE STR_TO_DATE(product_record.insert_time, '%Y-%m-%d') BETWEEN #{before} AND #{now})  AS submit,
                (SELECT COUNT(*)
                 FROM product_record
                          JOIN product ON product_record.pid = product.pid
@@ -101,11 +101,11 @@
                (SELECT COUNT(*)
                 FROM approach
                          JOIN classification_query ON approach.cid = classification_query.cid
-                WHERE STR_TO_DATE(business_time, '%Y-%m-%d') BETWEEN #{before} AND #{now}) AS               approach,
+                WHERE STR_TO_DATE(business_time, '%Y-%m-%d') BETWEEN #{before} AND #{now})               AS approach,
                (SELECT COUNT(*)
                 FROM entrance
                          JOIN classification_query ON entrance.cid = classification_query.cid
-                WHERE STR_TO_DATE(business_time, '%Y-%m-%d') BETWEEN #{before} AND #{now}) AS               entrance
+                WHERE STR_TO_DATE(business_time, '%Y-%m-%d') BETWEEN #{before} AND #{now})               AS entrance
     </select>
 
     <select id="selectTraceDataCount" resultType="java.lang.Integer">
@@ -382,6 +382,407 @@
         </where>
         )
         )
+    </select>
+
+    <select id="selectTraceDataCollect"
+            resultType="edu.hrbu.trace_backend_business.entity.po.json.TraceDataCollect">
+        <if test="condition == 'approach'">
+            SELECT
+            (
+            SELECT COUNT(approach.aid)
+            FROM approach
+            JOIN enterprise ON enterprise.eid = approach.eid
+            <where>
+                <if test="time=='YearTrace'">
+                    DATE_FORMAT(approach.business_time, '%Y') = #{date}
+                </if>
+                <if test="time=='MonthTrace'">
+                    DATE_FORMAT(approach.business_time, '%Y-%m') = #{date}
+                </if>
+                AND enterprise.type = #{type}
+            </where>
+            ) AS total,
+            (
+            SELECT COUNT(approach.aid)
+            FROM approach
+            JOIN enterprise ON enterprise.eid = approach.eid
+            <where>
+                <if test="time=='YearTrace'">
+                    DATE_FORMAT(approach.business_time, '%Y') = DATE_FORMAT(#{date} - INTERVAL 1 YEAR, '%Y')
+                </if>
+                <if test="time=='MonthTrace'">
+                    DATE_FORMAT(approach.business_time, '%Y-%m') = DATE_FORMAT(#{date} - INTERVAL 1 YEAR, '%Y-%m')
+                </if>
+                AND enterprise.type = #{type}
+            </where>
+            ) AS yoy,
+            (
+            SELECT COUNT(approach.aid)
+            FROM approach
+            JOIN enterprise ON enterprise.eid = approach.eid
+            <where>
+                <if test="time=='YearTrace'">
+                    DATE_FORMAT(approach.business_time, '%Y') = DATE_FORMAT(#{date} - INTERVAL 1 YEAR, '%Y')
+                </if>
+                <if test="time=='MonthTrace'">
+                    DATE_FORMAT(approach.business_time, '%Y-%m') = DATE_FORMAT(#{date} - INTERVAL 1 MONTH, '%Y-%m')
+                </if>
+                AND enterprise.type = #{type}
+            </where>
+            ) AS qoq
+        </if>
+        <if test="condition == 'entrance'">
+            SELECT
+            (
+            SELECT COUNT(entrance.eid)
+            FROM entrance
+            JOIN enterprise ON enterprise.eid = entrance.bid
+            <where>
+                <if test="time=='YearTrace'">
+                    DATE_FORMAT(entrance.business_time, '%Y') = #{date}
+                </if>
+                <if test="time=='MonthTrace'">
+                    DATE_FORMAT(entrance.business_time, '%Y-%m') = #{date}
+                </if>
+                AND enterprise.type = #{type}
+            </where>
+            ) AS total,
+            (
+            SELECT COUNT(entrance.eid)
+            FROM entrance
+            JOIN enterprise ON enterprise.eid = entrance.bid
+            <where>
+                <if test="time=='YearTrace'">
+                    DATE_FORMAT(entrance.business_time, '%Y') = DATE_FORMAT(#{date} - INTERVAL 1 YEAR, '%Y')
+                </if>
+                <if test="time=='MonthTrace'">
+                    DATE_FORMAT(entrance.business_time, '%Y-%m') = DATE_FORMAT(#{date} - INTERVAL 1 YEAR, '%Y-%m')
+                </if>
+                AND enterprise.type = #{type}
+            </where>
+            ) AS yoy,
+            (
+            SELECT COUNT(entrance.eid)
+            FROM entrance
+            JOIN enterprise ON enterprise.eid = entrance.bid
+            <where>
+                <if test="time=='YearTrace'">
+                    DATE_FORMAT(entrance.business_time, '%Y') = DATE_FORMAT(#{date} - INTERVAL 1 YEAR, '%Y')
+                </if>
+                <if test="time=='MonthTrace'">
+                    DATE_FORMAT(entrance.business_time, '%Y-%m') = DATE_FORMAT(#{date} - INTERVAL 1 MONTH, '%Y-%m')
+                </if>
+                AND enterprise.type = #{type}
+            </where>
+            ) AS qoq
+        </if>
+    </select>
+
+    <select id="selectTraceAddressByDateAndType" resultType="java.lang.String">
+        SELECT
+        e.address
+        FROM
+        enterprise e
+        JOIN entrance i ON e.eid = i.bid
+        <where>
+            <if test="type == 'YearTrace'">
+                DATE_FORMAT( i.business_time, '%Y' ) = #{date}
+            </if>
+            <if test="type == 'MonthTrace'">
+                DATE_FORMAT( i.business_time, '%Y-%m' ) = #{date}
+            </if>
+        </where>
+        UNION ALL
+        SELECT
+        e.address
+        FROM
+        enterprise e
+        JOIN approach a ON e.eid = a.eid
+        <where>
+            <if test="type == 'YearTrace'">
+                DATE_FORMAT( a.business_time, '%Y' ) = #{date}
+            </if>
+            <if test="type == 'MonthTrace'">
+                DATE_FORMAT( a.business_time, '%Y-%m' ) = #{date}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectTracePopularEnterpriseNameByCondition" resultType="java.lang.String">
+        <if test="condition == 'entrance'">
+            SELECT
+            enterprise.name
+            FROM
+            enterprise
+            JOIN
+            entrance ON enterprise.eid = entrance.bid
+            <where>
+                <if test="time == 'YearTrace'">
+                    DATE_FORMAT(entrance.business_time, '%Y') = #{date}
+                </if>
+                <if test="time == 'MonthTrace'">
+                    DATE_FORMAT(entrance.business_time, '%Y-%m') = #{date}
+                </if>
+                AND enterprise.type = #{type}
+            </where>
+            GROUP BY
+            enterprise.name
+            ORDER BY
+            COUNT(entrance.eid) DESC
+            LIMIT 1
+        </if>
+        <if test="condition == 'approach'">
+            SELECT
+            enterprise.name
+            FROM
+            enterprise
+            JOIN
+            approach ON enterprise.eid = approach.eid
+            <where>
+                <if test="time == 'YearTrace'">
+                    DATE_FORMAT(approach.business_time, '%Y') = #{date}
+                </if>
+                <if test="time == 'MonthTrace'">
+                    DATE_FORMAT(approach.business_time, '%Y-%m') = #{date}
+                </if>
+                AND enterprise.type = #{type}
+            </where>
+            GROUP BY
+            enterprise.name
+            ORDER BY
+            COUNT(approach.aid) DESC
+            LIMIT 1
+        </if>
+    </select>
+
+    <select id="selectTraceDataCollectQuarter"
+            resultType="edu.hrbu.trace_backend_business.entity.po.json.TraceDataCollect">
+        <if test="condition == 'approach'">
+            SELECT
+            (
+            SELECT COUNT(approach.aid)
+            FROM approach
+            JOIN enterprise ON enterprise.eid = approach.eid
+            WHERE DATE_FORMAT(approach.business_time, '%Y-%m') = #{start}
+            AND DATE_FORMAT(approach.business_time, '%Y-%m') &lt; #{end}
+            AND enterprise.type = #{type}
+            ) AS total,
+            (
+            SELECT COUNT(approach.aid)
+            FROM approach
+            JOIN enterprise ON enterprise.eid = approach.eid
+            WHERE DATE_FORMAT(approach.business_time, '%Y-%m') >= DATE_FORMAT(#{start} - INTERVAL 1 YEAR, '%Y-%m')
+            AND DATE_FORMAT(approach.business_time, '%Y-%m') &lt; DATE_FORMAT(#{end} - INTERVAL 1 YEAR, '%Y-%m')
+            AND enterprise.type = #{type}
+            ) AS yoy,
+            (
+            SELECT COUNT(approach.aid)
+            FROM approach
+            JOIN enterprise ON enterprise.eid = approach.eid
+            WHERE DATE_FORMAT(approach.business_time, '%Y-%m') >= DATE_FORMAT(#{start} - INTERVAL 1 MONTH, '%Y-%m')
+            AND DATE_FORMAT(approach.business_time, '%Y-%m') &lt; DATE_FORMAT(#{end} - INTERVAL 1 MONTH, '%Y-%m')
+            AND enterprise.type = #{type}
+            ) AS qoq
+        </if>
+        <if test="condition == 'entrance'">
+            SELECT
+            (
+            SELECT COUNT(entrance.eid)
+            FROM entrance
+            JOIN enterprise ON enterprise.eid = entrance.bid
+            WHERE DATE_FORMAT(entrance.business_time, '%Y-%m') >= #{start}
+            AND DATE_FORMAT(entrance.business_time, '%Y-%m') &lt; #{end}
+            AND enterprise.type = #{type}
+            ) AS total,
+            (
+            SELECT COUNT(entrance.eid)
+            FROM entrance
+            JOIN enterprise ON enterprise.eid = entrance.bid
+            WHERE DATE_FORMAT(entrance.business_time, '%Y-%m') >= DATE_FORMAT(#{start} - INTERVAL 1 YEAR, '%Y-%m')
+            AND DATE_FORMAT(entrance.business_time, '%Y-%m') &lt; DATE_FORMAT(#{end} - INTERVAL 1 YEAR, '%Y-%m')
+            AND enterprise.type = #{type}
+            ) AS yoy,
+            (
+            SELECT COUNT(entrance.eid)
+            FROM entrance
+            JOIN enterprise ON enterprise.eid = entrance.bid
+            WHERE DATE_FORMAT(entrance.business_time, '%Y-%m') >= DATE_FORMAT(#{start} - INTERVAL 1 MONTH, '%Y-%m')
+            AND DATE_FORMAT(entrance.business_time, '%Y-%m') &lt; DATE_FORMAT(#{end} - INTERVAL 1 MONTH, '%Y-%m')
+            AND enterprise.type = #{type}
+            ) AS qoq
+        </if>
+    </select>
+
+    <select id="selectTracePopularEnterpriseNameByConditionQuarter" resultType="java.lang.String">
+        <if test="condition == 'entrance'">
+            SELECT
+            enterprise.name
+            FROM
+            enterprise
+            JOIN
+            entrance ON enterprise.eid = entrance.bid
+            WHERE DATE_FORMAT(entrance.business_time, '%Y-%m') >= #{start}
+            AND DATE_FORMAT(entrance.business_time, '%Y-%m') &lt; #{end}
+            AND enterprise.type = #{type}
+            GROUP BY
+            enterprise.name
+            ORDER BY
+            COUNT(entrance.eid) DESC
+            LIMIT 1
+        </if>
+        <if test="condition == 'approach'">
+            SELECT
+            enterprise.name
+            FROM
+            enterprise
+            JOIN
+            approach ON enterprise.eid = approach.eid
+            WHERE DATE_FORMAT(approach.business_time, '%Y-%m') >= #{start}
+            AND DATE_FORMAT(approach.business_time, '%Y-%m') &lt; #{end}
+            AND enterprise.type = #{type}
+            GROUP BY
+            enterprise.name
+            ORDER BY
+            COUNT(approach.aid) DESC
+            LIMIT 1
+        </if>
+    </select>
+
+    <select id="selectReportStatisticsYOYByConditionQuarter" resultType="java.lang.Integer">
+        SELECT (
+                   (SELECT COUNT(approach.aid)
+                    FROM approach
+                             JOIN enterprise ON enterprise.eid = approach.eid
+                    WHERE
+                        DATE_FORMAT(approach.business_time, '%Y-%m') >= DATE_FORMAT(#{start} - INTERVAL 1 YEAR, '%Y-%m')
+                      AND DATE_FORMAT(approach.business_time, '%Y-%m') &lt;
+                          DATE_FORMAT(#{end} - INTERVAL 1 YEAR, '%Y-%m')
+                      AND enterprise.type = #{type}
+                      AND enterprise.eid = #{eid}) +
+                   (SELECT COUNT(entrance.eid)
+                    FROM entrance
+                             JOIN enterprise ON enterprise.eid = entrance.bid
+                    WHERE
+                        DATE_FORMAT(entrance.business_time, '%Y-%m') >= DATE_FORMAT(#{start} - INTERVAL 1 YEAR, '%Y-%m')
+                      AND DATE_FORMAT(entrance.business_time, '%Y-%m') &lt;
+                          DATE_FORMAT(#{end} - INTERVAL 1 YEAR, '%Y-%m')
+                      AND enterprise.type = #{type}
+                      AND enterprise.eid = #{eid}) +
+                   (SELECT COUNT(product_record.rid)
+                    FROM product_record
+                             JOIN product ON product.pid = product_record.pid
+                             JOIN enterprise ON enterprise.eid = product.eid
+                    WHERE DATE_FORMAT(product_record.process_time, '%Y-%m') >=
+                          DATE_FORMAT(#{start} - INTERVAL 1 YEAR, '%Y-%m')
+                      AND DATE_FORMAT(product_record.process_time, '%Y-%m') &lt;
+                          DATE_FORMAT(#{end} - INTERVAL 1 YEAR, '%Y-%m')
+                      AND enterprise.type = #{type}
+                      AND enterprise.eid = #{eid}) +
+                   (SELECT COUNT(pr.rid)
+                    FROM product_record pr
+                             JOIN product ON product.pid = pr.pid
+                             JOIN enterprise ON enterprise.eid = product.eid
+                    WHERE DATE_FORMAT(pr.insert_time, '%Y-%m') >= DATE_FORMAT(#{start} - INTERVAL 1 YEAR, '%Y-%m')
+                      AND DATE_FORMAT(pr.insert_time, '%Y-%m') &lt; DATE_FORMAT(#{end} - INTERVAL 1 YEAR, '%Y-%m')
+                      AND enterprise.type = #{type}
+                      AND enterprise.eid = #{eid})
+                   )
+    </select>
+
+    <select id="selectReportStatisticsQOQByConditionQuarter" resultType="java.lang.Integer">
+        SELECT (
+                   (SELECT COUNT(approach.aid)
+                    FROM approach
+                             JOIN enterprise ON enterprise.eid = approach.eid
+                    WHERE
+                        DATE_FORMAT(approach.business_time, '%Y-%m') >= DATE_FORMAT(#{start} - INTERVAL 1 MONTH, '%Y-%m')
+                      AND DATE_FORMAT(approach.business_time, '%Y-%m') &lt;
+                          DATE_FORMAT(#{end} - INTERVAL 1 MONTH, '%Y-%m')
+                      AND enterprise.type = #{type}
+                      AND enterprise.eid = #{eid}) +
+                   (SELECT COUNT(entrance.eid)
+                    FROM entrance
+                             JOIN enterprise ON enterprise.eid = entrance.bid
+                    WHERE
+                        DATE_FORMAT(entrance.business_time, '%Y-%m') >= DATE_FORMAT(#{start} - INTERVAL 1 MONTH, '%Y-%m')
+                      AND DATE_FORMAT(entrance.business_time, '%Y-%m') &lt;
+                          DATE_FORMAT(#{end} - INTERVAL 1 MONTH, '%Y-%m')
+                      AND enterprise.type = #{type}
+                      AND enterprise.eid = #{eid}) +
+                   (SELECT COUNT(product_record.rid)
+                    FROM product_record
+                             JOIN product ON product.pid = product_record.pid
+                             JOIN enterprise ON enterprise.eid = product.eid
+                    WHERE DATE_FORMAT(product_record.process_time, '%Y-%m') >=
+                          DATE_FORMAT(#{start} - INTERVAL 1 MONTH, '%Y-%m')
+                      AND DATE_FORMAT(product_record.process_time, '%Y-%m') &lt;
+                          DATE_FORMAT(#{end} - INTERVAL 1 MONTH, '%Y-%m')
+                      AND enterprise.type = #{type}
+                      AND enterprise.eid = #{eid}) +
+                   (SELECT COUNT(pr.rid)
+                    FROM product_record pr
+                             JOIN product ON product.pid = pr.pid
+                             JOIN enterprise ON enterprise.eid = product.eid
+                    WHERE DATE_FORMAT(pr.insert_time, '%Y-%m') >= DATE_FORMAT(#{start} - INTERVAL 1 MONTH, '%Y-%m')
+                      AND DATE_FORMAT(pr.insert_time, '%Y-%m') &lt; DATE_FORMAT(#{end} - INTERVAL 1 MONTH, '%Y-%m')
+                      AND enterprise.type = #{type}
+                      AND enterprise.eid = #{eid})
+                   )
+    </select>
+
+    <select id="selectStructTotalStatisticsDataQuarter" resultType="edu.hrbu.trace_backend_business.entity.dto.analysis.StructData">
+        SELECT(
+                  (SELECT COUNT(product_record.rid)
+                   FROM product_record
+                            JOIN product ON product.pid = product_record.pid
+                            JOIN
+                        enterprise ON enterprise.eid = product.eid
+                   WHERE DATE_FORMAT(process_time, '%Y-%m') >= #{start}
+                     AND DATE_FORMAT(process_time, '%Y-%m') &lt; #{end}
+                     AND enterprise.eid = #{eid})
+                      +
+                  (SELECT COUNT(pr.rid)
+                   FROM product_record pr
+                            JOIN product ON product.pid = pr.pid
+                            JOIN enterprise ON
+                       enterprise.eid = product.eid
+                   WHERE DATE_FORMAT(pr.insert_time, '%Y-%m') >= #{start}
+                     AND DATE_FORMAT(pr.insert_time, '%Y-%m') &lt; #{end}
+                     AND enterprise.eid = #{eid})
+                      +
+                  (SELECT COUNT(*)
+                   FROM approach
+                   WHERE DATE_FORMAT(business_time, '%Y-%m') >= #{start}
+                     AND DATE_FORMAT(business_time, '%Y-%m') &lt; #{end}
+                     AND approach.eid = #{eid})
+                      +
+                  (SELECT COUNT(*)
+                   FROM entrance
+                   WHERE DATE_FORMAT(business_time, '%Y-%m') >= #{start}
+                     AND DATE_FORMAT(business_time, '%Y-%m') &lt; #{end}
+                     AND entrance.bid = #{eid})) AS total,
+              `name`,
+              type
+        FROM enterprise
+        WHERE eid = #{eid}
+    </select>
+
+    <select id="selectTraceAddressByDateAndTypeQuarter" resultType="java.lang.String">
+        SELECT
+        e.address
+        FROM
+        enterprise e
+        JOIN entrance i ON e.eid = i.bid
+        WHERE DATE_FORMAT( i.business_time, '%Y-%m' ) >= #{start}
+        AND DATE_FORMAT( i.business_time, '%Y-%m' ) &lt; #{end}
+        UNION ALL
+        SELECT
+        e.address
+        FROM
+        enterprise e
+        JOIN approach a ON e.eid = a.eid
+        WHERE DATE_FORMAT( a.business_time, '%Y-%m' ) >= #{start}
+        AND DATE_FORMAT( a.business_time, '%Y-%m' ) &lt; #{end}
     </select>
 
 </mapper>

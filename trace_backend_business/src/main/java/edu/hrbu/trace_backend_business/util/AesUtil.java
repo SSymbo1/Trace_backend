@@ -4,11 +4,9 @@ import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.crypto.symmetric.SymmetricAlgorithm;
 import cn.hutool.crypto.symmetric.SymmetricCrypto;
 import edu.hrbu.trace_backend_business.entity.enums.Secret;
-import lombok.extern.slf4j.Slf4j;
 
 import java.nio.charset.StandardCharsets;
 
-@Slf4j
 public class AesUtil {
     private static final SymmetricCrypto aes = new SymmetricCrypto(
             SymmetricAlgorithm.AES,

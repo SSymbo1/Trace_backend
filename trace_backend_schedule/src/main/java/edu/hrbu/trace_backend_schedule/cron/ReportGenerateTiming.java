@@ -2,6 +2,7 @@ package edu.hrbu.trace_backend_schedule.cron;
 
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
+import edu.hrbu.trace_backend_business.entity.Result;
 import edu.hrbu.trace_backend_business.entity.dto.analysis.ReportQuery;
 import edu.hrbu.trace_backend_business.entity.enums.Format;
 import edu.hrbu.trace_backend_business.report.CommonReportFactory;
@@ -30,10 +31,11 @@ public class ReportGenerateTiming {
                 .date(localYear)
                 .report("TraceReport")
                 .type("YearTrace").build();
-        commonReportFactory
+        Result result = commonReportFactory
                 .getReportFactory(query.getReport())
                 .createReportSession(query)
                 .generateReport(query);
+        log.info(result.getMessage());
     }
 
     @Scheduled(cron = "0 59 23 28-31 * *")
@@ -46,14 +48,15 @@ public class ReportGenerateTiming {
                     .date(localMonth)
                     .report("TraceReport")
                     .type("MonthTrace").build();
-            commonReportFactory
+            Result result = commonReportFactory
                     .getReportFactory(query.getReport())
                     .createReportSession(query)
                     .generateReport(query);
+            log.info(result.getMessage());
         }
     }
 
-    @Scheduled(cron = "0 59 23 31 3,6,9,12 *")
+    @Scheduled(cron = "0 59 23 L 3,6,9,12 ?")
     public void generateQuarterTraceReport() {
         DateTime date = new DateTime(DateTime.now());
         String localMonth = date.toString(Format.YEAR_MONTH_FORMAT.getValue());
@@ -62,10 +65,11 @@ public class ReportGenerateTiming {
                 .date(localMonth)
                 .report("TraceReport")
                 .type("QuarterTrace").build();
-        commonReportFactory
+        Result result = commonReportFactory
                 .getReportFactory(query.getReport())
                 .createReportSession(query)
                 .generateReport(query);
+        log.info(result.getMessage());
     }
 
 }

@@ -170,8 +170,17 @@ public class AnalysisController {
             value = "获取追溯报告列表接口",
             notes = "调用此接口后，根据提供的查询参数返回指定时间段的追溯报告列表"
     )
-    Result getTraceDataList(ReportQuery query) {
+    Result getTraceDataList(TraceQuery query) {
         return analysisService.requestGetTraceReportList(query);
+    }
+
+    @GetMapping("/trace/report")
+    @ApiOperation(
+            value = "获取溯源分析报告数据接口",
+            notes = "调用此接口后，根据提供得查询参数返回指定日期构建产品溯源报告所需的数据"
+    )
+    Result getTraceReportData(ReportQuery query){
+        return analysisService.requestGetTraceReport(query);
     }
 
 
