@@ -6,6 +6,8 @@ import edu.hrbu.trace_backend_business.entity.Result;
 import edu.hrbu.trace_backend_business.entity.enums.Message;
 import edu.hrbu.trace_backend_business.entity.enums.Statue;
 import edu.hrbu.trace_backend_business.global.exception.ExcelException;
+import edu.hrbu.trace_backend_business.global.exception.TokenExpireException;
+import edu.hrbu.trace_backend_business.global.exception.TokenInconsistentException;
 import edu.hrbu.trace_backend_business.global.exception.excel.ExcelNullException;
 import edu.hrbu.trace_backend_business.global.exception.excel.ExcelStructException;
 import edu.hrbu.trace_backend_business.global.exception.excel.ExcelTimeoutException;
@@ -29,7 +31,7 @@ import java.util.Objects;
 //  全局异常处理器
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(value = ExpiredJwtException.class)
+    @ExceptionHandler(value = TokenExpireException.class)
     public Result tokenExpiredException(HttpServletResponse response, Exception exception) {
         log.error("token过期：{}", exception.getMessage());
         response.setStatus(Statue.EXPIRE_TOKEN.getValue());
@@ -46,6 +48,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(value = {
+            TokenInconsistentException.class,
             MalformedJwtException.class,
             io.jsonwebtoken.SignatureException.class
     })
@@ -57,7 +60,7 @@ public class GlobalExceptionHandler {
                 .data(
                         "info",
                         Result.custom(
-                                Message.WRONG_TOKEN.getValue(),
+                                Message.WRONG_TOKEN.getValue() + exception.getMessage(),
                                 Statue.WRONG_TOKEN.getValue(),
                                 false
                         )
@@ -147,8 +150,14 @@ public class GlobalExceptionHandler {
         return Result.fail(Message.SERVER_IO_ERROR.getValue()).data("code", Statue.FAIL.getValue());
     }
 
-    @ExceptionHandler(value = Exception.class)
-    public Result unknownException(Exception exception) {
+    @ExceptionHandler(value = {
+            Exception.class,
+            NullPointerException.class
+    })
+    public Result unknownException(HttpServletResponse response, Exception exception) {
+        if (exception.getMessage().contains("JWT")) {
+            return wrongTokenException(response, exception);
+        }
         log.error("服务器出现错误：{}", exception.getMessage());
         log.error(exception.getMessage(), exception);
         return Result.fail(Message.SERVER_ERROR.getValue()).data("code", Statue.FAIL.getValue());

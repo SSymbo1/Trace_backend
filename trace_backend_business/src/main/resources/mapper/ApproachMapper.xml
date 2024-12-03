@@ -210,4 +210,16 @@
         WHERE approach.business_time LIKE CONCAT(#{time}, '%')
           AND enterprise.type = #{type}
     </select>
+
+    <select id="selectApproachDataCountByDate" resultType="java.lang.Integer">
+        SELECT COUNT(aid)
+        FROM approach
+        WHERE DATE_FORMAT(business_time, '%Y-%m-%d') = STR_TO_DATE(#{date}, '%Y-%m-%d')
+    </select>
+
+    <select id="selectApproachAddress" resultType="java.lang.String">
+        SELECT enterprise.address
+        FROM approach
+        JOIN enterprise ON approach.eid = enterprise.eid
+    </select>
 </mapper>

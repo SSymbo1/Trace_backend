@@ -13,7 +13,10 @@ import edu.hrbu.trace_backend_business.entity.po.ImportantEnterprise;
 import edu.hrbu.trace_backend_business.entity.po.json.AreaData;
 import edu.hrbu.trace_backend_business.entity.po.json.PointStruct;
 import edu.hrbu.trace_backend_business.entity.po.json.TraceDataCollect;
-import edu.hrbu.trace_backend_business.mapper.*;
+import edu.hrbu.trace_backend_business.mapper.EnterpriseMapper;
+import edu.hrbu.trace_backend_business.mapper.ImportantEnterpriseMapper;
+import edu.hrbu.trace_backend_business.mapper.MonthTraceReportMapper;
+import edu.hrbu.trace_backend_business.mapper.StatisticsMapper;
 import edu.hrbu.trace_backend_business.report.Report;
 import edu.hrbu.trace_backend_business.strategy.impl.struct.MonthStructOperation;
 import org.springframework.context.ApplicationContext;
@@ -171,6 +174,7 @@ public class MonthTraceReport implements Report {
                 for (edu.hrbu.trace_backend_business.entity.enums.Province province : edu.hrbu.trace_backend_business.entity.enums.Province.values()) {
                     if (address.contains(province.getKey())) {
                         areaCount.put(province.getKey(), areaCount.get(province.getKey()) + 1);
+                        break;
                     }
                 }
             });

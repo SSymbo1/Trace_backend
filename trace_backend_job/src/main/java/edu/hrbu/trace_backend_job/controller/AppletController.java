@@ -1,6 +1,7 @@
 package edu.hrbu.trace_backend_job.controller;
 
 import edu.hrbu.trace_backend_business.entity.Result;
+import edu.hrbu.trace_backend_business.annotation.TrafficLimit;
 import edu.hrbu.trace_backend_business.service.AppletService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -22,6 +23,7 @@ public class AppletController {
     @Resource
     private AppletService appletService;
 
+    @TrafficLimit
     @GetMapping("/trace")
     @ApiOperation(
             value = "获取追溯产品数据接口",

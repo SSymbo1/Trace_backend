@@ -11,12 +11,13 @@ import lombok.ToString;
 public enum Statue {
 
     SUCCESS(200),
+    FREQUENCY(300),
     FAIL(500),
-    TABLE_WRONG(410),
-    WRONG_ARGUMENT(405),
-    WRONG_AES(403),
-    WRONG_TOKEN(402),
-    EXPIRE_TOKEN(401);
+    TABLE_WRONG(510),
+    WRONG_ARGUMENT(450),
+    WRONG_AES(430),
+    WRONG_TOKEN(420),
+    EXPIRE_TOKEN(410);
 
     private final Integer value;
 

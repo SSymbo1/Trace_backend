@@ -73,4 +73,37 @@
         </where>
     </select>
 
+    <select id="selectDataCollectFromCount" resultType="java.util.Map">
+        <if test="condition == 'product'">
+            SELECT
+            '产品备案' AS name,
+            COUNT(pid) AS value
+            FROM product
+        </if>
+        <if test="condition == 'record'">
+            SELECT
+            '备案审核' AS name,
+            COUNT(rid) AS value
+            FROM product_record
+        </if>
+        <if test="condition == 'approach'">
+            SELECT
+            '超市进场' AS name,
+            COUNT(aid) AS value
+            FROM approach
+        </if>
+        <if test="condition == 'entrance'">
+            SELECT
+            '超市出场' AS name,
+            COUNT(eid) AS value
+            FROM entrance
+        </if>
+    </select>
+
+    <select id="selectProductEnterpriseAddress" resultType="java.lang.String">
+        SELECT enterprise.address
+        FROM product
+        JOIN enterprise ON product.eid = enterprise.eid
+    </select>
+
 </mapper>

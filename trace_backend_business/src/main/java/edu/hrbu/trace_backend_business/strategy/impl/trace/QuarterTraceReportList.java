@@ -12,7 +12,10 @@ import edu.hrbu.trace_backend_business.strategy.TraceReportListStrategy;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Component("TraceQuarter")
 public class QuarterTraceReportList implements TraceReportListStrategy {

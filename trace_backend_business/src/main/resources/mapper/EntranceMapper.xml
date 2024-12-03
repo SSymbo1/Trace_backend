@@ -239,4 +239,16 @@
         ORDER BY total DESC
     </select>
 
+    <select id="selectEntranceDataCountByDate" resultType="java.lang.Integer">
+        SELECT COUNT(eid)
+        FROM entrance
+        WHERE DATE_FORMAT(business_time, '%Y-%m-%d') = STR_TO_DATE(#{date}, '%Y-%m-%d')
+    </select>
+
+    <select id="selectEntranceAddress" resultType="java.lang.String">
+        SELECT enterprise.address
+        FROM entrance
+        JOIN enterprise ON entrance.bid = enterprise.eid
+    </select>
+
 </mapper>

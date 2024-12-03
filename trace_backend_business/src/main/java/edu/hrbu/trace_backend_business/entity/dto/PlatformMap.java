@@ -1,4 +1,4 @@
-package edu.hrbu.trace_backend_business.entity.po.json;
+package edu.hrbu.trace_backend_business.entity.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,10 +11,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class TraceDataCollect {
+public class PlatformMap {
     private String name;
-    private String total;
-    private String yoy;
-    private String qoq;
-    private String popular;
+    private Integer value;
 }

@@ -9,6 +9,16 @@ public interface CommonDataService {
 
     Result requestHomeStatisticsLineData();
 
+    Result requestPlatformDataCollectData();
+
+    Result requestPlatformEnterpriseData();
+
+    Result requestPlatformProductData();
+
+    Result requestPlatformTraceData();
+
+    Result requestPlatformMap();
+
     Result requestWhoIs();
 
     Result requestDecodePass(Decode decode);

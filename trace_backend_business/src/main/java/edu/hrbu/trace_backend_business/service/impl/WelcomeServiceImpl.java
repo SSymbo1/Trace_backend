@@ -9,19 +9,20 @@ import edu.hrbu.trace_backend_business.entity.Result;
 import edu.hrbu.trace_backend_business.entity.dto.PictureCaptcha;
 import edu.hrbu.trace_backend_business.entity.dto.RePassword;
 import edu.hrbu.trace_backend_business.entity.dto.Welcome;
-import edu.hrbu.trace_backend_business.entity.enums.Captcha;
-import edu.hrbu.trace_backend_business.entity.enums.Condition;
-import edu.hrbu.trace_backend_business.entity.enums.Message;
+import edu.hrbu.trace_backend_business.entity.enums.*;
 import edu.hrbu.trace_backend_business.entity.po.Account;
 import edu.hrbu.trace_backend_business.mapper.AccountMapper;
 import edu.hrbu.trace_backend_business.service.WelcomeService;
 import edu.hrbu.trace_backend_business.util.AesUtil;
 import edu.hrbu.trace_backend_business.util.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Service
@@ -29,6 +30,8 @@ public class WelcomeServiceImpl implements WelcomeService {
 
     @Resource
     private AccountMapper accountMapper;
+    @Resource
+    private StringRedisTemplate stringRedisTemplate;
 
     @Override
     public Result login(Welcome welcome) {
@@ -53,9 +56,30 @@ public class WelcomeServiceImpl implements WelcomeService {
         if (userStatue.getDel().equals(Condition.ACCOUNT_DELETED.getValue())) {
             return Result.fail(Message.ACCOUNT_DELETE.getValue());
         }
+        String key = RedisKey.USER.getValue() + userStatue.getAid();
+        String existLogin = stringRedisTemplate.opsForValue().get(key);
+        if (existLogin != null) {
+            return Result.fail(Message.ALREADY_LOGIN.getValue());
+        }
+        String token = JwtUtil.createJWT(String.valueOf(userStatue.getAid()));
+        stringRedisTemplate.opsForValue().set(key, token);
+        stringRedisTemplate.expire(key, Long.parseLong(Secret.JWT_EXPIRE.getValue()), TimeUnit.MILLISECONDS);
         return Result
                 .ok(Message.LOGIN_SUCCESS.getValue() + userStatue.getUsername())
-                .data("token", JwtUtil.createJWT(String.valueOf(userStatue.getAid())));
+                .data("token", token);
+    }
+
+    @Override
+    public Result logout(HttpServletRequest request) {
+        String operateToken = request.getHeader("token");
+        int currentAccountId = Integer.parseInt(JwtUtil.parseJWT(operateToken).getSubject());
+        String key = RedisKey.USER.getValue() + currentAccountId;
+        String token = stringRedisTemplate.opsForValue().get(key);
+        if (token != null) {
+            stringRedisTemplate.delete(key);
+        }
+        log.info("aid为:{}的用户退出登录,已在系统中注销", currentAccountId);
+        return Result.ok(Message.LOGOUT_SUCCESS.getValue());
     }
 
     @Override

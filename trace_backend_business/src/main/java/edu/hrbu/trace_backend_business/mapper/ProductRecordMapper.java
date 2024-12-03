@@ -25,4 +25,12 @@ public interface ProductRecordMapper extends BaseMapper<ProductRecord> {
 
     List<ProductRecord> selectInsertInfoByYearBetween(@Param("start") String start, @Param("end") String end);
 
+    List<Integer> selectProductRecordClassID();
+
+    Integer selectProductRecordByDataCondition(@Param("date") String date, @Param("condition") String condition);
+
+    List<Integer> selectProductRecordClassIdByTime(@Param("start") String start, @Param("end") String end);
+
+    List<String> selectProductRecordEnterpriseAddress();
+
 }

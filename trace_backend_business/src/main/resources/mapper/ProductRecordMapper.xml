@@ -116,4 +116,41 @@
             STR_TO_DATE(product_record.insert_time, '%Y-%m-%d') BETWEEN #{start} AND #{end}
     </select>
 
+    <select id="selectProductRecordClassID" resultType="java.lang.Integer">
+        SELECT classification.cid
+        FROM product_record
+        JOIN product ON product_record.pid = product.pid
+        JOIN classification ON product.cid = classification.cid
+    </select>
+
+    <select id="selectProductRecordByDataCondition" resultType="java.lang.Integer">
+        <if test="condition == 'process'">
+            SELECT count(product_record.rid)
+            FROM product_record
+            WHERE date_format(process_time,'%Y-%m-%d') = str_to_date(#{date},'%Y-%m-%d')
+        </if>
+        <if test="condition == 'insert'">
+            SELECT count(product_record.rid)
+            FROM product_record
+            WHERE date_format(insert_time,'%Y-%m-%d') = str_to_date(#{date},'%Y-%m-%d')
+        </if>
+    </select>
+
+    <select id="selectProductRecordClassIdByTime" resultType="java.lang.Integer">
+        SELECT classification.cid
+        FROM product_record
+        JOIN product ON product_record.pid = product.pid
+        JOIN classification ON product.cid = classification.cid
+        WHERE
+            date_format(process_time,'%Y-%m-%d') >= str_to_date(#{start},'%Y-%m-%d')
+        AND date_format(process_time,'%Y-%m-%d') &lt;= str_to_date(#{end},'%Y-%m-%d')
+    </select>
+
+    <select id="selectProductRecordEnterpriseAddress" resultType="java.lang.String">
+        SELECT enterprise.address
+        FROM product_record
+                 JOIN product ON product_record.pid = product.pid
+                 JOIN enterprise ON product.eid = enterprise.eid
+    </select>
+
 </mapper>

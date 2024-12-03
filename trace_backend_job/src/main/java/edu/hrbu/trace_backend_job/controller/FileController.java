@@ -1,6 +1,7 @@
 package edu.hrbu.trace_backend_job.controller;
 
 import edu.hrbu.trace_backend_business.entity.Result;
+import edu.hrbu.trace_backend_business.annotation.AntiResubmit;
 import edu.hrbu.trace_backend_business.service.FileService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -20,6 +21,7 @@ public class FileController {
     @Resource
     private FileService fileService;
 
+    @AntiResubmit
     @PostMapping("/upload/avatar")
     @ApiOperation(
             value = "用户头像上传接口",
@@ -30,6 +32,7 @@ public class FileController {
         return fileService.requestAvatarUpload(avatar[0]);
     }
 
+    @AntiResubmit
     @PostMapping("/upload/goods")
     @ApiOperation(
             value = "产品图片上传接口",
@@ -40,6 +43,7 @@ public class FileController {
         return fileService.requestPhotoUpload(photo[0],goodsId);
     }
 
+    @AntiResubmit
     @PostMapping("/upload/product")
     @ApiOperation(
             value = "产品备案表格导入接口",
@@ -50,6 +54,7 @@ public class FileController {
         return fileService.requestProductAddByExcel(excel[0]);
     }
 
+    @AntiResubmit
     @PostMapping("/upload/approach")
     @ApiOperation(
             value = "超市进场表格导入接口",
@@ -60,6 +65,7 @@ public class FileController {
         return fileService.requestApproachByExcel(excel[0]);
     }
 
+    @AntiResubmit
     @PostMapping("/upload/entrance")
     @ApiOperation(
             value = "超市出场表格导入接口",
