@@ -1,7 +1,6 @@
 package edu.hrbu.trace_backend_job.global;
 
 import edu.hrbu.trace_backend_business.service.ExcelCheckService;
-import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -9,7 +8,6 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 
-@Slf4j
 @Aspect
 @Component
 //  上传表格校验切面

@@ -35,6 +35,10 @@ public interface EntranceMapper extends BaseMapper<Entrance> {
 
     List<Rank> selectEntranceSellRankByYearBetween(@Param("start") String start, @Param("end") String end, @Param("type") Integer type);
 
+    Integer selectEntranceDataCountByDate(@Param("date") String date);
+
+    List<String> selectEntranceAddress();
+
 }
 
 

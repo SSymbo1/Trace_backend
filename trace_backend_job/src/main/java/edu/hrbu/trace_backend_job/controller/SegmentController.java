@@ -1,6 +1,7 @@
 package edu.hrbu.trace_backend_job.controller;
 
 import edu.hrbu.trace_backend_business.entity.Result;
+import edu.hrbu.trace_backend_business.annotation.TrafficLimit;
 import edu.hrbu.trace_backend_business.entity.dto.segment.ApproachQuery;
 import edu.hrbu.trace_backend_business.entity.dto.segment.EntranceQuery;
 import edu.hrbu.trace_backend_business.service.SegmentService;
@@ -25,6 +26,7 @@ public class SegmentController {
     @Resource
     private SegmentService segmentService;
 
+    @TrafficLimit
     @GetMapping("/QRCode")
     @ApiOperation(
             value = "追溯二维码请求接口",
@@ -35,6 +37,7 @@ public class SegmentController {
         return segmentService.requestTraceQrCode(trace);
     }
 
+    @TrafficLimit
     @GetMapping("/entrance")
     @ApiOperation(
             value = "查询超市出场分页数据接口",
@@ -45,6 +48,7 @@ public class SegmentController {
         return segmentService.requestEntranceInfoPaged(query);
     }
 
+    @TrafficLimit
     @GetMapping("/approach")
     @ApiOperation(
             value = "查询超市进场分页数据接口",

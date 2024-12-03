@@ -1,6 +1,8 @@
 package edu.hrbu.trace_backend_job.controller;
 
 import edu.hrbu.trace_backend_business.entity.Result;
+import edu.hrbu.trace_backend_business.annotation.AntiResubmit;
+import edu.hrbu.trace_backend_business.annotation.TrafficLimit;
 import edu.hrbu.trace_backend_business.entity.dto.system.*;
 import edu.hrbu.trace_backend_business.service.SystemService;
 import io.swagger.annotations.Api;
@@ -21,6 +23,7 @@ public class SystemController {
     @Resource
     private SystemService systemService;
 
+    @TrafficLimit
     @GetMapping("/account")
     @ApiOperation(
             value = "查询分页用户信息接口",
@@ -31,6 +34,7 @@ public class SystemController {
         return systemService.requestAccountInfoPaged(query);
     }
 
+    @AntiResubmit
     @PostMapping("/account")
     @ApiOperation(
             value = "添加用户信息接口",
@@ -41,6 +45,7 @@ public class SystemController {
         return systemService.requestAccountAdd(account);
     }
 
+    @AntiResubmit
     @PutMapping("/account")
     @ApiOperation(
             value = "用户信息编辑接口",
@@ -51,6 +56,7 @@ public class SystemController {
         return systemService.requestAccountEdit(account);
     }
 
+    @AntiResubmit
     @PutMapping("/account/statue")
     @ApiOperation(
             value = "用户状态修改接口",
@@ -61,6 +67,7 @@ public class SystemController {
         return systemService.requestAccountStatueSet(statue);
     }
 
+    @AntiResubmit
     @PutMapping("/account/enable")
     @ApiOperation(
             value = "启用所有用户接口",
@@ -71,6 +78,7 @@ public class SystemController {
         return systemService.requestEnableAllAccount(able);
     }
 
+    @AntiResubmit
     @PutMapping("/account/disable")
     @ApiOperation(
             value = "禁用所有用户接口",
@@ -81,6 +89,7 @@ public class SystemController {
         return systemService.requestDisableAllAccount(able);
     }
 
+    @TrafficLimit
     @GetMapping("/enterprise")
     @ApiOperation(
             value = "查询分页企业信息接口",
@@ -91,6 +100,7 @@ public class SystemController {
         return systemService.requestEnterpriseInfoPaged(query);
     }
 
+    @AntiResubmit
     @PostMapping("/enterprise")
     @ApiOperation(
             value = "添加企业信息接口",
@@ -101,6 +111,7 @@ public class SystemController {
         return systemService.requestEnterpriseAdd(enterprise);
     }
 
+    @AntiResubmit
     @PutMapping("/enterprise")
     @ApiOperation(
             value = "企业信息编辑接口",
@@ -111,6 +122,7 @@ public class SystemController {
         return systemService.requestEnterpriseEdit(enterprise);
     }
 
+    @TrafficLimit
     @GetMapping("/role")
     @ApiOperation(
             value = "查询分页角色信息接口",
@@ -121,6 +133,7 @@ public class SystemController {
         return systemService.requestRoleInfoPaged(query);
     }
 
+    @AntiResubmit
     @PostMapping("/role")
     @ApiOperation(
             value = "添加角色信息接口",
@@ -131,6 +144,7 @@ public class SystemController {
         return systemService.requestRoleAdd(role);
     }
 
+    @AntiResubmit
     @PutMapping("/role")
     @ApiOperation(
             value = "角色信息编辑接口",
@@ -141,6 +155,7 @@ public class SystemController {
         return systemService.requestRoleEdit(role);
     }
 
+    @AntiResubmit
     @PutMapping("/role/statue")
     @ApiOperation(
             value = "角色状态修改接口",
@@ -151,6 +166,7 @@ public class SystemController {
         return systemService.requestRoleStatueSet(statue);
     }
 
+    @AntiResubmit
     @PutMapping("/role/enable")
     @ApiOperation(
             value = "启用所有角色接口",
@@ -161,6 +177,7 @@ public class SystemController {
         return systemService.requestEnableAllRole(able);
     }
 
+    @AntiResubmit
     @PutMapping("/role/disable")
     @ApiOperation(
             value = "禁用所有角色接口",
@@ -171,6 +188,7 @@ public class SystemController {
         return systemService.requestDisableAllRole(able);
     }
 
+    @TrafficLimit
     @GetMapping("/sensitive/account")
     @ApiOperation(
             value = "查询分页账户敏感操作记录接口",
@@ -181,6 +199,7 @@ public class SystemController {
         return systemService.requestSensitiveAccountInfoPaged(keyword, currentPage, pageSize);
     }
 
+    @TrafficLimit
     @GetMapping("/sensitive/enterprise")
     @ApiOperation(
             value = "查询分页企业敏感操作记录接口",
@@ -191,6 +210,7 @@ public class SystemController {
         return systemService.requestSensitiveEnterpriseInfoPaged(keyword, currentPage, pageSize);
     }
 
+    @TrafficLimit
     @GetMapping("/sensitive/role")
     @ApiOperation(
             value = "查询分页角色敏感操作记录接口",

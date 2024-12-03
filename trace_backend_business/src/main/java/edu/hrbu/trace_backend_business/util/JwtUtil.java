@@ -11,12 +11,10 @@ public class JwtUtil {
 
     public static String createJWT(String username) {
         Date now = new Date();
-        Date expiration = new Date(now.getTime() + Long.parseLong(Secret.JWT_EXPIRE.getValue()));
         return Jwts.builder()
                 .setHeaderParam("type", "JWT")
                 .setSubject(username)
                 .setIssuedAt(now)
-                .setExpiration(expiration)
                 .signWith(SignatureAlgorithm.HS256, Secret.JWT.getValue())
                 .compact();
     }

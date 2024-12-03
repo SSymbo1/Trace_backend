@@ -14,4 +14,9 @@ public class TokenTests {
         log.info(JwtUtil.createJWT("1", 360000000000L));
     }
 
+    @Test
+    public void generateQuickToken() {
+        log.info(JwtUtil.createJWT("1", 120));
+    }
+
 }

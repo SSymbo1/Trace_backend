@@ -10,6 +10,8 @@ import lombok.ToString;
 // 通讯消息枚举
 public enum Message {
 
+    PLATFORM("获取平台数据成功!"),
+    TOO_FAST("太快了，慢一点!"),
     GET_TRACE_YEAR_REPORT("获取年度追溯报告数据成功"),
     GET_TRACE_MONTH_REPORT("获取月度追溯报告数据成功"),
     GET_TRACE_QUARTER_REPORT("获取季度追溯报告数据成功"),
@@ -123,7 +125,9 @@ public enum Message {
     WRONG_USERNAME_OR_PASSWORD("用户名或密码错误!"),
     ACCOUNT_DISABLE("该账号已被暂停使用，详情请联系管理员!"),
     ACCOUNT_DELETE("该账号已被删除，详情请联系管理员!"),
-    LOGIN_SUCCESS("登录成功，欢迎:");
+    ALREADY_LOGIN("该账号已在其他地方登录,请不要重复登录!"),
+    LOGIN_SUCCESS("登录成功，欢迎:"),
+    LOGOUT_SUCCESS("退出登录成功!");
 
     private final String value;
 

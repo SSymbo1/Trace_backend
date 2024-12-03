@@ -1,6 +1,8 @@
 package edu.hrbu.trace_backend_job.controller;
 
 import edu.hrbu.trace_backend_business.entity.Result;
+import edu.hrbu.trace_backend_business.annotation.AntiResubmit;
+import edu.hrbu.trace_backend_business.annotation.TrafficLimit;
 import edu.hrbu.trace_backend_business.entity.dto.subject.Product;
 import edu.hrbu.trace_backend_business.entity.dto.subject.ProductQuery;
 import edu.hrbu.trace_backend_business.entity.dto.subject.SupplierQuery;
@@ -24,6 +26,7 @@ public class SubjectController {
     @Resource
     private SubjectService subjectService;
 
+    @TrafficLimit
     @GetMapping("/supplier")
     @ApiOperation(
             value = "查询分页供应商信息接口",
@@ -34,6 +37,7 @@ public class SubjectController {
         return subjectService.requestSupplierPaged(query);
     }
 
+    @TrafficLimit
     @GetMapping("/vendors")
     @ApiOperation(
             value = "查询分页供销商信息接口",
@@ -44,6 +48,7 @@ public class SubjectController {
         return subjectService.requestVendorsPaged(query);
     }
 
+    @TrafficLimit
     @GetMapping("/product")
     @ApiOperation(
             value = "查询产品分页信息接口",
@@ -54,6 +59,7 @@ public class SubjectController {
         return subjectService.requestProductPaged(query);
     }
 
+    @AntiResubmit
     @PostMapping("/product")
     @ApiOperation(
             value = "添加产品备案接口",
@@ -64,6 +70,7 @@ public class SubjectController {
         return subjectService.requestProductAdd(product);
     }
 
+    @AntiResubmit
     @PutMapping("/product")
     @ApiOperation(
             value = "产品信息编辑接口",
@@ -74,6 +81,7 @@ public class SubjectController {
         return subjectService.requestEditProduct(product);
     }
 
+    @TrafficLimit
     @GetMapping("/product/record")
     @ApiOperation(
             value = "查询产品审核分页信息接口",
@@ -84,6 +92,7 @@ public class SubjectController {
         return subjectService.requestProductRecordPaged(query);
     }
 
+    @AntiResubmit
     @PutMapping("/product/process/batched")
     @ApiOperation(
             value = "产品信息批量审批接口",
@@ -94,6 +103,7 @@ public class SubjectController {
         return subjectService.requestProcessProductRecordBatched(products);
     }
 
+    @AntiResubmit
     @PutMapping("/product/process/approve")
     @ApiOperation(
             value = "产品信息审批通过接口",
@@ -104,6 +114,7 @@ public class SubjectController {
         return subjectService.requestApproveProductRecord(product);
     }
 
+    @AntiResubmit
     @PutMapping("/product/process/reject")
     @ApiOperation(
             value = "产品信息审批不通过接口",

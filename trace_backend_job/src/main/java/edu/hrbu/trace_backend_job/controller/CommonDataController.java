@@ -1,6 +1,8 @@
 package edu.hrbu.trace_backend_job.controller;
 
 import edu.hrbu.trace_backend_business.entity.Result;
+import edu.hrbu.trace_backend_business.annotation.AntiResubmit;
+import edu.hrbu.trace_backend_business.annotation.TrafficLimit;
 import edu.hrbu.trace_backend_business.entity.dto.Decode;
 import edu.hrbu.trace_backend_business.service.CommonDataService;
 import io.swagger.annotations.Api;
@@ -41,6 +43,52 @@ public class CommonDataController {
         return commonDataService.requestHomeStatisticsLineData();
     }
 
+    @GetMapping("/platform/collect/ring")
+    @ApiOperation(
+            value = "可视化平台获取数据采集环图数据",
+            notes = "返回可视化平台数据采集环形数据"
+    )
+    public Result getPlatformDataCollectRingData() {
+        return commonDataService.requestPlatformDataCollectData();
+    }
+
+    @GetMapping("/platform/enterprise")
+    @ApiOperation(
+            value = "可视化平台获取企业数据接口",
+            notes = "返回可视化平台企业数据"
+    )
+    public Result getPlatformEnterpriseData() {
+        return commonDataService.requestPlatformEnterpriseData();
+    }
+
+    @GetMapping("/platform/product")
+    @ApiOperation(
+            value = "可视化平台获取产品备案数据接口",
+            notes = "返回可视化平台产品备案数据"
+    )
+    public Result getPlatformProductData() {
+        return commonDataService.requestPlatformProductData();
+    }
+
+    @GetMapping("/platform/trace")
+    @ApiOperation(
+            value = "可视化平台获取追溯数据接口",
+            notes = "返回可视化平台追溯数据"
+    )
+    public Result getPlatformTraceData() {
+        return commonDataService.requestPlatformTraceData();
+    }
+
+    @GetMapping("/platform/map")
+    @ApiOperation(
+            value = "可视化平台获取地图数据接口",
+            notes = "返回可视化平台地图数据"
+    )
+    public Result getPlatformMapData() {
+        return commonDataService.requestPlatformMap();
+    }
+
+    @TrafficLimit
     @GetMapping("/whois")
     @ApiOperation(
             value = "获取当前用户信息接口",
@@ -51,6 +99,7 @@ public class CommonDataController {
         return commonDataService.requestWhoIs();
     }
 
+    @AntiResubmit
     @PostMapping("/decode/password")
     @ApiOperation(
             value = "解码加密后密码接口",
@@ -61,6 +110,7 @@ public class CommonDataController {
         return commonDataService.requestDecodePass(decode);
     }
 
+    @TrafficLimit
     @GetMapping("/account")
     @ApiOperation(
             value = "获取用户修改信息接口",
@@ -71,6 +121,7 @@ public class CommonDataController {
         return commonDataService.requestEditAccountInfo(accountId);
     }
 
+    @TrafficLimit
     @GetMapping("/enterprise")
     @ApiOperation(
             value = "获取企业修改信息接口",
@@ -81,6 +132,7 @@ public class CommonDataController {
         return commonDataService.requestEditEnterpriseInfo(enterpriseId);
     }
 
+    @TrafficLimit
     @GetMapping("/role")
     @ApiOperation(
             value = "获取角色修改信息接口",
@@ -91,6 +143,7 @@ public class CommonDataController {
         return commonDataService.requestEditRoleInfo(roleId);
     }
 
+    @TrafficLimit
     @GetMapping("/product")
     @ApiOperation(
             value = "获取产品修改信息接口",
@@ -101,6 +154,7 @@ public class CommonDataController {
         return commonDataService.requestProductInfo(productId);
     }
 
+    @TrafficLimit
     @GetMapping("/approver")
     @ApiOperation(
             value = "获取审批人员信息接口",

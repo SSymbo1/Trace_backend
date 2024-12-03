@@ -1,6 +1,7 @@
 package edu.hrbu.trace_backend_job.controller;
 
 import edu.hrbu.trace_backend_business.entity.Result;
+import edu.hrbu.trace_backend_business.annotation.AntiResubmit;
 import edu.hrbu.trace_backend_business.entity.dto.RePassword;
 import edu.hrbu.trace_backend_business.entity.dto.Welcome;
 import edu.hrbu.trace_backend_business.service.WelcomeService;
@@ -10,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 @Slf4j
 @CrossOrigin
@@ -31,6 +33,16 @@ public class WelcomeController {
         return welcomeService.login(welcome);
     }
 
+    @GetMapping("/logout")
+    @ApiOperation(
+            value = "用户登出接口",
+            notes = "用户登出接口，调用这个接口时注销用户登录凭证"
+    )
+    public Result logout(HttpServletRequest request) {
+        return welcomeService.logout(request);
+    }
+
+    @AntiResubmit
     @PutMapping("/password")
     @ApiOperation(
             value = "用户修改密码接口",

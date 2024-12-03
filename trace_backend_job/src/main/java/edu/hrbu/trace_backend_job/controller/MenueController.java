@@ -1,6 +1,7 @@
 package edu.hrbu.trace_backend_job.controller;
 
 import edu.hrbu.trace_backend_business.entity.Result;
+import edu.hrbu.trace_backend_business.annotation.TrafficLimit;
 import edu.hrbu.trace_backend_business.service.MenueService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -22,6 +23,7 @@ public class MenueController {
     @Resource
     private MenueService menueService;
 
+    @TrafficLimit
     @GetMapping("/home")
     @ApiOperation(
             value = "首页功能菜单请求接口",
@@ -32,6 +34,7 @@ public class MenueController {
         return menueService.requestHomeMenue();
     }
 
+    @TrafficLimit
     @GetMapping("/subject")
     @ApiOperation(
             value = "追溯主体管理菜单请求接口",
@@ -42,6 +45,7 @@ public class MenueController {
         return menueService.requestSubjectMenue();
     }
 
+    @TrafficLimit
     @GetMapping("/analysis")
     @ApiOperation(
             value = "追溯数据分析菜单请求接口",
@@ -52,6 +56,7 @@ public class MenueController {
         return menueService.requestAnalysisMenue();
     }
 
+    @TrafficLimit
     @GetMapping("/monitor")
     @ApiOperation(
             value = "运行监测管理菜单请求接口",
@@ -62,6 +67,7 @@ public class MenueController {
         return menueService.requestMonitorMenue();
     }
 
+    @TrafficLimit
     @GetMapping("/segment")
     @ApiOperation(
             value = "追溯环节管理菜单请求接口",
@@ -72,6 +78,7 @@ public class MenueController {
         return menueService.requestSegmentMenue();
     }
 
+    @TrafficLimit
     @GetMapping("/system")
     @ApiOperation(
             value = "系统设置管理菜单请求接口",
@@ -82,6 +89,7 @@ public class MenueController {
         return menueService.requestSystemMenue();
     }
 
+    @TrafficLimit
     @GetMapping("/popup/role")
     @ApiOperation(
             value = "角色菜单数据接口",
@@ -92,6 +100,7 @@ public class MenueController {
         return menueService.requestRoleSubMenue();
     }
 
+    @TrafficLimit
     @GetMapping("/popup/enterprise")
     @ApiOperation(
             value = "公司菜单数据接口",
@@ -102,6 +111,7 @@ public class MenueController {
         return menueService.requestEnterpriseMenue(keyword);
     }
 
+    @TrafficLimit
     @GetMapping("/tree/role")
     @ApiOperation(
             value = "权限树形菜单接口",
@@ -112,6 +122,7 @@ public class MenueController {
         return menueService.requestRoleTreeMenue();
     }
 
+    @TrafficLimit
     @GetMapping("/tree/classification")
     @ApiOperation(
             value = "产品分类树形菜单接口",

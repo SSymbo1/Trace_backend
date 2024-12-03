@@ -179,9 +179,9 @@ public class MenueServiceImpl implements MenueService {
         Integer currentAccountId = Integer.valueOf(JwtUtil.parseJWT(OnlineContext.getCurrent()).getSubject());
         List<Menue> baseMenue = menueMapper.selectChildMenueByFatherId(target, currentAccountId);
         if (!baseMenue.isEmpty()) {
-            baseMenue.forEach(menue -> {
-                menue.setChildren(menueMapper.selectChildMenueByFatherId(menue.getMid(), currentAccountId));
-            });
+            baseMenue.forEach(menue ->
+                    menue.setChildren(menueMapper.selectChildMenueByFatherId(menue.getMid(), currentAccountId))
+            );
         }
         return baseMenue;
     }

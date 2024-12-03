@@ -168,6 +168,7 @@ public class QuarterTraceReport implements Report {
                 for (edu.hrbu.trace_backend_business.entity.enums.Province province : edu.hrbu.trace_backend_business.entity.enums.Province.values()) {
                     if (address.contains(province.getKey())) {
                         areaCount.put(province.getKey(), areaCount.get(province.getKey()) + 1);
+                        break;
                     }
                 }
             });

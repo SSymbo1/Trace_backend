@@ -10,6 +10,8 @@ import lombok.ToString;
 //  异常信息枚举
 public enum Exception {
 
+    TOKEN_EXPIRED("提供的token已过期!"),
+    TOKEN_INCONSISTENT("提供了无效token!"),
     EXCEL_NO_TRACE("存在未在出场记录中进行追溯的数据:"),
     EXCEL_TRACE_ERROR("存在非产品生产商且未填写追溯码的数据，无法导入!"),
     COMPARE_EXCEPTION("比较器异常，在比较两个Map时出现错误!"),

@@ -1,6 +1,7 @@
 package edu.hrbu.trace_backend_job.controller;
 
 import edu.hrbu.trace_backend_business.entity.Result;
+import edu.hrbu.trace_backend_business.annotation.TrafficLimit;
 import edu.hrbu.trace_backend_business.entity.dto.monitor.InfoQuery;
 import edu.hrbu.trace_backend_business.entity.dto.monitor.SummaryQuery;
 import edu.hrbu.trace_backend_business.service.MonitorService;
@@ -25,6 +26,7 @@ public class MonitorController {
     @Resource
     private MonitorService monitorService;
 
+    @TrafficLimit
     @GetMapping("/summary/histogram")
     @ApiOperation(
             value = "采集数据汇总竖形柱状图数据集接口",
@@ -35,6 +37,7 @@ public class MonitorController {
         return monitorService.requestHistogramData(query);
     }
 
+    @TrafficLimit
     @GetMapping("/summary")
     @ApiOperation(
             value = "采集数据汇总表格数据接口",
@@ -45,6 +48,7 @@ public class MonitorController {
         return monitorService.requestSummaryData(query);
     }
 
+    @TrafficLimit
     @GetMapping("/node/histogram")
     @ApiOperation(
             value = "环节类型数据竖形柱状图信息数据接口",
@@ -55,6 +59,7 @@ public class MonitorController {
         return monitorService.requestMonitorHistogramData(query);
     }
 
+    @TrafficLimit
     @GetMapping("/node/pie")
     @ApiOperation(
             value = "环节类型数据饼图信息数据接口",
@@ -65,6 +70,7 @@ public class MonitorController {
         return monitorService.requestMonitorPieData(query);
     }
 
+    @TrafficLimit
     @GetMapping("/node")
     @ApiOperation(
             value = "环节类型数据信息接口",
@@ -75,6 +81,7 @@ public class MonitorController {
         return monitorService.requestMonitorData(query);
     }
 
+    @TrafficLimit
     @GetMapping("/info/pie")
     @ApiOperation(
             value = "查看明细饼图数据接口",
@@ -85,6 +92,7 @@ public class MonitorController {
         return monitorService.requestMonitorInfoPie(query);
     }
 
+    @TrafficLimit
     @GetMapping("/info")
     @ApiOperation(
             value = "查看明细表格数据接口",

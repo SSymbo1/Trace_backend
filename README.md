@@ -22,12 +22,12 @@
 在项目根目录下的 recover 文件夹中的 database 里可以找到本项目的数据库sql文件，您需要在MySQL的命令行窗口内执行初始化
 
 ```bash
-mysql -u 你的数据库用户名 -p 你的数据库密码 < ./recover/database/trace.sql
+mysql -u 你的数据库用户名 -p 你的数据库密码 < ./recover/database/dump-trace-${timestamp}.sql
 ```
 
-当然，如果您有数据库可视化管理软件( 如 Navicat ),在选中的数据库右键选择 运行SQL文件 选择 trace.sql 点击执行则可初始化数据库
+当然，如果您有数据库可视化管理软件( 如 Navicat,DBeaver ),在选中的数据库右键选择 运行SQL文件 选择 dump-trace-${timestamp}.sql 点击执行则可初始化数据库
 
-注意：不要忘记在 application-dev.yml 或 application-prod.yml 中更改数据库的配置（链接，账号，密码）
+注意：不要忘记在所有模块的 application-dev.yml 或 application-prod.yml 中更改数据库的配置（链接，账号，密码）
 
 #### 2.静态资源
 
@@ -41,6 +41,8 @@ mysql -u 你的数据库用户名 -p 你的数据库密码 < ./recover/database/
 ### 部署项目
 当前项目还在开发中，预计以后将支持 shell脚本启用停用项目，目前在 IntelliJ IDEA 中运行 TraceBackendApplication类即可启动
 
+首先要启动服务监控模块（trace_backend_monitor）,确保其启动完毕后再启动其他模块，trace_backend_business模块为业务模块不需要启动
+
 ### 接口文档
 本项目使用 Knife4j 自动生成接口文档，当启动项目时，控制台将显示接口文档地址
 
@@ -52,7 +54,7 @@ mysql -u 你的数据库用户名 -p 你的数据库密码 < ./recover/database/
 
 #### 1.trace_backend_job为溯源服务控制器模块
 
-
+----------------------------------------------
 src下
 
 - config ( 配置类 )
@@ -66,9 +68,11 @@ resources下
 - application-prod.yml ( 生产环境配置文件 )
 - banner.txt ( 项目启动时控制台打印的图标 )
 - logback-spring.xml ( logback日志配置文件 )
+----------------------------------------------
 
 #### 2.trace_backend_monitor为溯源服务监控模块
 
+----------------------------------------------
 src下
 
 - global ( 自定义框架相关 )
@@ -80,9 +84,11 @@ resources下
 - application-prod.yml ( 生产环境配置文件 )
 - banner.txt ( 项目启动时控制台打印的图标 )
 - logback-spring.xml ( logback日志配置文件 )
+----------------------------------------------
 
 #### 3.trace_backend_business为溯源业务模块
 
+----------------------------------------------
 src下
 
 - entity ( 实体类 )
@@ -97,9 +103,11 @@ resources下
 
 - img ( 静态资源 )
 - mapper ( mybatis-plus xml文件 )
+----------------------------------------------
 
 #### 4.trace_backend_business为溯源服务定时任务模块
 
+----------------------------------------------
 src下
 
 - cron ( 定时任务 )
@@ -113,4 +121,4 @@ resources下
 - application-prod.yml ( 生产环境配置文件 )
 - banner.txt ( 项目启动时控制台打印的图标 )
 - logback-spring.xml ( logback日志配置文件 )
-
+----------------------------------------------

@@ -7,6 +7,7 @@ import edu.hrbu.trace_backend_business.entity.enums.Format;
 import edu.hrbu.trace_backend_business.entity.enums.Operate;
 import edu.hrbu.trace_backend_business.entity.po.EnterpriseOperate;
 import edu.hrbu.trace_backend_business.mapper.EnterpriseOperateMapper;
+import edu.hrbu.trace_backend_business.mapper.PlatformDataMapper;
 import edu.hrbu.trace_backend_business.service.EnterpriseOperateService;
 import edu.hrbu.trace_backend_business.util.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +23,8 @@ public class EnterpriseOperateServiceImpl implements EnterpriseOperateService {
 
     @Resource
     private EnterpriseOperateMapper enterpriseOperateMapper;
+    @Resource
+    private PlatformDataMapper platformDataMapper;
 
     @Override
     public void requestRecordEnterpriseAdd(JoinPoint joinPoint, Object result) {
